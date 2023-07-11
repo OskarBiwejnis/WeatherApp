@@ -9,9 +9,15 @@ import UIKit
 import SnapKit
 
 class WelcomeVC: UIViewController {
-
+    
+    private enum Strings {
+        static let labelName = "WeatherApp"
+        static let systemIconName = "sun.haze"
+        static let buttonName = "Proceed"
+    }
+    
     private let icon: UIImageView = {
-        let icon = UIImageView(image: UIImage(systemName: "sun.haze") )
+        let icon = UIImageView(image: UIImage(systemName: Strings.systemIconName) )
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.layer.cornerRadius = 40
         icon.tintColor = .systemCyan
@@ -21,7 +27,7 @@ class WelcomeVC: UIViewController {
     
     private let label: UILabel = {
         let label = UILabel()
-        label.text = "WeatherApp"
+        label.text = Strings.labelName
         label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         label.textAlignment = .center
@@ -35,20 +41,30 @@ class WelcomeVC: UIViewController {
         button.backgroundColor = .systemGray2
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
-        button.setTitle("Proceed", for: .normal)
+        button.setTitle(Strings.buttonName, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        setupView()
+        setupConstraints()
+    }
+    
+    private func setupView() {
+        
         view.backgroundColor = .systemGray
         view.addSubview(button)
         view.addSubview(label)
         view.addSubview(icon)
         
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
             button.centerYAnchor.constraint(equalTo: label.centerYAnchor, constant: 300),
@@ -64,8 +80,4 @@ class WelcomeVC: UIViewController {
             icon.heightAnchor.constraint(equalToConstant: 300),
         ])
     }
-    
-
-
-
 }
