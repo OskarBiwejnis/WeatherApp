@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import SnapKit
 
 class WelcomeVC: UIViewController {
 
-    private let icon: UIImage = {
-        let icon = UIImage()
-        
+    private let icon: UIImageView = {
+        let icon = UIImageView(image: UIImage(systemName: "sun.haze") )
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.layer.cornerRadius = 40
+        icon.tintColor = .systemCyan
+        icon.backgroundColor = .systemGray3
         return icon
     }()
     
@@ -21,17 +25,17 @@ class WelcomeVC: UIViewController {
         label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
     private let button: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 12
+        let button = UIButton(type: .system)
+        button.backgroundColor = .systemGray2
+        button.layer.cornerRadius = 20
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
         button.setTitle("Proceed", for: .normal)
-        button.titleLabel?.textColor = .white
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -42,12 +46,22 @@ class WelcomeVC: UIViewController {
 
         view.backgroundColor = .systemGray
         view.addSubview(button)
+        view.addSubview(label)
+        view.addSubview(icon)
         
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
+            button.centerYAnchor.constraint(equalTo: label.centerYAnchor, constant: 300),
             button.widthAnchor.constraint(equalToConstant: 150),
-            button.heightAnchor.constraint(equalToConstant: 50)
+            button.heightAnchor.constraint(equalToConstant: 50),
+            
+            label.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor, constant: -50),
+            
+            icon.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
+            icon.bottomAnchor.constraint(equalTo: label.topAnchor, constant: -10),
+            icon.widthAnchor.constraint(equalToConstant: 300),
+            icon.heightAnchor.constraint(equalToConstant: 300),
         ])
     }
     
