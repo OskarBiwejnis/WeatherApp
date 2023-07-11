@@ -79,5 +79,7 @@ class WelcomeVC: UIViewController {
             icon.widthAnchor.constraint(equalToConstant: 300),
             icon.heightAnchor.constraint(equalToConstant: 300),
         ])
+        
+        
     }
 }
