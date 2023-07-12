@@ -21,7 +21,7 @@ class WelcomeView: UIView {
     private enum Constants {
         static let imageCornerRadius = 40
         static let buttonCornerRadius = 20
-        static let buttonToLabelDistance = 300
+        static let buttonToLabelDistance = 260
         static let buttonSize = CGSize(width: 150, height: 50)
         static let titleLabelYOffset = 50
         static let imageToLabelDistance = 10
@@ -74,7 +74,7 @@ class WelcomeView: UIView {
     
     private func setupConstraints() {
         iconImageView.snp.makeConstraints { (make) -> Void in
-            make.centerX.equalTo(titleLabel)
+            make.centerX.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(titleLabel.snp.top).offset(-Constants.imageToLabelDistance)
             make.width.height.equalTo(Constants.imageSize)
         }
@@ -85,8 +85,8 @@ class WelcomeView: UIView {
         }
         
         proceedButton.snp.makeConstraints { (make) -> Void in
-            make.centerX.equalTo(titleLabel)
-            make.centerY.equalTo(titleLabel).offset(Constants.buttonToLabelDistance)
+            make.centerX.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(titleLabel.snp.bottom).offset(Constants.buttonToLabelDistance)
             make.size.equalTo(Constants.buttonSize)
         }
     }
