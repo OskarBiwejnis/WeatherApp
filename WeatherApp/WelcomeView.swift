@@ -30,7 +30,7 @@ class WelcomeView: UIView {
         static let proceedButtonWidth = 150
         static let proceedButtonHeight = 50
         static let titleLabelYOffset = -50
-        static let iconImageViewToTitleLabelDistance = -1
+        static let iconImageViewToTitleLabelDistance = -10
         static let iconImageSize = 300
     }
     private let iconImageView: UIImageView = {
