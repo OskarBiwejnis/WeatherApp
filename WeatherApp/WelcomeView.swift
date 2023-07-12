@@ -19,19 +19,19 @@ class WelcomeView: UIView {
     }
     
     private enum Constants {
-        static let iconImageViewCornerRadius = 40
+        static let imageCornerRadius = 40
         static let proceedButtonCornerRadius = 20
-        static let proceedButtonToTitleLabelDistance = 300
+        static let buttonToLabelDistance = 300
         static let proceedButtonWidth = 150
         static let proceedButtonHeight = 50
-        static let titleLabelYOffset = -50
-        static let iconImageViewToTitleLabelDistance = -10
-        static let iconImageSize = 300
+        static let titleLabelYOffset = 50
+        static let imageToLabelDistance = 10
+        static let imageSize = 300
     }
     private let iconImageView: UIImageView = {
         let iconImageView = UIImageView(image: UIImage(systemName: Strings.systemIconName) )
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.layer.cornerRadius = CGFloat(Constants.iconImageViewCornerRadius)
+        iconImageView.layer.cornerRadius = CGFloat(Constants.imageCornerRadius)
         iconImageView.tintColor = .systemCyan
         iconImageView.backgroundColor = .systemGray3
         return iconImageView
@@ -76,18 +76,18 @@ class WelcomeView: UIView {
         
         iconImageView.snp.makeConstraints { (make) -> Void in
             make.centerX.equalTo(self.layoutMarginsGuide)
-            make.bottom.equalTo(titleLabel.snp.top).offset(Constants.iconImageViewToTitleLabelDistance)
-            make.width.height.equalTo(Constants.iconImageSize)
+            make.bottom.equalTo(titleLabel.snp.top).offset(-Constants.imageToLabelDistance)
+            make.width.height.equalTo(Constants.imageSize)
         }
         
         titleLabel.snp.makeConstraints { (make) -> Void in
             make.centerX.equalTo(self.layoutMarginsGuide)
-            make.centerY.equalTo(self.layoutMarginsGuide).offset(Constants.titleLabelYOffset)
+            make.centerY.equalTo(self.layoutMarginsGuide).offset(-Constants.titleLabelYOffset)
         }
         
         proceedButton.snp.makeConstraints { (make) -> Void in
             make.centerX.equalTo(self.layoutMarginsGuide)
-            make.centerY.equalTo(titleLabel).offset(Constants.proceedButtonToTitleLabelDistance)
+            make.centerY.equalTo(titleLabel).offset(Constants.buttonToLabelDistance)
             make.size.equalTo(CGSize(width: Constants.proceedButtonWidth, height: Constants.proceedButtonHeight))
         }
     }
