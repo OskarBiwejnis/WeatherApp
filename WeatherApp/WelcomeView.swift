@@ -74,10 +74,10 @@ class WelcomeView: UIView {
     
     private func setupConstraints() {
         
-        proceedButton.snp.makeConstraints { (make) -> Void in
+        iconImageView.snp.makeConstraints { (make) -> Void in
             make.centerX.equalTo(self.layoutMarginsGuide)
-            make.centerY.equalTo(titleLabel).offset(Constants.proceedButtonToTitleLabelDistance)
-            make.size.equalTo(CGSize(width: Constants.proceedButtonWidth, height: Constants.proceedButtonHeight))
+            make.bottom.equalTo(titleLabel.snp.top).offset(Constants.iconImageViewToTitleLabelDistance)
+            make.width.height.equalTo(Constants.iconImageSize)
         }
         
         titleLabel.snp.makeConstraints { (make) -> Void in
@@ -85,10 +85,10 @@ class WelcomeView: UIView {
             make.centerY.equalTo(self.layoutMarginsGuide).offset(Constants.titleLabelYOffset)
         }
         
-        iconImageView.snp.makeConstraints { (make) -> Void in
+        proceedButton.snp.makeConstraints { (make) -> Void in
             make.centerX.equalTo(self.layoutMarginsGuide)
-            make.bottom.equalTo(titleLabel.snp.top).offset(Constants.iconImageViewToTitleLabelDistance)
-            make.width.height.equalTo(Constants.iconImageSize)
+            make.centerY.equalTo(titleLabel).offset(Constants.proceedButtonToTitleLabelDistance)
+            make.size.equalTo(CGSize(width: Constants.proceedButtonWidth, height: Constants.proceedButtonHeight))
         }
     }
 }
