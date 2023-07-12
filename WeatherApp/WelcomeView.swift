@@ -2,11 +2,6 @@ import UIKit
 
 class WelcomeView: UIView {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
-    
     init() {
         super.init(frame: .zero)
         setup()
@@ -14,7 +9,6 @@ class WelcomeView: UIView {
     
     required init?(coder: NSCoder) {
         super.init(coder: NSCoder())
-        setup()
     }
 
     private enum Strings {
