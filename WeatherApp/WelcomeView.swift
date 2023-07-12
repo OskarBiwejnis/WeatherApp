@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 class WelcomeView: UIView {
     
@@ -72,19 +73,22 @@ class WelcomeView: UIView {
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            proceedButton.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-            proceedButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor, constant: CGFloat(Constants.proceedButtonToTitleLabelDistance)),
-            proceedButton.widthAnchor.constraint(equalToConstant: CGFloat(Constants.proceedButtonWidth)),
-            proceedButton.heightAnchor.constraint(equalToConstant: CGFloat(Constants.proceedButtonHeight)),
-            
-            titleLabel.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor, constant: CGFloat(Constants.titleLabelYOffset)),
-            
-            iconImageView.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-            iconImageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: CGFloat(Constants.iconImageViewToTitleLabelDistance)),
-            iconImageView.widthAnchor.constraint(equalToConstant: CGFloat(Constants.iconImageSize)),
-            iconImageView.heightAnchor.constraint(equalToConstant: CGFloat(Constants.iconImageSize)),
-        ])
+        
+        proceedButton.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(self.layoutMarginsGuide)
+            make.centerY.equalTo(titleLabel).offset(Constants.proceedButtonToTitleLabelDistance)
+            make.size.equalTo(CGSize(width: Constants.proceedButtonWidth, height: Constants.proceedButtonHeight))
+        }
+        
+        titleLabel.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(self.layoutMarginsGuide)
+            make.centerY.equalTo(self.layoutMarginsGuide).offset(Constants.titleLabelYOffset)
+        }
+        
+        iconImageView.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(self.layoutMarginsGuide)
+            make.bottom.equalTo(titleLabel.snp.top).offset(Constants.iconImageViewToTitleLabelDistance)
+            make.width.height.equalTo(Constants.iconImageSize)
+        }
     }
 }
