@@ -18,40 +18,40 @@ class WelcomeView: UIView {
     }
 
     private enum Strings {
-        static let labelName = "WeatherApp"
+        static let titleLabelName = "WeatherApp"
         static let systemIconName = "sun.haze"
-        static let buttonName = "Proceed"
+        static let proceedButtonName = "Proceed"
     }
     
-    private let icon: UIImageView = {
-        let icon = UIImageView(image: UIImage(systemName: Strings.systemIconName) )
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.layer.cornerRadius = 40
-        icon.tintColor = .systemCyan
-        icon.backgroundColor = .systemGray3
-        return icon
+    private let iconImageView: UIImageView = {
+        let iconImageView = UIImageView(image: UIImage(systemName: Strings.systemIconName) )
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.layer.cornerRadius = 40
+        iconImageView.tintColor = .systemCyan
+        iconImageView.backgroundColor = .systemGray3
+        return iconImageView
     }()
     
-    private let label: UILabel = {
-        let label = UILabel()
-        label.text = Strings.labelName
-        label.textColor = .white
-        label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
+    private let titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.text = Strings.titleLabelName
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        return label
+        return titleLabel
     }()
     
-    private let button: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .systemGray2
-        button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
-        button.setTitle(Strings.buttonName, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
+    private let proceedButton: UIButton = {
+        let proceedButton = UIButton(type: .system)
+        proceedButton.backgroundColor = .systemGray2
+        proceedButton.layer.cornerRadius = 20
+        proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
+        proceedButton.setTitle(Strings.proceedButtonName, for: .normal)
+        proceedButton.translatesAutoresizingMaskIntoConstraints = false
         
-        return button
+        return proceedButton
     }()
 
     
@@ -62,25 +62,25 @@ class WelcomeView: UIView {
     
     private func setupView() {
         backgroundColor = .systemGray
-        addSubview(button)
-        addSubview(label)
-        addSubview(icon)
+        addSubview(proceedButton)
+        addSubview(titleLabel)
+        addSubview(iconImageView)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            button.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: label.centerYAnchor, constant: 300),
-            button.widthAnchor.constraint(equalToConstant: 150),
-            button.heightAnchor.constraint(equalToConstant: 50),
+            proceedButton.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
+            proceedButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor, constant: 300),
+            proceedButton.widthAnchor.constraint(equalToConstant: 150),
+            proceedButton.heightAnchor.constraint(equalToConstant: 50),
             
-            label.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor, constant: -50),
+            titleLabel.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor, constant: -50),
             
-            icon.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-            icon.bottomAnchor.constraint(equalTo: label.topAnchor, constant: -10),
-            icon.widthAnchor.constraint(equalToConstant: 300),
-            icon.heightAnchor.constraint(equalToConstant: 300),
+            iconImageView.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
+            iconImageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -10),
+            iconImageView.widthAnchor.constraint(equalToConstant: 300),
+            iconImageView.heightAnchor.constraint(equalToConstant: 300),
         ])
     }
     
