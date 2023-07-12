@@ -80,8 +80,8 @@ class WelcomeView: UIView {
         }
         
         titleLabel.snp.makeConstraints { (make) -> Void in
-            make.centerX.equalTo(layoutMarginsGuide)
-            make.centerY.equalTo(layoutMarginsGuide).offset(-Constants.titleLabelYOffset)
+            make.centerX.equalTo(safeAreaLayoutGuide)
+            make.centerY.equalTo(safeAreaLayoutGuide).offset(-Constants.titleLabelYOffset)
         }
         
         proceedButton.snp.makeConstraints { (make) -> Void in
