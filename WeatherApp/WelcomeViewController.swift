@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class WelcomeVC: UIViewController {
+class WelcomeViewController: UIViewController {
     
     private enum Strings {
         static let labelName = "WeatherApp"
