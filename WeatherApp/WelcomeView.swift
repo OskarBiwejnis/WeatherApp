@@ -12,14 +12,8 @@ class WelcomeView: UIView {
         super.init(coder: NSCoder())
     }
 
-    private enum Strings {
-        static let labelName = "WeatherApp"
-        static let iconName = "sun.haze"
-        static let buttonName = "Proceed"
-    }
-
     private enum Constants {
-        static let imageCornerRadius = 40
+        static let imageCornerRadius = 65
         static let buttonCornerRadius = 20
         static let buttonToLabelDistance = 260
         static let buttonSize = CGSize(width: 150, height: 50)
@@ -29,17 +23,17 @@ class WelcomeView: UIView {
     }
 
     private let iconImageView: UIImageView = {
-        let iconImageView = UIImageView(image: UIImage(systemName: Strings.iconName) )
+        let iconImageView = UIImageView(image: R.image.logo() )
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.layer.cornerRadius = CGFloat(Constants.imageCornerRadius)
-        iconImageView.tintColor = .systemCyan
-        iconImageView.backgroundColor = .systemGray3
+        iconImageView.backgroundColor = .systemGray6
+
         return iconImageView
     }()
 
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = Strings.labelName
+        titleLabel.text = R.string.localizable.appName()
         titleLabel.textColor = .white
         titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         titleLabel.textAlignment = .center
@@ -53,7 +47,7 @@ class WelcomeView: UIView {
         proceedButton.backgroundColor = .systemGray2
         proceedButton.layer.cornerRadius = CGFloat(Constants.buttonCornerRadius)
         proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
-        proceedButton.setTitle(Strings.buttonName, for: .normal)
+        proceedButton.setTitle(R.string.localizable.buttonText(), for: .normal)
         proceedButton.translatesAutoresizingMaskIntoConstraints = false
 
         return proceedButton

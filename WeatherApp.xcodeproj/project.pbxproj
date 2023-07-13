@@ -16,6 +16,8 @@
 		46C758C42A5D4D52008B52A5 /* WeatherAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758C32A5D4D52008B52A5 /* WeatherAppUITestsLaunchTests.swift */; };
 		46C758D32A5D521D008B52A5 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758D22A5D521D008B52A5 /* WelcomeViewController.swift */; };
 		46C758D52A5E8D32008B52A5 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758D42A5E8D32008B52A5 /* WelcomeView.swift */; };
+		46C758DB2A5FDC54008B52A5 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 46C758DA2A5FDC54008B52A5 /* RswiftLibrary */; };
+		46C758E52A5FE615008B52A5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 46C758E72A5FE615008B52A5 /* Localizable.strings */; };
 		5CB114C0C95858668BA33ABB /* Pods_WeatherApp_WeatherAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0748B236273F74780BE0760B /* Pods_WeatherApp_WeatherAppUITests.framework */; };
 		6955A475B80C313CE1268630 /* Pods_WeatherAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 178F5A385C3ED40EEAE5DFA1 /* Pods_WeatherAppTests.framework */; };
 		FDEF09A778EBB45F32A4EDCC /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE19633D95897EC7905168E /* Pods_WeatherApp.framework */; };
@@ -57,6 +59,8 @@
 		46C758C32A5D4D52008B52A5 /* WeatherAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		46C758D22A5D521D008B52A5 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		46C758D42A5E8D32008B52A5 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		46C758E62A5FE615008B52A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		46C758E82A5FE6C3008B52A5 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5CE19633D95897EC7905168E /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		695C176475EBF2FD44E2B469 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
 		C4DA2D75D97BB5DDA51105F7 /* Pods-WeatherAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherAppTests.debug.xcconfig"; path = "Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -69,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDEF09A778EBB45F32A4EDCC /* Pods_WeatherApp.framework in Frameworks */,
+				46C758DB2A5FDC54008B52A5 /* RswiftLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +128,7 @@
 				46C758A92A5D4D52008B52A5 /* Assets.xcassets */,
 				46C758AB2A5D4D52008B52A5 /* LaunchScreen.storyboard */,
 				46C758AE2A5D4D52008B52A5 /* Info.plist */,
+				46C758E72A5FE615008B52A5 /* Localizable.strings */,
 			);
 			path = WeatherApp;
 			sourceTree = "<group>";
@@ -175,6 +181,7 @@
 			buildConfigurationList = 46C758C72A5D4D52008B52A5 /* Build configuration list for PBXNativeTarget "WeatherApp" */;
 			buildPhases = (
 				308559D7C18D745996799639 /* [CP] Check Pods Manifest.lock */,
+				46C758D82A5FD32A008B52A5 /* Run Script */,
 				46C758992A5D4D51008B52A5 /* Sources */,
 				46C7589A2A5D4D51008B52A5 /* Frameworks */,
 				46C7589B2A5D4D51008B52A5 /* Resources */,
@@ -184,8 +191,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				46C758DF2A5FDD07008B52A5 /* PBXTargetDependency */,
 			);
 			name = WeatherApp;
+			packageProductDependencies = (
+				46C758DA2A5FDC54008B52A5 /* RswiftLibrary */,
+			);
 			productName = WeatherApp;
 			productReference = 46C7589D2A5D4D51008B52A5 /* WeatherApp.app */;
 			productType = "com.apple.product-type.application";
@@ -259,8 +270,12 @@
 			knownRegions = (
 				en,
 				Base,
+				pl,
 			);
 			mainGroup = 46C758942A5D4D51008B52A5;
+			packageReferences = (
+				46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */,
+			);
 			productRefGroup = 46C7589E2A5D4D51008B52A5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -278,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46C758AD2A5D4D52008B52A5 /* LaunchScreen.storyboard in Resources */,
+				46C758E52A5FE615008B52A5 /* Localizable.strings in Resources */,
 				46C758AA2A5D4D52008B52A5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,6 +376,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n";
+		};
+		46C758D82A5FD32A008B52A5 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				$SRCROOT/R.generated.swift,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
 		};
 		B8DBC9FC106EAD07A05A752E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -461,6 +497,10 @@
 			target = 46C7589C2A5D4D51008B52A5 /* WeatherApp */;
 			targetProxy = 46C758BE2A5D4D52008B52A5 /* PBXContainerItemProxy */;
 		};
+		46C758DF2A5FDD07008B52A5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 46C758DE2A5FDD07008B52A5 /* RswiftGenerateInternalResources */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -472,6 +512,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		46C758E72A5FE615008B52A5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				46C758E62A5FE615008B52A5 /* en */,
+				46C758E82A5FE6C3008B52A5 /* pl */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -479,6 +528,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -539,6 +589,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -759,6 +810,29 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		46C758DA2A5FDC54008B52A5 /* RswiftLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */;
+			productName = RswiftLibrary;
+		};
+		46C758DE2A5FDD07008B52A5 /* RswiftGenerateInternalResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "plugin:RswiftGenerateInternalResources";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 46C758952A5D4D51008B52A5 /* Project object */;
 }
