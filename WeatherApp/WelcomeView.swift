@@ -19,7 +19,7 @@ class WelcomeView: UIView {
     }
 
     private enum Constants {
-        static let imageCornerRadius = 40
+        static let imageCornerRadius = 65
         static let buttonCornerRadius = 20
         static let buttonToLabelDistance = 260
         static let buttonSize = CGSize(width: 150, height: 50)
@@ -29,11 +29,10 @@ class WelcomeView: UIView {
     }
 
     private let iconImageView: UIImageView = {
-        let iconImageView = UIImageView(image: UIImage(systemName: Strings.iconName) )
+        let iconImageView = UIImageView(image: R.image.logo() )
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.layer.cornerRadius = CGFloat(Constants.imageCornerRadius)
-        iconImageView.tintColor = .systemCyan
-        iconImageView.backgroundColor = .systemGray3
+        iconImageView.backgroundColor = .systemGray6
         return iconImageView
     }()
 
