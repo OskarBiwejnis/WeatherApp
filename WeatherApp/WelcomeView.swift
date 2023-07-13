@@ -12,12 +12,6 @@ class WelcomeView: UIView {
         super.init(coder: NSCoder())
     }
 
-    private enum Strings {
-        static let labelName = "WeatherApp"
-        static let iconName = "sun.haze"
-        static let buttonName = "Proceed"
-    }
-
     private enum Constants {
         static let imageCornerRadius = 65
         static let buttonCornerRadius = 20
@@ -33,6 +27,7 @@ class WelcomeView: UIView {
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.layer.cornerRadius = CGFloat(Constants.imageCornerRadius)
         iconImageView.backgroundColor = .systemGray6
+
         return iconImageView
     }()
 
@@ -61,7 +56,6 @@ class WelcomeView: UIView {
     private func setup() {
         setupView()
         setupConstraints()
-
     }
 
     private func setupView() {
