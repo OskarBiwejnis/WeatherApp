@@ -3,7 +3,7 @@ import UIKit
 class WelcomeViewController: UIViewController {
 
     var welcomeView = WelcomeView()
-    var mainViewController = MainViewController()
+    var mainViewController = SearchViewController()
 
     override func loadView() {
         welcomeView.viewController = self
@@ -14,7 +14,7 @@ class WelcomeViewController: UIViewController {
         super.viewDidLoad()
     }
 
-    func tappedButton() {
+    func proceedButtonTap() {
         navigationController?.pushViewController(mainViewController, animated: true)
     }
 }

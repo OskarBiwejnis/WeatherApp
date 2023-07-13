@@ -1,7 +1,7 @@
 import SnapKit
 import UIKit
 
-class MainView: UIView {
+class SearchView: UIView {
 
     init() {
         super.init(frame: .zero)
@@ -12,7 +12,7 @@ class MainView: UIView {
         super.init(coder: coder)
     }
 
-    unowned var viewController: MainViewController?
+    unowned var viewController: SearchViewController?
 
     private enum Constants {
         static let textFieldFontSize = 32
@@ -44,9 +44,7 @@ class MainView: UIView {
     private func setupConstraints() {
         searchTextField.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(Constants.textFieldMarginTop)
-            make.centerX.equalTo(safeAreaLayoutGuide)
-            make.left.equalTo(safeAreaLayoutGuide).offset(Constants.textFieldMarginSides)
-            make.right.equalTo(safeAreaLayoutGuide).offset(-Constants.textFieldMarginSides)
+            make.left.right.equalToSuperview().inset(Constants.textFieldMarginSides)
         }
     }
 }

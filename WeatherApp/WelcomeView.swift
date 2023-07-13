@@ -26,7 +26,6 @@ class WelcomeView: UIView {
 
     private let iconImageView: UIImageView = {
         let iconImageView = UIImageView(image: R.image.logo() )
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.layer.cornerRadius = CGFloat(Constants.imageCornerRadius)
         iconImageView.backgroundColor = .white
 
@@ -39,7 +38,6 @@ class WelcomeView: UIView {
         titleLabel.textColor = .white
         titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         titleLabel.textAlignment = .center
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return titleLabel
     }()
@@ -50,8 +48,8 @@ class WelcomeView: UIView {
         proceedButton.layer.cornerRadius = CGFloat(Constants.buttonCornerRadius)
         proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
         proceedButton.setTitle(R.string.localizable.buttonText(), for: .normal)
-        proceedButton.translatesAutoresizingMaskIntoConstraints = false
-        proceedButton.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
+        proceedButton.addTarget(self, action: #selector(proceedButtonTap), for: .touchUpInside)
+
         return proceedButton
     }()
 
@@ -87,7 +85,7 @@ class WelcomeView: UIView {
     }
 
     @objc
-    private func tappedButton() {
-        viewController?.tappedButton()
+    private func proceedButtonTap() {
+        viewController?.proceedButtonTap()
     }
 }
