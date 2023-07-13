@@ -1,2 +1,3 @@
 "appName" = "WeatherApp";
 "buttonText" = "Proceed";
+"searchPlaceholder" = "Search";
