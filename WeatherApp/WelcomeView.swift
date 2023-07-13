@@ -62,6 +62,7 @@ class WelcomeView: UIView {
     private func setup() {
         setupView()
         setupConstraints()
+
     }
 
     private func setupView() {

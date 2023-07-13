@@ -16,6 +16,7 @@
 		46C758C42A5D4D52008B52A5 /* WeatherAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758C32A5D4D52008B52A5 /* WeatherAppUITestsLaunchTests.swift */; };
 		46C758D32A5D521D008B52A5 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758D22A5D521D008B52A5 /* WelcomeViewController.swift */; };
 		46C758D52A5E8D32008B52A5 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758D42A5E8D32008B52A5 /* WelcomeView.swift */; };
+		46C758DB2A5FDC54008B52A5 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 46C758DA2A5FDC54008B52A5 /* RswiftLibrary */; };
 		5CB114C0C95858668BA33ABB /* Pods_WeatherApp_WeatherAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0748B236273F74780BE0760B /* Pods_WeatherApp_WeatherAppUITests.framework */; };
 		6955A475B80C313CE1268630 /* Pods_WeatherAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 178F5A385C3ED40EEAE5DFA1 /* Pods_WeatherAppTests.framework */; };
 		FDEF09A778EBB45F32A4EDCC /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE19633D95897EC7905168E /* Pods_WeatherApp.framework */; };
@@ -69,6 +70,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDEF09A778EBB45F32A4EDCC /* Pods_WeatherApp.framework in Frameworks */,
+				46C758DB2A5FDC54008B52A5 /* RswiftLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +177,7 @@
 			buildConfigurationList = 46C758C72A5D4D52008B52A5 /* Build configuration list for PBXNativeTarget "WeatherApp" */;
 			buildPhases = (
 				308559D7C18D745996799639 /* [CP] Check Pods Manifest.lock */,
+				46C758D82A5FD32A008B52A5 /* Run Script */,
 				46C758992A5D4D51008B52A5 /* Sources */,
 				46C7589A2A5D4D51008B52A5 /* Frameworks */,
 				46C7589B2A5D4D51008B52A5 /* Resources */,
@@ -184,8 +187,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				46C758DF2A5FDD07008B52A5 /* PBXTargetDependency */,
 			);
 			name = WeatherApp;
+			packageProductDependencies = (
+				46C758DA2A5FDC54008B52A5 /* RswiftLibrary */,
+			);
 			productName = WeatherApp;
 			productReference = 46C7589D2A5D4D51008B52A5 /* WeatherApp.app */;
 			productType = "com.apple.product-type.application";
@@ -261,6 +268,9 @@
 				Base,
 			);
 			mainGroup = 46C758942A5D4D51008B52A5;
+			packageReferences = (
+				46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */,
+			);
 			productRefGroup = 46C7589E2A5D4D51008B52A5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -361,6 +371,26 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n";
 		};
+		46C758D82A5FD32A008B52A5 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				$SRCROOT/R.generated.swift,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
+		};
 		B8DBC9FC106EAD07A05A752E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -460,6 +490,10 @@
 			isa = PBXTargetDependency;
 			target = 46C7589C2A5D4D51008B52A5 /* WeatherApp */;
 			targetProxy = 46C758BE2A5D4D52008B52A5 /* PBXContainerItemProxy */;
+		};
+		46C758DF2A5FDD07008B52A5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 46C758DE2A5FDD07008B52A5 /* RswiftGenerateInternalResources */;
 		};
 /* End PBXTargetDependency section */
 
@@ -759,6 +793,29 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		46C758DA2A5FDC54008B52A5 /* RswiftLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */;
+			productName = RswiftLibrary;
+		};
+		46C758DE2A5FDD07008B52A5 /* RswiftGenerateInternalResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "plugin:RswiftGenerateInternalResources";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 46C758952A5D4D51008B52A5 /* Project object */;
 }
