@@ -1,13 +1,13 @@
-import UIKit
 import SnapKit
+import UIKit
 
 class WelcomeView: UIView {
-    
+
     init() {
         super.init(frame: .zero)
         setup()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: NSCoder())
     }
@@ -17,7 +17,7 @@ class WelcomeView: UIView {
         static let iconName = "sun.haze"
         static let buttonName = "Proceed"
     }
-    
+
     private enum Constants {
         static let imageCornerRadius = 40
         static let buttonCornerRadius = 20
@@ -27,7 +27,7 @@ class WelcomeView: UIView {
         static let imageToLabelDistance = 10
         static let imageSize = 300
     }
-    
+
     private let iconImageView: UIImageView = {
         let iconImageView = UIImageView(image: UIImage(systemName: Strings.iconName) )
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ class WelcomeView: UIView {
         iconImageView.backgroundColor = .systemGray3
         return iconImageView
     }()
-    
+
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = Strings.labelName
@@ -44,10 +44,10 @@ class WelcomeView: UIView {
         titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return titleLabel
     }()
-    
+
     private let proceedButton: UIButton = {
         let proceedButton = UIButton(type: .system)
         proceedButton.backgroundColor = .systemGray2
@@ -55,36 +55,35 @@ class WelcomeView: UIView {
         proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
         proceedButton.setTitle(Strings.buttonName, for: .normal)
         proceedButton.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return proceedButton
     }()
 
-    
     private func setup() {
         setupView()
         setupConstraints()
     }
-    
+
     private func setupView() {
         backgroundColor = .systemGray
         addSubview(proceedButton)
         addSubview(titleLabel)
         addSubview(iconImageView)
     }
-    
+
     private func setupConstraints() {
-        iconImageView.snp.makeConstraints { (make) -> Void in
+        iconImageView.snp.makeConstraints { make -> Void in
             make.centerX.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(titleLabel.snp.top).offset(-Constants.imageToLabelDistance)
             make.width.height.equalTo(Constants.imageSize)
         }
-        
-        titleLabel.snp.makeConstraints { (make) -> Void in
+
+        titleLabel.snp.makeConstraints { make -> Void in
             make.centerX.equalTo(safeAreaLayoutGuide)
             make.centerY.equalTo(safeAreaLayoutGuide).offset(-Constants.titleLabelYOffset)
         }
-        
-        proceedButton.snp.makeConstraints { (make) -> Void in
+
+        proceedButton.snp.makeConstraints { make -> Void in
             make.centerX.equalTo(safeAreaLayoutGuide)
             make.top.equalTo(titleLabel.snp.bottom).offset(Constants.buttonToLabelDistance)
             make.size.equalTo(Constants.buttonSize)
