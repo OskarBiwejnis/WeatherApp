@@ -51,7 +51,7 @@ class WelcomeView: UIView {
         proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
         proceedButton.setTitle(R.string.localizable.buttonText(), for: .normal)
         proceedButton.translatesAutoresizingMaskIntoConstraints = false
-        proceedButton.addTarget(self , action: #selector(tappedButton), for: .touchUpInside)
+        proceedButton.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
         return proceedButton
     }()
 

@@ -17,11 +17,12 @@ class MainView: UIView {
     private enum Constants {
         static let textFieldFontSize = 32
         static let textFieldMarginTop = 25
+        static let textFieldMarginSides = 20
     }
 
     private let searchTextField = {
         let searchTextField = UITextField()
-        searchTextField.placeholder = "Search"
+        searchTextField.placeholder = R.string.localizable.searchPlaceholder()
         searchTextField.borderStyle = .roundedRect
         searchTextField.textAlignment = .left
         searchTextField.textColor = .black
@@ -44,8 +45,8 @@ class MainView: UIView {
         searchTextField.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(Constants.textFieldMarginTop)
             make.centerX.equalTo(safeAreaLayoutGuide)
-            make.left.equalTo(safeAreaLayoutGuide).offset(20)
-            make.right.equalTo(safeAreaLayoutGuide).offset(-20)
+            make.left.equalTo(safeAreaLayoutGuide).offset(Constants.textFieldMarginSides)
+            make.right.equalTo(safeAreaLayoutGuide).offset(-Constants.textFieldMarginSides)
         }
     }
 }
