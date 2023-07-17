@@ -6,6 +6,17 @@ class SearchViewController: UIViewController {
     var searchTexts: [String] = []
 
     override func loadView() {
+
+        Task {
+            do {
+                let cities =  try await NetworkingUtils.getCitiesWithPrefix("new")
+                print("koneic")
+                print(cities)
+            } catch {
+                fatalError("blad")
+            }
+        }
+
         Task {
             do {
                 let users = try await NetworkingUtils.get3FirstGitHubUsers()
