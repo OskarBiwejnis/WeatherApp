@@ -13,11 +13,11 @@ class NetworkingUtils {
         static let acceptedResponses = [200, 204]
     }
 
-    static func getCitiesWithPrefix(_ prefix: String) async throws -> [City] {
+    static func fetchCities(_ searchText: String) async throws -> [City] {
 
         var cities: [City] = []
 
-        let url = Constants.urlBase + prefix
+        let url = Constants.urlBase + searchText
         let request = NSMutableURLRequest(url: NSURL(string: url)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: Constants.timeoutInterval)
@@ -26,10 +26,10 @@ class NetworkingUtils {
 
         let session = URLSession.shared
         let (data, response) = try await session.data(for: request as URLRequest)
-        guard let response = response as? HTTPURLResponse, Constants.acceptedResponses.contains(response.statusCode) else { fatalError(R.string.localizable.error_message()) }
+        guard let response = response as? HTTPURLResponse, Constants.acceptedResponses.contains(response.statusCode) else { throw NetworkingError.invalidResponse }
 
         let decoder = JSONDecoder()
-        guard let decodedData = try? decoder.decode(CitiesData.self, from: data) else { fatalError(R.string.localizable.error_message()) }
+        guard let decodedData = try? decoder.decode(CitiesData.self, from: data) else { throw NetworkingError.decodingError }
         cities = decodedData.data
 
         return cities

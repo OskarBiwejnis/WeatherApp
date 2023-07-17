@@ -7,7 +7,7 @@ class SearchViewController: UIViewController {
     }
     
     var searchView = SearchView()
-    var searchTexts: [String] = []
+    var searchResults: [String] = []
 
     override func loadView() {
         searchView.viewController = self
@@ -21,7 +21,7 @@ class SearchViewController: UIViewController {
     }
 
     func textChanged(_ text: String) {
-        searchTexts = []
+        searchResults = []
         guard text != "" else {
             searchView.tableView.reloadData()
             return
@@ -29,14 +29,15 @@ class SearchViewController: UIViewController {
 
         Task {
             do {
-
-                let cities = try await NetworkingUtils.getCitiesWithPrefix(text)
+                let cities = try await NetworkingUtils.fetchCities(text)
                 for city in cities {
-                    searchTexts.append(city.name)
+                    searchResults.append(city.name)
                 }
                 searchView.tableView.reloadData()
-            } catch {
-                fatalError(R.string.localizable.error_message())
+            } catch NetworkingError.decodingError {
+                print(NetworkingError.decodingError)
+            } catch NetworkingError.invalidResponse {
+                print(NetworkingError.invalidResponse)
             }
         }
     }
@@ -44,12 +45,12 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchTexts.count
+        return searchResults.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? SearchCell else { return SearchCell() }
-        cell.label.text = searchTexts[indexPath.row]
+        cell.label.text = searchResults[indexPath.row]
 
         return cell
     }

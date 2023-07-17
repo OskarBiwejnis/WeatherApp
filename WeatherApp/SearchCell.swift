@@ -13,7 +13,7 @@ class SearchCell: UITableViewCell {
     }
 
     private enum Constants {
-        static let fontSize = CGFloat(24)
+        static let fontSize: CGFloat = 24
         static let labelLeftMargin = 20
     }
 
