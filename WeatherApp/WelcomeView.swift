@@ -34,7 +34,7 @@ class WelcomeView: UIView {
 
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = R.string.localizable.appName()
+        titleLabel.text = R.string.localizable.app_name()
         titleLabel.textColor = .white
         titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         titleLabel.textAlignment = .center
@@ -47,7 +47,7 @@ class WelcomeView: UIView {
         proceedButton.backgroundColor = .systemGray5
         proceedButton.layer.cornerRadius = CGFloat(Constants.buttonCornerRadius)
         proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
-        proceedButton.setTitle(R.string.localizable.buttonText(), for: .normal)
+        proceedButton.setTitle(R.string.localizable.button_text(), for: .normal)
         proceedButton.addTarget(self, action: #selector(proceedButtonTap), for: .touchUpInside)
 
         return proceedButton

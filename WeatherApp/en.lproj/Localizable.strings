@@ -1,5 +1,4 @@
-"appName" = "WeatherApp";
-"buttonText" = "Proceed";
-"searchPlaceholder" = "Search";
-"reuseIdentifier" = "searchCell";
-"errorMessage" = "Error fetching data";
+"app_name" = "WeatherApp";
+"button_text" = "Proceed";
+"search_placeholder" = "Search";
+"error_message" = "Error occured";
