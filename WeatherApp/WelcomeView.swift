@@ -42,7 +42,7 @@ class WelcomeView: UIView {
         return titleLabel
     }()
 
-    private let proceedButton: UIButton = {
+    private lazy var proceedButton: UIButton = {
         let proceedButton = UIButton(type: .system)
         proceedButton.backgroundColor = .systemGray5
         proceedButton.layer.cornerRadius = CGFloat(Constants.buttonCornerRadius)

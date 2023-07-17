@@ -16,5 +16,17 @@ class WelcomeViewController: UIViewController {
 
     func proceedButtonTap() {
         navigationController?.pushViewController(mainViewController, animated: true)
+
+        Task {
+            do {
+                let users = try await NetworkingUtils.get3FirstGitHubUsers()
+
+                if let users {
+                    print(users)
+                }
+            } catch {
+                print("error")
+            }
+        }
     }
 }
