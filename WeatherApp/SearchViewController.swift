@@ -18,7 +18,7 @@ class SearchViewController: UIViewController {
                     print(searchTexts)
                 }
             } catch {
-                print("error")
+                fatalError(R.string.localizable.errorMessage())
             }
         }
 
@@ -39,7 +39,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCell") as? SearchCell else { return SearchCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: R.string.localizable.reuseIdentifier()) as? SearchCell else { return SearchCell() }
         cell.set(text: searchTexts[indexPath.row])
 
         return cell

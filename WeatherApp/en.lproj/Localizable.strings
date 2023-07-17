@@ -1,3 +1,5 @@
 "appName" = "WeatherApp";
 "buttonText" = "Proceed";
 "searchPlaceholder" = "Search";
+"reuseIdentifier" = "searchCell";
+"errorMessage" = "Error fetching data";

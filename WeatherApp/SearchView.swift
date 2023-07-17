@@ -17,12 +17,13 @@ class SearchView: UIView {
     private enum Constants {
         static let textFieldFontSize = 32
         static let textFieldMargin = 20
+        static let rowHeight = 50
     }
 
     let tableView = {
         let tableView = UITableView()
-        tableView.rowHeight = 50
-        tableView.register(SearchCell.self, forCellReuseIdentifier: "SearchCell")
+        tableView.rowHeight = CGFloat(Constants.rowHeight)
+        tableView.register(SearchCell.self, forCellReuseIdentifier: R.string.localizable.reuseIdentifier())
         return tableView
     }()
 

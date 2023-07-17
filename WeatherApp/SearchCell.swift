@@ -12,12 +12,15 @@ class SearchCell: UITableViewCell {
         super.init(coder: coder)
     }
 
+    private enum Constants {
+        static let fontSize = 24
+        static let labelLeftMargin = 20
+    }
+
     let label: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 24)
-        label.numberOfLines = 1
-        label.text = "text"
+        label.font = UIFont.systemFont(ofSize: CGFloat(Constants.fontSize))
 
         return label
     }()
@@ -31,7 +34,7 @@ class SearchCell: UITableViewCell {
     private func setupConstraints() {
         label.snp.makeConstraints { make -> Void in
             make.centerY.equalToSuperview()
-            make.left.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(Constants.labelLeftMargin)
         }
     }
 }
