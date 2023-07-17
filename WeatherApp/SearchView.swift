@@ -16,11 +16,17 @@ class SearchView: UIView {
 
     private enum Constants {
         static let textFieldFontSize = 32
-        static let textFieldMarginTop = 25
-        static let textFieldMarginSides = 20
+        static let textFieldMargin = 20
     }
 
-    private let searchTextField = {
+    let tableView = {
+        let tableView = UITableView()
+        tableView.rowHeight = 50
+        tableView.register(SearchCell.self, forCellReuseIdentifier: "SearchCell")
+        return tableView
+    }()
+
+    let searchTextField = {
         let searchTextField = UITextField()
         searchTextField.placeholder = R.string.localizable.searchPlaceholder()
         searchTextField.borderStyle = .roundedRect
@@ -39,12 +45,18 @@ class SearchView: UIView {
     private func setupView() {
         backgroundColor = .systemGray6
         addSubview(searchTextField)
+        addSubview(tableView)
     }
 
     private func setupConstraints() {
         searchTextField.snp.makeConstraints { make -> Void in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(Constants.textFieldMarginTop)
-            make.left.right.equalToSuperview().inset(Constants.textFieldMarginSides)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(Constants.textFieldMargin)
+            make.left.right.equalToSuperview().inset(Constants.textFieldMargin)
+        }
+
+        tableView.snp.makeConstraints { make -> Void in
+            make.top.equalTo(searchTextField.snp.bottom).offset(Constants.textFieldMargin)
+            make.bottom.left.right.equalToSuperview()
         }
     }
 }
