@@ -21,7 +21,6 @@
 		46C758EA2A600065008B52A5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758E92A600065008B52A5 /* SearchViewController.swift */; };
 		46C758ED2A600088008B52A5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758EC2A600088008B52A5 /* SearchView.swift */; };
 		46C758F42A614E55008B52A5 /* NetworkingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758F32A614E55008B52A5 /* NetworkingUtils.swift */; };
-		46C758F62A614ED1008B52A5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758F52A614ED1008B52A5 /* User.swift */; };
 		46D1FEA82A652B43003A71C4 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEA72A652B43003A71C4 /* SearchCell.swift */; };
 		46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEAA2A655FE1003A71C4 /* City.swift */; };
 		5CB114C0C95858668BA33ABB /* Pods_WeatherApp_WeatherAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0748B236273F74780BE0760B /* Pods_WeatherApp_WeatherAppUITests.framework */; };
@@ -70,7 +69,6 @@
 		46C758E92A600065008B52A5 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		46C758EC2A600088008B52A5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		46C758F32A614E55008B52A5 /* NetworkingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingUtils.swift; sourceTree = "<group>"; };
-		46C758F52A614ED1008B52A5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		46D1FEA72A652B43003A71C4 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		46D1FEAA2A655FE1003A71C4 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		5CE19633D95897EC7905168E /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,7 +139,6 @@
 				46C758EC2A600088008B52A5 /* SearchView.swift */,
 				46D1FEA72A652B43003A71C4 /* SearchCell.swift */,
 				46C758F32A614E55008B52A5 /* NetworkingUtils.swift */,
-				46C758F52A614ED1008B52A5 /* User.swift */,
 				46D1FEAA2A655FE1003A71C4 /* City.swift */,
 				46C758A92A5D4D52008B52A5 /* Assets.xcassets */,
 				46C758AB2A5D4D52008B52A5 /* LaunchScreen.storyboard */,
@@ -479,7 +476,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				46C758A12A5D4D51008B52A5 /* AppDelegate.swift in Sources */,
-				46C758F62A614ED1008B52A5 /* User.swift in Sources */,
 				46C758EA2A600065008B52A5 /* SearchViewController.swift in Sources */,
 				46C758A32A5D4D51008B52A5 /* SceneDelegate.swift in Sources */,
 				46D1FEA82A652B43003A71C4 /* SearchCell.swift in Sources */,

@@ -5,6 +5,7 @@ class SearchViewController: UIViewController {
     private enum Constants {
         static let reuseIdentifier = "searchCell"
     }
+    
     var searchView = SearchView()
     var searchTexts: [String] = []
 
