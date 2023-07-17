@@ -16,6 +16,7 @@ class SearchViewController: UIViewController {
                     }
                     print(users)
                     print(searchTexts)
+                    searchView.tableView.reloadData()
                 }
             } catch {
                 fatalError(R.string.localizable.errorMessage())
