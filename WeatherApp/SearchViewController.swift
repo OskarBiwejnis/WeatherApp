@@ -2,38 +2,13 @@ import UIKit
 
 class SearchViewController: UIViewController {
 
+    private enum Constants {
+        static let reuseIdentifier = "searchCell"
+    }
     var searchView = SearchView()
     var searchTexts: [String] = []
 
     override func loadView() {
-
-        Task {
-            do {
-                let cities =  try await NetworkingUtils.getCitiesWithPrefix("new")
-                print("koneic")
-                print(cities)
-            } catch {
-                fatalError("blad")
-            }
-        }
-
-        Task {
-            do {
-                let users = try await NetworkingUtils.get3FirstGitHubUsers()
-
-                if let users {
-                    for user in users {
-                        searchTexts.append(user.login)
-                    }
-                    print(users)
-                    print(searchTexts)
-                    searchView.tableView.reloadData()
-                }
-            } catch {
-                fatalError(R.string.localizable.errorMessage())
-            }
-        }
-
         searchView.viewController = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
@@ -43,6 +18,27 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+
+    func textChanged(_ text: String) {
+        searchTexts = []
+        guard text != "" else {
+            searchView.tableView.reloadData()
+            return
+        }
+
+        Task {
+            do {
+
+                let cities = try await NetworkingUtils.getCitiesWithPrefix(text)
+                for city in cities {
+                    searchTexts.append(city.name)
+                }
+                searchView.tableView.reloadData()
+            } catch {
+                fatalError(R.string.localizable.error_message())
+            }
+        }
+    }
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
@@ -51,8 +47,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: R.string.localizable.reuseIdentifier()) as? SearchCell else { return SearchCell() }
-        cell.set(text: searchTexts[indexPath.row])
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? SearchCell else { return SearchCell() }
+        cell.label.text = searchTexts[indexPath.row]
 
         return cell
     }

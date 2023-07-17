@@ -1,5 +1,4 @@
-"appName" = "Pogodynka";
-"buttonText" = "Wejdź";
-"searchPlaceholder" = "Znajdź";
-"reuseIdentifier" = "searchCell";
-"errorMessage" = "Błąd przy pobieraniu danych";
+"app_name" = "Pogodynka";
+"button_text" = "Wejdź";
+"search_placeholder" = "Znajdź";
+"error_message" = "Wystąpił błąd";

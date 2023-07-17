@@ -18,22 +18,24 @@ class SearchView: UIView {
         static let textFieldFontSize = 32
         static let textFieldMargin = 20
         static let rowHeight = 50
+        static let reuseIdentifier = "searchCell"
     }
 
     let tableView = {
         let tableView = UITableView()
         tableView.rowHeight = CGFloat(Constants.rowHeight)
-        tableView.register(SearchCell.self, forCellReuseIdentifier: R.string.localizable.reuseIdentifier())
+        tableView.register(SearchCell.self, forCellReuseIdentifier: Constants.reuseIdentifier)
         return tableView
     }()
 
     let searchTextField = {
         let searchTextField = UITextField()
-        searchTextField.placeholder = R.string.localizable.searchPlaceholder()
+        searchTextField.placeholder = R.string.localizable.search_placeholder()
         searchTextField.borderStyle = .roundedRect
         searchTextField.textAlignment = .left
         searchTextField.textColor = .black
         searchTextField.font = .systemFont(ofSize: CGFloat(Constants.textFieldFontSize))
+        searchTextField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
         return searchTextField
     }()
@@ -59,5 +61,10 @@ class SearchView: UIView {
             make.top.equalTo(searchTextField.snp.bottom).offset(Constants.textFieldMargin)
             make.bottom.left.right.equalToSuperview()
         }
+    }
+
+    @objc
+    private func textChanged() {
+        viewController?.textChanged(searchTextField.text ?? "")
     }
 }

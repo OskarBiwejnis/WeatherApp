@@ -13,23 +13,17 @@ class SearchCell: UITableViewCell {
     }
 
     private enum Constants {
-        static let fontSize = 24
+        static let fontSize = CGFloat(24)
         static let labelLeftMargin = 20
     }
 
     let label: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: CGFloat(Constants.fontSize))
+        label.font = UIFont.systemFont(ofSize: Constants.fontSize)
 
         return label
     }()
-
-
-    func set(text: String) {
-        label.text = text
-    }
-
 
     private func setupConstraints() {
         label.snp.makeConstraints { make -> Void in
