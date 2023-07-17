@@ -1,0 +1,40 @@
+import UIKit
+
+class SearchCell: UITableViewCell {
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        addSubview(label)
+        setupConstraints()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    private enum Constants {
+        static let fontSize = 24
+        static let labelLeftMargin = 20
+    }
+
+    let label: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: CGFloat(Constants.fontSize))
+
+        return label
+    }()
+
+
+    func set(text: String) {
+        label.text = text
+    }
+
+
+    private func setupConstraints() {
+        label.snp.makeConstraints { make -> Void in
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().offset(Constants.labelLeftMargin)
+        }
+    }
+}
