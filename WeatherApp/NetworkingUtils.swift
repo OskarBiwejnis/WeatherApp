@@ -10,6 +10,7 @@ class NetworkingUtils {
         static let urlBase = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities?types=CITY&minPopulation=20000&sort=-population&namePrefix="
         static let httpMethod = "GET"
         static let timeoutInterval = 10.0
+        static let acceptedResponses = [200, 204]
     }
 
     static func getCitiesWithPrefix(_ prefix: String) async throws -> [City] {
@@ -25,7 +26,7 @@ class NetworkingUtils {
 
         let session = URLSession.shared
         let (data, response) = try await session.data(for: request as URLRequest)
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { fatalError(R.string.localizable.error_message()) }
+        guard let response = response as? HTTPURLResponse, Constants.acceptedResponses.contains(response.statusCode) else { fatalError(R.string.localizable.error_message()) }
 
         let decoder = JSONDecoder()
         guard let decodedData = try? decoder.decode(CitiesData.self, from: data) else { fatalError(R.string.localizable.error_message()) }
