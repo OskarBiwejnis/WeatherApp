@@ -1,10 +1,18 @@
 import Foundation
 
 class SearchViewModel: NSObject {
+    var debounceTimer: Timer?
     var searchResults: [String] = []
     weak var searchViewControllerDelegate: SearchViewControllerDelegate?
 
     func searchTextDidChange(_ text: String) {
+        debounceTimer?.invalidate()
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: 1.1, repeats: false) { [weak self] timer in
+            self?.fetchCities(text)
+        }
+    }
+
+    private func fetchCities(_ text: String) {
         searchResults = []
         guard text != "" else {
             return
