@@ -3,10 +3,12 @@ import UIKit
 class WelcomeViewController: UIViewController {
 
     var welcomeView = WelcomeView()
+    var welcomeViewModel = WelcomeViewModel()
     var mainViewController = SearchViewController()
 
     override func loadView() {
         welcomeView.viewController = self
+        welcomeViewModel.welcomeViewControllerDelegate = self
         view = welcomeView
     }
 
@@ -15,6 +17,17 @@ class WelcomeViewController: UIViewController {
     }
 
     func proceedButtonTap() {
+        welcomeViewModel.proceedButtonTap()
+
+    }
+}
+
+protocol WelcomeViewControllerDelegate: AnyObject {
+    func pushViewController()
+}
+
+extension WelcomeViewController: WelcomeViewControllerDelegate {
+    func pushViewController() {
         navigationController?.pushViewController(mainViewController, animated: true)
     }
 }

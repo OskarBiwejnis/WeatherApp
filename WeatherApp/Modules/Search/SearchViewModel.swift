@@ -5,9 +5,13 @@ class SearchViewModel: NSObject {
     var searchResults: [String] = []
     weak var searchViewControllerDelegate: SearchViewControllerDelegate?
 
+    private enum Constants {
+        static let timeInterval = 1.1
+    }
+
     func searchTextDidChange(_ text: String) {
         debounceTimer?.invalidate()
-        debounceTimer = Timer.scheduledTimer(withTimeInterval: 1.1, repeats: false) { [weak self] timer in
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: Constants.timeInterval, repeats: false) { [weak self] timer in
             self?.fetchCities(text)
         }
     }
