@@ -110,6 +110,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		464975BF2A66B4F300DC78FB /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				464975C02A66B50900DC78FB /* Welcome */,
+				464975C12A66B51200DC78FB /* Search */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		464975C02A66B50900DC78FB /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				46C758D22A5D521D008B52A5 /* WelcomeViewController.swift */,
+				46C758D42A5E8D32008B52A5 /* WelcomeView.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+		464975C12A66B51200DC78FB /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				46C758E92A600065008B52A5 /* SearchViewController.swift */,
+				464975BC2A668B2800DC78FB /* SearchViewModel.swift */,
+				46C758EC2A600088008B52A5 /* SearchView.swift */,
+				46D1FEA72A652B43003A71C4 /* SearchCell.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		464975C22A66B52D00DC78FB /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				46D1FEAA2A655FE1003A71C4 /* City.swift */,
+				46D1FEB32A659B35003A71C4 /* NetworkingError.swift */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		464975C32A66B53900DC78FB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				46C758F32A614E55008B52A5 /* NetworkingUtils.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		464975C42A66B55D00DC78FB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				46C758A02A5D4D51008B52A5 /* AppDelegate.swift */,
+				46C758A22A5D4D51008B52A5 /* SceneDelegate.swift */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		46C758942A5D4D51008B52A5 = {
 			isa = PBXGroup;
 			children = (
@@ -135,17 +190,10 @@
 		46C7589F2A5D4D51008B52A5 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
-				46C758A02A5D4D51008B52A5 /* AppDelegate.swift */,
-				46C758A22A5D4D51008B52A5 /* SceneDelegate.swift */,
-				46C758D22A5D521D008B52A5 /* WelcomeViewController.swift */,
-				46C758D42A5E8D32008B52A5 /* WelcomeView.swift */,
-				46C758E92A600065008B52A5 /* SearchViewController.swift */,
-				464975BC2A668B2800DC78FB /* SearchViewModel.swift */,
-				46C758EC2A600088008B52A5 /* SearchView.swift */,
-				46D1FEA72A652B43003A71C4 /* SearchCell.swift */,
-				46C758F32A614E55008B52A5 /* NetworkingUtils.swift */,
-				46D1FEAA2A655FE1003A71C4 /* City.swift */,
-				46D1FEB32A659B35003A71C4 /* NetworkingError.swift */,
+				464975C42A66B55D00DC78FB /* Supporting Files */,
+				464975BF2A66B4F300DC78FB /* Modules */,
+				464975C32A66B53900DC78FB /* Services */,
+				464975C22A66B52D00DC78FB /* DataModel */,
 				46C758A92A5D4D52008B52A5 /* Assets.xcassets */,
 				46C758AB2A5D4D52008B52A5 /* LaunchScreen.storyboard */,
 				46C758AE2A5D4D52008B52A5 /* Info.plist */,

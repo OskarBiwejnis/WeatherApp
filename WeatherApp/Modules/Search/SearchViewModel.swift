@@ -1,10 +1,10 @@
-import UIKit
+import Foundation
 
 class SearchViewModel: NSObject {
     var searchResults: [String] = []
-    var didFetchSearchResults: ( ([String]) async -> Void ) = { _ in }
+    weak var searchViewControllerDelegate: SearchViewControllerDelegate?
 
-    func fetchSearchResults(_ text: String) {
+    func searchTextDidChange(_ text: String) {
         searchResults = []
         guard text != "" else {
             return
@@ -16,7 +16,7 @@ class SearchViewModel: NSObject {
                 for city in cities {
                     searchResults.append(city.name)
                 }
-                await didFetchSearchResults(searchResults)
+                await searchViewControllerDelegate?.reloadTable()
             } catch NetworkingError.decodingError {
                 print(NetworkingError.decodingError)
             } catch NetworkingError.invalidResponse {
