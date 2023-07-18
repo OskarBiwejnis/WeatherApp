@@ -7,12 +7,14 @@ class SearchViewController: UIViewController {
     }
     
     var searchView = SearchView()
+    var searchViewModel = SearchViewModel()
     var searchResults: [String] = []
 
     override func loadView() {
         searchView.viewController = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
+        searchViewModel.didFetchSearchResults = self.didFetchSearchResults(searchResults:)
         view = searchView
     }
 
@@ -21,25 +23,12 @@ class SearchViewController: UIViewController {
     }
 
     func textChanged(_ text: String) {
-        searchResults = []
-        guard text != "" else {
-            searchView.tableView.reloadData()
-            return
-        }
+        searchViewModel.fetchSearchResults(text)
+    }
 
-        Task {
-            do {
-                let cities = try await NetworkingUtils.fetchCities(text)
-                for city in cities {
-                    searchResults.append(city.name)
-                }
-                searchView.tableView.reloadData()
-            } catch NetworkingError.decodingError {
-                print(NetworkingError.decodingError)
-            } catch NetworkingError.invalidResponse {
-                print(NetworkingError.invalidResponse)
-            }
-        }
+    func didFetchSearchResults(searchResults: [String]) async {
+        self.searchResults = searchResults
+        searchView.tableView.reloadData()
     }
 }
 
