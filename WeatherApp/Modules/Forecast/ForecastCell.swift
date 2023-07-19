@@ -4,7 +4,6 @@ import UIKit
 class ForecastCell: UITableViewCell {
 
     private enum Constants {
-        static let forecastReuseIdentifier = "forecastCell"
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -27,6 +26,7 @@ class ForecastCell: UITableViewCell {
 
     let temperatureLabel = {
         let temperatureLabel = UILabel()
+        temperatureLabel.textColor = .systemCyan
         temperatureLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         temperatureLabel.text = "22°"
 
@@ -35,7 +35,8 @@ class ForecastCell: UITableViewCell {
 
     let humidityLabel = {
         let humidityLabel = UILabel()
-        humidityLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        humidityLabel.textColor = .systemGray2
+        humidityLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         humidityLabel.text = "57%"
 
         return humidityLabel
@@ -43,7 +44,8 @@ class ForecastCell: UITableViewCell {
 
     let windLabel = {
         let windLabel = UILabel()
-        windLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        windLabel.textColor = .systemGray2
+        windLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         windLabel.text = "11 kmh"
 
         return windLabel
@@ -55,7 +57,15 @@ class ForecastCell: UITableViewCell {
         return skyImageView
     }()
 
+    func setupValues(hour: String, temperature: Double, humidity: Int, wind: Double, sky: String) {
+        hourLabel.text = String(String(hour.split(separator: " ")[1]).prefix(5))
+        temperatureLabel.text = String(Int(temperature-273)) + "°"
+        humidityLabel.text = String(humidity) + "%"
+        windLabel.text = String(Int(wind)) + " kmh"
+    }
+
     private func setupView() {
+        backgroundColor = .systemGray5
         addSubview(hourLabel)
         addSubview(temperatureLabel)
         addSubview(humidityLabel)
@@ -65,23 +75,28 @@ class ForecastCell: UITableViewCell {
 
     private func setupConstraints() {
         hourLabel.snp.makeConstraints { make -> Void in
-
+            make.left.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
         }
 
         temperatureLabel.snp.makeConstraints { make -> Void in
-
+            make.left.equalTo(hourLabel.snp.right).offset(20)
+            make.centerY.equalToSuperview()
         }
 
         humidityLabel.snp.makeConstraints { make -> Void in
-
+            make.left.equalTo(temperatureLabel.snp.right).offset(20)
+            make.centerY.equalToSuperview()
         }
 
         windLabel.snp.makeConstraints { make -> Void in
-
+            make.left.equalTo(humidityLabel.snp.right).offset(20)
+            make.centerY.equalToSuperview()
         }
 
         skyImageView.snp.makeConstraints { make -> Void in
-
+            make.left.equalTo(windLabel.snp.right).offset(20)
+            make.centerY.equalToSuperview()
         }
     }
 

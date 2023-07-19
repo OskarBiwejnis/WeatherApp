@@ -27,13 +27,14 @@ class ForecastView: UIView {
     }()
 
     private func setupView() {
-        backgroundColor = .cyan
+        backgroundColor = .systemGray6
         addSubview(tableView)
     }
 
     private func setupConstraints() {
         tableView.snp.makeConstraints { make -> Void in
-
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.bottom.left.right.equalToSuperview()
         }
     }
 
