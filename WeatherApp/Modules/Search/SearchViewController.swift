@@ -6,8 +6,8 @@ class SearchViewController: UIViewController {
         static let reuseIdentifier = "searchCell"
     }
     
-    var searchView = SearchView()
-    var searchViewModel = SearchViewModel()
+    let searchView = SearchView()
+    private let searchViewModel = SearchViewModel()
 
     override func loadView() {
         searchView.viewController = self

@@ -1,13 +1,13 @@
 import Foundation
 
 class SearchViewModel: NSObject {
-    
-    var debounceTimer: Timer?
+
+    private var debounceTimer: Timer?
     var searchResults: [String] = []
     weak var searchViewControllerDelegate: SearchViewControllerDelegate?
 
     private enum Constants {
-        static let minTimeBetweenFetchCities = 1.1
+        static let minTimeBetweenFetchCities = 0.35
     }
 
     func searchTextDidChange(_ text: String) {

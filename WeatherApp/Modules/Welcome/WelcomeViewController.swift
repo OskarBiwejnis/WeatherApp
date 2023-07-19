@@ -2,9 +2,9 @@ import UIKit
 
 class WelcomeViewController: UIViewController {
 
-    var welcomeView = WelcomeView()
-    var welcomeViewModel = WelcomeViewModel()
-    var mainViewController = SearchViewController()
+    private let welcomeView = WelcomeView()
+    private let welcomeViewModel = WelcomeViewModel()
+    private let mainViewController = SearchViewController()
 
     override func loadView() {
         welcomeView.viewController = self
