@@ -30,12 +30,12 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchViewModel.searchResults.count
+        return searchViewModel.cities.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? SearchCell else { return SearchCell() }
-        cell.label.text = searchViewModel.searchResults[indexPath.row]
+        cell.label.text = searchViewModel.cities[indexPath.row].name
         
         return cell
     }

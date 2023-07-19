@@ -13,6 +13,7 @@ class ForecastViewController: UIViewController {
 
 
     override func loadView() {
+        print("lat: \(latitude), lon: \(longitude)")
         forecastViewModel.didStartLoadingView(latitude: latitude ?? Constants.warsawLatitude, longitude: longitude ?? Constants.warsawLatitude)
         forecastViewModel.delegate = self
 

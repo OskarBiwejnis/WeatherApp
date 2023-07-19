@@ -12,10 +12,9 @@ class NetworkingUtils {
         static let timeoutInterval = 10.0
         static let acceptedResponses = [200, 204]
 
-
-        static let openWeatherUrlBase = ""
-        static let openWeatherUrlLongitudePart = ""
-        static let openWeatherUrlApiKeyPart = ""
+        static let openWeatherUrlBase = "https://api.openweathermap.org/data/2.5/forecast?lat="
+        static let openWeatherUrlLongitudePart = "&lon="
+        static let openWeatherUrlApiKeyPart = "&appid=ac65470224290f0854e9e6a757500205"
     }
 
     static func fetchCities(_ searchText: String) async throws -> [City] {
@@ -43,6 +42,7 @@ class NetworkingUtils {
         var forecast3Hour: [Forecast3Hour] = []
 
         let urlString = Constants.openWeatherUrlBase + String(latitude) + Constants.openWeatherUrlLongitudePart + String(longitude) + Constants.openWeatherUrlApiKeyPart
+        print(urlString)
 
         guard let url = URL(string: urlString) else {
             print("Incorrect coordinates")
@@ -54,9 +54,10 @@ class NetworkingUtils {
         guard let response = response as? HTTPURLResponse, Constants.acceptedResponses.contains(response.statusCode) else { throw NetworkingError.invalidResponse }
 
         let decoder = JSONDecoder()
-        guard let decodedData = try? decoder.decode(Forecast3HourData.self, from: data) else { throw NetworkingError.decodingError}
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        guard let decodedData = try? decoder.decode(Forecast3HourData.self, from: data) else { throw NetworkingError.decodingError }
         forecast3Hour = decodedData.list
-
+        
         return forecast3Hour
     }
 

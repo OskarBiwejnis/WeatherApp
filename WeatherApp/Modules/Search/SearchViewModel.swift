@@ -3,7 +3,6 @@ import Foundation
 class SearchViewModel: NSObject {
 
     private var debounceTimer: Timer?
-    var searchResults: [String] = []
     var cities: [City] = []
     weak var searchViewControllerDelegate: SearchViewControllerDelegate?
 
@@ -19,7 +18,6 @@ class SearchViewModel: NSObject {
     }
 
     private func fetchCities(_ text: String) {
-        searchResults = []
         guard text != "" else {
             return
         }
@@ -27,9 +25,6 @@ class SearchViewModel: NSObject {
         Task {
             do {
                 cities = try await NetworkingUtils.fetchCities(text)
-                for city in cities {
-                    searchResults.append(city.name)
-                }
                 searchViewControllerDelegate?.reloadTable()
             } catch NetworkingError.decodingError {
                 print(NetworkingError.decodingError)
@@ -43,5 +38,4 @@ class SearchViewModel: NSObject {
         searchViewControllerDelegate?.pushForecastViewController(latitude: cities[indexPath.row].latitude, longitude: cities[indexPath.row].longitude)
     }
 
-    
 }

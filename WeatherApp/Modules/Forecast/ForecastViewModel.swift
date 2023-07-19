@@ -6,13 +6,13 @@ class ForecastViewModel: NSObject {
     weak var delegate: ForecastViewModelDelegate?
 
     func didStartLoadingView(latitude: Double, longitude: Double){
-
+        
         Task {
             do {
                 forecast3Hour = try await NetworkingUtils.fetchForecast3Hour(latitude: latitude, longitude: longitude)
                 delegate?.reloadTable()
-            } catch {
-                print("some error")
+            } catch NetworkingError.decodingError {
+                print(NetworkingError.decodingError)
             }
         }
 
