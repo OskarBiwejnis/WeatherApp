@@ -4,6 +4,7 @@ class SearchViewModel: NSObject {
 
     private var debounceTimer: Timer?
     var searchResults: [String] = []
+    var cities: [City] = []
     weak var searchViewControllerDelegate: SearchViewControllerDelegate?
 
     private enum Constants {
@@ -38,4 +39,9 @@ class SearchViewModel: NSObject {
         }
     }
 
+    func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
+        searchViewControllerDelegate?.pushForecastViewController(latitude: cities[indexPath.row].latitude, longitude: cities[indexPath.row].longitude)
+    }
+
+    
 }

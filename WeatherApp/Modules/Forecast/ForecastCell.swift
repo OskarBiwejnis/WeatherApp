@@ -55,7 +55,6 @@ class ForecastCell: UITableViewCell {
         return skyImageView
     }()
 
-
     private func setupView() {
         addSubview(hourLabel)
         addSubview(temperatureLabel)

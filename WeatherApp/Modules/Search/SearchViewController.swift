@@ -24,9 +24,11 @@ class SearchViewController: UIViewController {
     func textChanged(_ text: String) {
         searchViewModel.searchTextDidChange(text)
     }
+
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchViewModel.searchResults.count
     }
@@ -34,14 +36,20 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? SearchCell else { return SearchCell() }
         cell.label.text = searchViewModel.searchResults[indexPath.row]
-
+        
         return cell
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        searchViewModel.didSelectSearchCell(didSelectRowAt: indexPath)
+    }
+
 }
 
 protocol SearchViewControllerDelegate: AnyObject {
 
     func reloadTable()
+    func pushForecastViewController(latitude: Double, longitude: Double)
     
 }
 
@@ -51,6 +59,13 @@ extension SearchViewController: SearchViewControllerDelegate {
         DispatchQueue.main.async {
             self.searchView.tableView.reloadData()
         }
+    }
+
+    func pushForecastViewController(latitude: Double, longitude: Double) {
+        let forecastNavigationController = ForecastViewController()
+        forecastNavigationController.latitude = latitude
+        forecastNavigationController.longitude = longitude
+        navigationController?.pushViewController(forecastNavigationController, animated: true)
     }
 
 }
