@@ -26,7 +26,7 @@ class SearchViewModel: NSObject {
 
         Task {
             do {
-                let cities = try await NetworkingUtils.fetchCities(text)
+                cities = try await NetworkingUtils.fetchCities(text)
                 for city in cities {
                     searchResults.append(city.name)
                 }

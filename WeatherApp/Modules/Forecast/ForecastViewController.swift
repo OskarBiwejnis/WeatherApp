@@ -27,7 +27,7 @@ class ForecastViewController: UIViewController {
 extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return forecastViewModel.forecasts3Hour.count
+        return forecastViewModel.forecast3Hour.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -27,6 +27,7 @@ class ForecastView: UIView {
     }()
 
     private func setupView() {
+        backgroundColor = .cyan
         addSubview(tableView)
     }
 
