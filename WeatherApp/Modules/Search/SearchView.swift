@@ -18,13 +18,13 @@ class SearchView: UIView {
         static let textFieldFontSize = 32
         static let textFieldMargin = 20
         static let rowHeight = 50
-        static let reuseIdentifier = "searchCell"
+        static let searchReuseIdentifier = "searchCell"
     }
 
     let tableView = {
         let tableView = UITableView()
         tableView.rowHeight = CGFloat(Constants.rowHeight)
-        tableView.register(SearchCell.self, forCellReuseIdentifier: Constants.reuseIdentifier)
+        tableView.register(SearchCell.self, forCellReuseIdentifier: Constants.searchReuseIdentifier)
         return tableView
     }()
 

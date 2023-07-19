@@ -25,7 +25,7 @@ class WelcomeView: UIView {
     }
 
     private let iconImageView: UIImageView = {
-        let iconImageView = UIImageView(image: R.image.logo() )
+        let iconImageView = UIImageView(image: R.image.logo())
         iconImageView.layer.cornerRadius = CGFloat(Constants.imageCornerRadius)
         iconImageView.backgroundColor = .white
 
