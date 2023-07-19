@@ -49,7 +49,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 protocol SearchViewControllerDelegate: AnyObject {
 
     func reloadTable()
-    func pushForecastViewController(latitude: Double, longitude: Double)
+    func pushForecastViewController(latitude: Double, longitude: Double, name: String)
     
 }
 
@@ -61,11 +61,12 @@ extension SearchViewController: SearchViewControllerDelegate {
         }
     }
 
-    func pushForecastViewController(latitude: Double, longitude: Double) {
-        let forecastNavigationController = ForecastViewController()
-        forecastNavigationController.latitude = latitude
-        forecastNavigationController.longitude = longitude
-        navigationController?.pushViewController(forecastNavigationController, animated: true)
+    func pushForecastViewController(latitude: Double, longitude: Double, name: String) {
+        let forecastViewController = ForecastViewController()
+        forecastViewController.latitude = latitude
+        forecastViewController.longitude = longitude
+        forecastViewController.cityName = name
+        navigationController?.pushViewController(forecastViewController, animated: true)
     }
 
 }

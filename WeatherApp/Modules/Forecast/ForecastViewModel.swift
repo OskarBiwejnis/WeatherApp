@@ -15,7 +15,6 @@ class ForecastViewModel: NSObject {
                 print(NetworkingError.decodingError)
             }
         }
-
     }
 
 }

@@ -12,10 +12,10 @@ class ForecastViewController: UIViewController {
     let forecastViewModel = ForecastViewModel()
     var latitude: Double?
     var longitude: Double?
-
+    var cityName: String?
 
     override func loadView() {
-        print("lat: \(latitude), lon: \(longitude)")
+        title = cityName
         forecastViewModel.didStartLoadingView(latitude: latitude ?? Constants.warsawLatitude, longitude: longitude ?? Constants.warsawLatitude)
         forecastViewModel.delegate = self
         forecastView.tableView.delegate = self
@@ -32,7 +32,7 @@ class ForecastViewController: UIViewController {
 extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return forecastViewModel.forecast3Hour.count
+        return forecastViewModel.forecast3Hour.isEmpty ? 0 : 8
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

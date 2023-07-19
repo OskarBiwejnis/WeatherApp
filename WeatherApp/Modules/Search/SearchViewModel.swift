@@ -35,7 +35,7 @@ class SearchViewModel: NSObject {
     }
 
     func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
-        searchViewControllerDelegate?.pushForecastViewController(latitude: cities[indexPath.row].latitude, longitude: cities[indexPath.row].longitude)
+        searchViewControllerDelegate?.pushForecastViewController(latitude: cities[indexPath.row].latitude, longitude: cities[indexPath.row].longitude, name: cities[indexPath.row].name)
     }
 
 }
