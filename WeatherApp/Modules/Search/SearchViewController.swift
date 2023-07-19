@@ -6,15 +6,14 @@ class SearchViewController: UIViewController {
         static let reuseIdentifier = "searchCell"
     }
     
-    var searchView = SearchView()
-    var searchViewModel = SearchViewModel()
-    var searchResults: [String] = []
+    let searchView = SearchView()
+    private let searchViewModel = SearchViewModel()
 
     override func loadView() {
         searchView.viewController = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
-        searchViewModel.didFetchSearchResults = self.didFetchSearchResults(searchResults:)
+        searchViewModel.searchViewControllerDelegate = self
         view = searchView
     }
 
@@ -23,24 +22,35 @@ class SearchViewController: UIViewController {
     }
 
     func textChanged(_ text: String) {
-        searchViewModel.fetchSearchResults(text)
-    }
-
-    func didFetchSearchResults(searchResults: [String]) async {
-        self.searchResults = searchResults
-        searchView.tableView.reloadData()
+        searchViewModel.searchTextDidChange(text)
     }
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        return searchViewModel.searchResults.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? SearchCell else { return SearchCell() }
-        cell.label.text = searchResults[indexPath.row]
+        cell.label.text = searchViewModel.searchResults[indexPath.row]
 
         return cell
     }
+}
+
+protocol SearchViewControllerDelegate: AnyObject {
+
+    func reloadTable()
+    
+}
+
+extension SearchViewController: SearchViewControllerDelegate {
+
+    func reloadTable() {
+        DispatchQueue.main.async {
+            self.searchView.tableView.reloadData()
+        }
+    }
+
 }

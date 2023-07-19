@@ -67,4 +67,5 @@ class SearchView: UIView {
     private func textChanged() {
         viewController?.textChanged(searchTextField.text ?? "")
     }
+    
 }

@@ -14,7 +14,6 @@ class NetworkingUtils {
     }
 
     static func fetchCities(_ searchText: String) async throws -> [City] {
-
         var cities: [City] = []
 
         let url = Constants.urlBase + searchText
@@ -34,4 +33,5 @@ class NetworkingUtils {
 
         return cities
     }
+    
 }

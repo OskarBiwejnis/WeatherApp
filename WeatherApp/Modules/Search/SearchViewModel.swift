@@ -1,10 +1,23 @@
-import UIKit
+import Foundation
 
 class SearchViewModel: NSObject {
-    var searchResults: [String] = []
-    var didFetchSearchResults: ( ([String]) async -> Void ) = { _ in }
 
-    func fetchSearchResults(_ text: String) {
+    private var debounceTimer: Timer?
+    var searchResults: [String] = []
+    weak var searchViewControllerDelegate: SearchViewControllerDelegate?
+
+    private enum Constants {
+        static let minTimeBetweenFetchCities = 0.35
+    }
+
+    func searchTextDidChange(_ text: String) {
+        debounceTimer?.invalidate()
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: Constants.minTimeBetweenFetchCities, repeats: false) { [weak self] timer in
+            self?.fetchCities(text)
+        }
+    }
+
+    private func fetchCities(_ text: String) {
         searchResults = []
         guard text != "" else {
             return
@@ -16,7 +29,7 @@ class SearchViewModel: NSObject {
                 for city in cities {
                     searchResults.append(city.name)
                 }
-                await didFetchSearchResults(searchResults)
+                searchViewControllerDelegate?.reloadTable()
             } catch NetworkingError.decodingError {
                 print(NetworkingError.decodingError)
             } catch NetworkingError.invalidResponse {
@@ -24,4 +37,5 @@ class SearchViewModel: NSObject {
             }
         }
     }
+
 }
