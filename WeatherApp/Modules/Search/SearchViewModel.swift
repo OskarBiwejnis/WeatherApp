@@ -1,17 +1,18 @@
 import Foundation
 
 class SearchViewModel: NSObject {
+    
     var debounceTimer: Timer?
     var searchResults: [String] = []
     weak var searchViewControllerDelegate: SearchViewControllerDelegate?
 
     private enum Constants {
-        static let timeInterval = 1.1
+        static let minTimeBetweenFetchCities = 1.1
     }
 
     func searchTextDidChange(_ text: String) {
         debounceTimer?.invalidate()
-        debounceTimer = Timer.scheduledTimer(withTimeInterval: Constants.timeInterval, repeats: false) { [weak self] timer in
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: Constants.minTimeBetweenFetchCities, repeats: false) { [weak self] timer in
             self?.fetchCities(text)
         }
     }
@@ -28,7 +29,7 @@ class SearchViewModel: NSObject {
                 for city in cities {
                     searchResults.append(city.name)
                 }
-                await searchViewControllerDelegate?.reloadTable()
+                searchViewControllerDelegate?.reloadTable()
             } catch NetworkingError.decodingError {
                 print(NetworkingError.decodingError)
             } catch NetworkingError.invalidResponse {
@@ -36,4 +37,5 @@ class SearchViewModel: NSObject {
             }
         }
     }
+
 }

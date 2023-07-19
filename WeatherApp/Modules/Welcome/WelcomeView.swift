@@ -88,4 +88,5 @@ class WelcomeView: UIView {
     private func proceedButtonTap() {
         viewController?.proceedButtonTap()
     }
+    
 }

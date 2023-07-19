@@ -40,11 +40,17 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 protocol SearchViewControllerDelegate: AnyObject {
-    func reloadTable() async
+
+    func reloadTable()
+    
 }
 
 extension SearchViewController: SearchViewControllerDelegate {
-    func reloadTable() async {
-        searchView.tableView.reloadData()
+
+    func reloadTable() {
+        DispatchQueue.main.async {
+            self.searchView.tableView.reloadData()
+        }
     }
+
 }

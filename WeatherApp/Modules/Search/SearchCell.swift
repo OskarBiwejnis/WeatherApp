@@ -31,4 +31,5 @@ class SearchCell: UITableViewCell {
             make.left.equalToSuperview().offset(Constants.labelLeftMargin)
         }
     }
+    
 }

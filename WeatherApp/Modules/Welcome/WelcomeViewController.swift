@@ -17,17 +17,21 @@ class WelcomeViewController: UIViewController {
     }
 
     func proceedButtonTap() {
-        welcomeViewModel.proceedButtonTap()
-
+        welcomeViewModel.pushViewController()
     }
+
 }
 
 protocol WelcomeViewControllerDelegate: AnyObject {
+
     func pushViewController()
+    
 }
 
 extension WelcomeViewController: WelcomeViewControllerDelegate {
+
     func pushViewController() {
         navigationController?.pushViewController(mainViewController, animated: true)
     }
+
 }
