@@ -57,11 +57,28 @@ class ForecastCell: UITableViewCell {
         return skyImageView
     }()
 
-    func setupValues(hour: String, temperature: Double, humidity: Int, wind: Double, sky: String) {
+    func setupValues(hour: String, temperature: Double, humidity: Int, wind: Double, sky: WeatherType) {
         hourLabel.text = String(String(hour.split(separator: " ")[1]).prefix(5))
         temperatureLabel.text = String(Int(temperature-273)) + "°"
         humidityLabel.text = String(humidity) + "%"
         windLabel.text = String(Int(wind)) + " kmh"
+
+        switch sky {
+        case .thunderstorm:
+            skyImageView.image = R.image.thunderstorm()
+        case .drizzle:
+            skyImageView.image = R.image.drizzle()
+        case .rain:
+            skyImageView.image = R.image.rain()
+        case .snow:
+            skyImageView.image = R.image.snow()
+        case .atmosphere:
+            skyImageView.image = R.image.atmosphere()
+        case .clear:
+            skyImageView.image = R.image.clear()
+        case .clouds:
+            skyImageView.image = R.image.clouds()
+        }
     }
 
     private func setupView() {
@@ -95,7 +112,7 @@ class ForecastCell: UITableViewCell {
         }
 
         skyImageView.snp.makeConstraints { make -> Void in
-            make.left.equalTo(windLabel.snp.right).offset(20)
+            make.right.equalToSuperview()
             make.centerY.equalToSuperview()
         }
     }
