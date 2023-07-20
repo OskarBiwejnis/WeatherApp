@@ -6,23 +6,19 @@ class SearchViewController: UIViewController {
         static let reuseIdentifier = "searchCell"
     }
     
-    let searchView = SearchView()
+    private let searchView = SearchView()
     private let searchViewModel = SearchViewModel()
 
     override func loadView() {
-        searchView.viewController = self
+        searchView.delegate = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
-        searchViewModel.searchViewControllerDelegate = self
+        searchViewModel.delegate = self
         view = searchView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-
-    func textChanged(_ text: String) {
-        searchViewModel.searchTextDidChange(text)
     }
 
 }
@@ -46,14 +42,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
 }
 
-protocol SearchViewControllerDelegate: AnyObject {
 
-    func reloadTable()
-    func pushForecastViewController(latitude: Double, longitude: Double, name: String)
-    
-}
 
-extension SearchViewController: SearchViewControllerDelegate {
+extension SearchViewController: SearchViewModelDelegate {
 
     func reloadTable() {
         DispatchQueue.main.async {
@@ -69,4 +60,12 @@ extension SearchViewController: SearchViewControllerDelegate {
         navigationController?.pushViewController(forecastViewController, animated: true)
     }
 
+}
+
+extension SearchViewController: SearchViewDelegate {
+
+    func textChanged(_ text: String) {
+        searchViewModel.searchTextDidChange(text)
+    }
+    
 }

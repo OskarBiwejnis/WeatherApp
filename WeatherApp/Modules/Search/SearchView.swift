@@ -12,7 +12,7 @@ class SearchView: UIView {
         super.init(coder: coder)
     }
 
-    unowned var viewController: SearchViewController?
+    weak var delegate: SearchViewDelegate?
 
     private enum Constants {
         static let textFieldFontSize = 32
@@ -66,7 +66,13 @@ class SearchView: UIView {
 
     @objc
     private func textChanged() {
-        viewController?.textChanged(searchTextField.text ?? "")
+        delegate?.textChanged(searchTextField.text ?? "")
     }
     
+}
+
+protocol SearchViewDelegate: AnyObject {
+
+    func textChanged(_ text: String)
+
 }

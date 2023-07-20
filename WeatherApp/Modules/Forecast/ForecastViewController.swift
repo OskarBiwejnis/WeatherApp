@@ -6,8 +6,8 @@ class ForecastViewController: UIViewController {
         static let warsawLatitude = 52.23
         static let warsawLongitude = 21.01
         static let forecastReuseIdentifier = "forecastCell"
-
     }
+    
     let forecastView = ForecastView()
     let forecastViewModel = ForecastViewModel()
     var latitude: Double?

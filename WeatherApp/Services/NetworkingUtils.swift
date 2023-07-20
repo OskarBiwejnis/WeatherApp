@@ -44,10 +44,7 @@ class NetworkingUtils {
         let urlString = Constants.openWeatherUrlBase + String(latitude) + Constants.openWeatherUrlLongitudePart + String(longitude) + Constants.openWeatherUrlApiKeyPart
         print(urlString)
 
-        guard let url = URL(string: urlString) else {
-            print("Incorrect coordinates")
-            return []
-        }
+        guard let url = URL(string: urlString) else { throw NetworkingError.invalidUrl }
 
         let session = URLSession.shared
         let (data, response) = try await session.data(from: url)

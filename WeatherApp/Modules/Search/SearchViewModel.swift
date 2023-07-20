@@ -4,7 +4,7 @@ class SearchViewModel: NSObject {
 
     private var debounceTimer: Timer?
     var cities: [City] = []
-    weak var searchViewControllerDelegate: SearchViewControllerDelegate?
+    weak var delegate: SearchViewModelDelegate?
 
     private enum Constants {
         static let minTimeBetweenFetchCities = 0.35
@@ -25,7 +25,7 @@ class SearchViewModel: NSObject {
         Task {
             do {
                 cities = try await NetworkingUtils.fetchCities(text)
-                searchViewControllerDelegate?.reloadTable()
+                delegate?.reloadTable()
             } catch NetworkingError.decodingError {
                 print(NetworkingError.decodingError)
             } catch NetworkingError.invalidResponse {
@@ -35,7 +35,14 @@ class SearchViewModel: NSObject {
     }
 
     func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
-        searchViewControllerDelegate?.pushForecastViewController(latitude: cities[indexPath.row].latitude, longitude: cities[indexPath.row].longitude, name: cities[indexPath.row].name)
+        delegate?.pushForecastViewController(latitude: cities[indexPath.row].latitude, longitude: cities[indexPath.row].longitude, name: cities[indexPath.row].name)
     }
+
+}
+
+protocol SearchViewModelDelegate: AnyObject {
+
+    func reloadTable()
+    func pushForecastViewController(latitude: Double, longitude: Double, name: String)
 
 }
