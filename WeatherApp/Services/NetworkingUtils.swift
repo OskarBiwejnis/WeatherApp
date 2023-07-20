@@ -3,13 +3,13 @@ import Foundation
 class NetworkingUtils {
 
     private enum Constants {
-        static let headers = [
+        static let geoDbHeaders = [
             "X-RapidAPI-Key": "8daecc527cmsh1e37f3348b7206fp1766a0jsnfd5f88ed92f0",
             "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com"
         ]
-        static let urlBase = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities?types=CITY&minPopulation=20000&sort=-population&namePrefix="
-        static let httpMethod = "GET"
-        static let timeoutInterval = 10.0
+        static let geoDbUrlBase = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities?types=CITY&minPopulation=20000&sort=-population&namePrefix="
+        static let geoDbHttpMethod = "GET"
+        static let geoDbTimeoutInterval = 10.0
         static let acceptedResponses = [200, 204]
 
         static let openWeatherUrlBase = "https://api.openweathermap.org/data/2.5/forecast?lat="
@@ -20,12 +20,12 @@ class NetworkingUtils {
     static func fetchCities(_ searchText: String) async throws -> [City] {
         var cities: [City] = []
 
-        let url = Constants.urlBase + searchText
+        let url = Constants.geoDbUrlBase + searchText
         let request = NSMutableURLRequest(url: NSURL(string: url)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
-                                          timeoutInterval: Constants.timeoutInterval)
-        request.httpMethod = Constants.httpMethod
-        request.allHTTPHeaderFields = Constants.headers
+                                          timeoutInterval: Constants.geoDbTimeoutInterval)
+        request.httpMethod = Constants.geoDbHttpMethod
+        request.allHTTPHeaderFields = Constants.geoDbHeaders
 
         let session = URLSession.shared
         let (data, response) = try await session.data(for: request as URLRequest)
@@ -42,8 +42,6 @@ class NetworkingUtils {
         var forecast3Hour: [Forecast3Hour] = []
 
         let urlString = Constants.openWeatherUrlBase + String(latitude) + Constants.openWeatherUrlLongitudePart + String(longitude) + Constants.openWeatherUrlApiKeyPart
-        print(urlString)
-
         guard let url = URL(string: urlString) else { throw NetworkingError.invalidUrl }
 
         let session = URLSession.shared

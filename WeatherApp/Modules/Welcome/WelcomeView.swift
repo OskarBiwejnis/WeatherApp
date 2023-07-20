@@ -12,7 +12,7 @@ class WelcomeView: UIView {
         super.init(coder: NSCoder())
     }
 
-    unowned var viewController: WelcomeViewController?
+    unowned var delegate: WelcomeViewDelegate?
 
     private enum Constants {
         static let imageCornerRadius = 65
@@ -86,7 +86,13 @@ class WelcomeView: UIView {
 
     @objc
     private func proceedButtonTap() {
-        viewController?.proceedButtonTap()
+        delegate?.proceedButtonTap()
     }
+
+}
+
+protocol WelcomeViewDelegate: AnyObject {
+
+    func proceedButtonTap()
     
 }

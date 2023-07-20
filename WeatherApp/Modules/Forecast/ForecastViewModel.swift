@@ -5,7 +5,7 @@ class ForecastViewModel: NSObject {
     var forecast3Hour: [Forecast3Hour] = []
     weak var delegate: ForecastViewModelDelegate?
 
-    func didStartLoadingView(latitude: Double, longitude: Double){
+    func didStartLoadingView(latitude: Double, longitude: Double) {
         
         Task {
             do {
@@ -13,6 +13,10 @@ class ForecastViewModel: NSObject {
                 delegate?.reloadTable()
             } catch NetworkingError.decodingError {
                 print(NetworkingError.decodingError)
+            } catch NetworkingError.invalidResponse {
+                print(NetworkingError.invalidResponse)
+            } catch NetworkingError.invalidUrl {
+                print(NetworkingError.invalidUrl)
             }
         }
     }

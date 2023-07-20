@@ -4,6 +4,16 @@ import UIKit
 class ForecastCell: UITableViewCell {
 
     private enum Constants {
+        static let spacingBetweenElements = 15
+        static let bigFontSize: CGFloat = 32
+        static let smallFontSize: CGFloat = 18
+        static let degreeSign = "°"
+        static let percentSign = "%"
+        static let speedUnit = " kmh"
+        static let hourFormatWithoutSeconds = 5
+        static let space = " "
+        static let secondPartOfDateFormat = 1
+        static let kelvinUnitOffset = 273.15
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -18,8 +28,7 @@ class ForecastCell: UITableViewCell {
 
     let hourLabel = {
         let hourLabel = UILabel()
-        hourLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        hourLabel.text = "15:00"
+        hourLabel.font = UIFont.systemFont(ofSize: Constants.bigFontSize, weight: .bold)
 
         return hourLabel
     }()
@@ -27,8 +36,7 @@ class ForecastCell: UITableViewCell {
     let temperatureLabel = {
         let temperatureLabel = UILabel()
         temperatureLabel.textColor = .systemCyan
-        temperatureLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        temperatureLabel.text = "22°"
+        temperatureLabel.font = UIFont.systemFont(ofSize: Constants.bigFontSize, weight: .bold)
 
         return temperatureLabel
     }()
@@ -36,8 +44,7 @@ class ForecastCell: UITableViewCell {
     let humidityLabel = {
         let humidityLabel = UILabel()
         humidityLabel.textColor = .systemGray2
-        humidityLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        humidityLabel.text = "57%"
+        humidityLabel.font = UIFont.systemFont(ofSize: Constants.smallFontSize, weight: .bold)
 
         return humidityLabel
     }()
@@ -45,8 +52,7 @@ class ForecastCell: UITableViewCell {
     let windLabel = {
         let windLabel = UILabel()
         windLabel.textColor = .systemGray2
-        windLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        windLabel.text = "11 kmh"
+        windLabel.font = UIFont.systemFont(ofSize: Constants.smallFontSize, weight: .bold)
 
         return windLabel
     }()
@@ -57,11 +63,11 @@ class ForecastCell: UITableViewCell {
         return skyImageView
     }()
 
-    func setupValues(hour: String, temperature: Double, humidity: Int, wind: Double, sky: WeatherType) {
-        hourLabel.text = String(String(hour.split(separator: " ")[1]).prefix(5))
-        temperatureLabel.text = String(Int(temperature-273)) + "°"
-        humidityLabel.text = String(humidity) + "%"
-        windLabel.text = String(Int(wind)) + " kmh"
+    func setupWith(hour: String, temperature: Double, humidity: Int, wind: Double, sky: WeatherType) {
+        hourLabel.text = String(String(hour.split(separator: Constants.space)[Constants.secondPartOfDateFormat]).prefix(Constants.hourFormatWithoutSeconds))
+        temperatureLabel.text = String(Int(temperature - Constants.kelvinUnitOffset)) + Constants.degreeSign
+        humidityLabel.text = String(humidity) + Constants.percentSign
+        windLabel.text = String(Int(wind)) + Constants.speedUnit
 
         switch sky {
         case .thunderstorm:
@@ -92,22 +98,22 @@ class ForecastCell: UITableViewCell {
 
     private func setupConstraints() {
         hourLabel.snp.makeConstraints { make -> Void in
-            make.left.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(Constants.spacingBetweenElements)
             make.centerY.equalToSuperview()
         }
 
         temperatureLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(hourLabel.snp.right).offset(20)
+            make.left.equalTo(hourLabel.snp.right).offset(Constants.spacingBetweenElements)
             make.centerY.equalToSuperview()
         }
 
         humidityLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(temperatureLabel.snp.right).offset(20)
+            make.left.equalTo(temperatureLabel.snp.right).offset(Constants.spacingBetweenElements)
             make.centerY.equalToSuperview()
         }
 
         windLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(humidityLabel.snp.right).offset(20)
+            make.left.equalTo(humidityLabel.snp.right).offset(Constants.spacingBetweenElements)
             make.centerY.equalToSuperview()
         }
 

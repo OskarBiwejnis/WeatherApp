@@ -2,10 +2,16 @@ import Foundation
 
 class WelcomeViewModel: NSObject {
 
-    weak var welcomeViewControllerDelegate: WelcomeViewControllerDelegate?
+    weak var delegate: WelcomeViewModelDelegate?
 
     func pushViewController() {
-        welcomeViewControllerDelegate?.pushViewController()
+        delegate?.pushViewController()
     }
     
+}
+
+protocol WelcomeViewModelDelegate: AnyObject {
+
+    func pushViewController()
+
 }

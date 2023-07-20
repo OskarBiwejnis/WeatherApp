@@ -42,8 +42,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
 }
 
-
-
 extension SearchViewController: SearchViewModelDelegate {
 
     func reloadTable() {
@@ -67,5 +65,5 @@ extension SearchViewController: SearchViewDelegate {
     func textChanged(_ text: String) {
         searchViewModel.searchTextDidChange(text)
     }
-    
+
 }

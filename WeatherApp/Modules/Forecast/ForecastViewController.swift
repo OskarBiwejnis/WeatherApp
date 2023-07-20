@@ -16,13 +16,14 @@ class ForecastViewController: UIViewController {
 
     override func loadView() {
         title = cityName
-        forecastViewModel.didStartLoadingView(latitude: latitude ?? Constants.warsawLatitude, longitude: longitude ?? Constants.warsawLatitude)
         forecastViewModel.delegate = self
         forecastView.tableView.delegate = self
         forecastView.tableView.dataSource = self
-        
+        forecastViewModel.didStartLoadingView(latitude: latitude ?? Constants.warsawLatitude, longitude: longitude ?? Constants.warsawLatitude)
+
         view = forecastView
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -38,11 +39,11 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.forecastReuseIdentifier) as? ForecastCell else { return ForecastCell() }
         let givenForecast3Hour = forecastViewModel.forecast3Hour[indexPath.row]
-        cell.setupValues(hour: givenForecast3Hour.dtTxt,
-                         temperature: givenForecast3Hour.main.temp,
-                         humidity: givenForecast3Hour.main.humidity,
-                         wind: givenForecast3Hour.wind.speed,
-                         sky: givenForecast3Hour.weather[0].main)
+        cell.setupWith(hour: givenForecast3Hour.dtTxt,
+                       temperature: givenForecast3Hour.main.temp,
+                       humidity: givenForecast3Hour.main.humidity,
+                       wind: givenForecast3Hour.wind.speed,
+                       sky: givenForecast3Hour.weather[0].main)
         
         return cell
     }
