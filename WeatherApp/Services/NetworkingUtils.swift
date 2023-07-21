@@ -38,10 +38,10 @@ class NetworkingUtils {
         return cities
     }
 
-    static func fetchForecast3Hour(latitude: Double, longitude: Double) async throws -> [Forecast3Hour] {
+    static func fetchForecast3Hour(city: City) async throws -> [Forecast3Hour] {
         var forecast3Hour: [Forecast3Hour] = []
 
-        let urlString = Constants.openWeatherUrlBase + String(latitude) + Constants.openWeatherUrlLongitudePart + String(longitude) + Constants.openWeatherUrlApiKeyPart
+        let urlString = Constants.openWeatherUrlBase + String(city.latitude) + Constants.openWeatherUrlLongitudePart + String(city.longitude) + Constants.openWeatherUrlApiKeyPart
         guard let url = URL(string: urlString) else { throw NetworkingError.invalidUrl }
 
         let session = URLSession.shared

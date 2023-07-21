@@ -35,7 +35,7 @@ class SearchViewModel: NSObject {
     }
 
     func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
-        delegate?.pushForecastViewController(latitude: cities[indexPath.row].latitude, longitude: cities[indexPath.row].longitude, name: cities[indexPath.row].name)
+        delegate?.pushForecastViewController(city: cities[indexPath.row])
     }
 
 }
@@ -43,6 +43,6 @@ class SearchViewModel: NSObject {
 protocol SearchViewModelDelegate: AnyObject {
 
     func reloadTable()
-    func pushForecastViewController(latitude: Double, longitude: Double, name: String)
+    func pushForecastViewController(city: City)
 
 }

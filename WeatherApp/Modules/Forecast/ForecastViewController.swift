@@ -10,17 +10,21 @@ class ForecastViewController: UIViewController {
     
     let forecastView = ForecastView()
     let forecastViewModel = ForecastViewModel()
-    var latitude: Double?
-    var longitude: Double?
-    var cityName: String?
 
-    override func loadView() {
-        title = cityName
+    init(city: City) {
+        super.init(nibName: nil, bundle: nil)
         forecastViewModel.delegate = self
         forecastView.tableView.delegate = self
         forecastView.tableView.dataSource = self
-        forecastViewModel.didStartLoadingView(latitude: latitude ?? Constants.warsawLatitude, longitude: longitude ?? Constants.warsawLatitude)
+        self.title = city.name
+        forecastViewModel.didInitialize(city: city)
+    }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func loadView() {
         view = forecastView
     }
     

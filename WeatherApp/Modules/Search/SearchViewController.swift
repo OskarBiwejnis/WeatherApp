@@ -50,12 +50,8 @@ extension SearchViewController: SearchViewModelDelegate {
         }
     }
 
-    func pushForecastViewController(latitude: Double, longitude: Double, name: String) {
-        let forecastViewController = ForecastViewController()
-        forecastViewController.latitude = latitude
-        forecastViewController.longitude = longitude
-        forecastViewController.cityName = name
-        navigationController?.pushViewController(forecastViewController, animated: true)
+    func pushForecastViewController(city: City) {
+        navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
     }
 
 }
