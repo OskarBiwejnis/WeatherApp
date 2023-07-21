@@ -3,6 +3,7 @@ import Foundation
 struct Forecast3HourData: Decodable {
     var list: [Forecast3Hour]
 }
+
 struct Forecast3Hour: Decodable {
     var main: Forecast3HourMain
     var weather: [Forecast3HourWeather]

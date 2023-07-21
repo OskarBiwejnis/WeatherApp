@@ -38,12 +38,12 @@ extension ForecastViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.forecastReuseIdentifier) as? ForecastCell else { return ForecastCell() }
-        let givenForecast3Hour = forecastViewModel.forecast3Hour[indexPath.row]
-        cell.setupWith(hour: givenForecast3Hour.dtTxt,
-                       temperature: givenForecast3Hour.main.temp,
-                       humidity: givenForecast3Hour.main.humidity,
-                       wind: givenForecast3Hour.wind.speed,
-                       sky: givenForecast3Hour.weather[0].main)
+        let formattedForecast3Hour = forecastViewModel.getFormattedForecast3Hour(index: indexPath.row)
+        cell.setupWith(hour: formattedForecast3Hour.hour,
+                       temperature: formattedForecast3Hour.temperature,
+                       humidity: formattedForecast3Hour.humidity,
+                       wind: formattedForecast3Hour.wind,
+                       skyImage: formattedForecast3Hour.skyImage)
         
         return cell
     }
