@@ -7,7 +7,7 @@ class SearchViewModel: NSObject {
     weak var delegate: SearchViewModelDelegate?
 
     private enum Constants {
-        static let minTimeBetweenFetchCities = 0.35
+        static let minTimeBetweenFetchCities = 0.1
     }
 
     func searchTextDidChange(_ text: String) {
@@ -26,10 +26,8 @@ class SearchViewModel: NSObject {
             do {
                 cities = try await NetworkingUtils.fetchCities(text)
                 delegate?.reloadTable()
-            } catch NetworkingError.decodingError {
-                print(NetworkingError.decodingError)
-            } catch NetworkingError.invalidResponse {
-                print(NetworkingError.invalidResponse)
+            } catch {
+                delegate?.showError(error)
             }
         }
     }
@@ -44,5 +42,6 @@ protocol SearchViewModelDelegate: AnyObject {
 
     func reloadTable()
     func pushForecastViewController(city: City)
+    func showError(_ error: Error)
 
 }

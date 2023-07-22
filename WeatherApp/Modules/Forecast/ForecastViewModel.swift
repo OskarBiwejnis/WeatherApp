@@ -22,24 +22,20 @@ class ForecastViewModel: NSObject {
             do {
                 forecast3Hour = try await NetworkingUtils.fetchForecast3Hour(city: city)
                 delegate?.reloadTable()
-            } catch NetworkingError.decodingError {
-                print(NetworkingError.decodingError)
-            } catch NetworkingError.invalidResponse {
-                print(NetworkingError.invalidResponse)
-            } catch NetworkingError.invalidUrl {
-                print(NetworkingError.invalidUrl)
+            } catch {
+                delegate?.showError(error)
             }
         }
     }
 
     func getFormattedForecast3Hour(index: Int) -> FormattedForecast3Hour {
-        let hour = String(String(forecast3Hour[index].dtTxt.split(separator: Constants.space)[Constants.secondPartOfDateFormat]).prefix(Constants.hourFormatWithoutSeconds))
+        let hour = String(String(forecast3Hour[index].date.split(separator: Constants.space)[Constants.secondPartOfDateFormat]).prefix(Constants.hourFormatWithoutSeconds))
         let temperature = String(Int(forecast3Hour[index].main.temp - Constants.kelvinUnitOffset)) + Constants.degreeSign
         let humidity = String(forecast3Hour[index].main.humidity) + Constants.percentSign
         let wind = String(Int(forecast3Hour[index].wind.speed)) + Constants.speedUnit
         var skyImage: UIImage?
 
-        switch forecast3Hour[index].weather[Constants.weatherMainPart].main  {
+        switch forecast3Hour[index].weather[Constants.weatherMainPart].weatherType  {
         case .thunderstorm:
             skyImage = R.image.thunderstorm()
         case .drizzle:
@@ -64,6 +60,7 @@ class ForecastViewModel: NSObject {
 protocol ForecastViewModelDelegate: AnyObject {
 
     func reloadTable()
+    func showError(_ error: Error)
 
 }
 

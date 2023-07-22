@@ -54,6 +54,15 @@ extension SearchViewController: SearchViewModelDelegate {
         navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
     }
 
+    func showError(_ error: Error) {
+        let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        errorAlert.addAction(okButton)
+        DispatchQueue.main.async {
+            self.present(errorAlert, animated: true, completion: nil)
+        }
+    }
+
 }
 
 extension SearchViewController: SearchViewDelegate {

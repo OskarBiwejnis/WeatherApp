@@ -1,4 +1,7 @@
 "app_name" = "WeatherApp";
 "button_text" = "Proceed";
 "search_placeholder" = "Search";
-"error_message" = "Error occured";
+"error_alert_title" = "Error occured";
+"invalid_response_message" = "Invalid response from server";
+"invalid_url_message" = "Invalid URL";
+"decoding_error_message" = "Decoding error occured";
