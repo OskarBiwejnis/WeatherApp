@@ -9,6 +9,7 @@ class ForecastView: UIView {
         static let temperatureLabelOffset = 115
         static let humidityLabelOffset = 175
         static let windLabelOffset = 225
+        static let collectionViewTopMargin = 10
     }
 
     let collectionView: UICollectionView = {
@@ -72,7 +73,7 @@ class ForecastView: UIView {
 
     private func setupConstraints() {
         collectionView.snp.makeConstraints { make -> Void in
-            make.top.equalTo(hourLabel.snp.bottom).offset(10)
+            make.top.equalTo(hourLabel.snp.bottom).offset(Constants.collectionViewTopMargin)
             make.bottom.left.right.equalToSuperview()
         }
 
@@ -98,5 +99,3 @@ class ForecastView: UIView {
     }
 
 }
-
-
