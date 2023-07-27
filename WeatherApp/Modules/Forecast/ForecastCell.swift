@@ -6,7 +6,11 @@ class ForecastCell: UICollectionViewCell {
     private enum Constants {
         static let spacingBetweenElements = 15
         static let bigFontSize: CGFloat = 32
-        static let smallFontSize: CGFloat = 18
+        static let smallFontSize: CGFloat = 16
+        static let hourLabelOffset = 10
+        static let temperatureLabelOffset = 115
+        static let humidityLabelOffset = 175
+        static let windLabelOffset = 220
     }
 
     override init(frame: CGRect) {
@@ -75,22 +79,22 @@ class ForecastCell: UICollectionViewCell {
 
     private func setupConstraints() {
         hourLabel.snp.makeConstraints { make -> Void in
-            make.left.equalToSuperview().offset(Constants.spacingBetweenElements)
+            make.left.equalToSuperview().offset(Constants.hourLabelOffset)
             make.centerY.equalToSuperview()
         }
 
         temperatureLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(hourLabel.snp.right).offset(Constants.spacingBetweenElements)
+            make.left.equalToSuperview().offset(Constants.temperatureLabelOffset)
             make.centerY.equalToSuperview()
         }
 
         humidityLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(temperatureLabel.snp.right).offset(Constants.spacingBetweenElements)
+            make.left.equalToSuperview().offset(Constants.humidityLabelOffset)
             make.centerY.equalToSuperview()
         }
 
         windLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(humidityLabel.snp.right).offset(Constants.spacingBetweenElements)
+            make.left.equalToSuperview().offset(Constants.windLabelOffset)
             make.centerY.equalToSuperview()
         }
 
