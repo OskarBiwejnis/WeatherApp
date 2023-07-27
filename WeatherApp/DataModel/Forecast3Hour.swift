@@ -47,22 +47,22 @@ enum WeatherType: String, Decodable {
     case clear = "Clear"
     case clouds = "Clouds"
 
-    var image: UIImage {
+    var image: UIImage! {
         switch self {
         case .thunderstorm:
-            return R.image.thunderstorm()!
+            return R.image.thunderstorm()
         case .drizzle:
-            return R.image.drizzle()!
+            return R.image.drizzle()
         case .rain:
-            return R.image.rain()!
+            return R.image.rain()
         case .snow:
-            return R.image.snow()!
+            return R.image.snow()
         case .atmosphere:
-            return R.image.atmosphere()!
+            return R.image.atmosphere()
         case .clear:
-            return R.image.clear()!
+            return R.image.clear()
         case .clouds:
-            return R.image.clouds()!
+            return R.image.clouds()
         }
     }
 }

@@ -1,7 +1,7 @@
 import SnapKit
 import UIKit
 
-class ForecastCell: UITableViewCell {
+class ForecastCell: UICollectionViewCell {
 
     private enum Constants {
         static let spacingBetweenElements = 15
@@ -9,8 +9,8 @@ class ForecastCell: UITableViewCell {
         static let smallFontSize: CGFloat = 18
     }
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupView()
         setupConstraints()
     }

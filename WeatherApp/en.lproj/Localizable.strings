@@ -5,3 +5,4 @@
 "invalid_response_message" = "Invalid response from server";
 "invalid_url_message" = "Invalid URL";
 "decoding_error_message" = "Decoding error occured";
+"ok_button_text" = "OK";

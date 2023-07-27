@@ -5,8 +5,16 @@ class ForecastView: UIView {
 
     private enum Constants {
         static let forecastReuseIdentifier = "forecastCell"
-        static let forecastRowHeight: CGFloat = 75
     }
+
+    let collectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: Constants.forecastReuseIdentifier)
+
+        return collectionView
+    }()
 
     init() {
         super.init(frame: .zero)
@@ -18,24 +26,19 @@ class ForecastView: UIView {
         super.init(coder: coder)
     }
 
-    let tableView = {
-        let tableView = UITableView()
-        tableView.rowHeight = Constants.forecastRowHeight
-        tableView.register(ForecastCell.self, forCellReuseIdentifier: Constants.forecastReuseIdentifier)
-
-        return tableView
-    }()
-
+    
     private func setupView() {
         backgroundColor = .systemGray6
-        addSubview(tableView)
+        addSubview(collectionView)
     }
 
     private func setupConstraints() {
-        tableView.snp.makeConstraints { make -> Void in
+        collectionView.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide)
             make.bottom.left.right.equalToSuperview()
         }
     }
 
 }
+
+
