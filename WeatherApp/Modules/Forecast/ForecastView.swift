@@ -8,7 +8,7 @@ class ForecastView: UIView {
         static let hourLabelOffset = 10
         static let temperatureLabelOffset = 115
         static let humidityLabelOffset = 175
-        static let windLabelOffset = 220
+        static let windLabelOffset = 225
     }
 
     let collectionView: UICollectionView = {

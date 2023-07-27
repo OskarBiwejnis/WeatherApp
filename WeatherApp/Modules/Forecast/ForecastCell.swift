@@ -10,7 +10,7 @@ class ForecastCell: UICollectionViewCell {
         static let hourLabelOffset = 10
         static let temperatureLabelOffset = 115
         static let humidityLabelOffset = 175
-        static let windLabelOffset = 220
+        static let windLabelOffset = 225
     }
 
     override init(frame: CGRect) {
