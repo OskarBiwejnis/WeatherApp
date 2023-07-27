@@ -7,7 +7,7 @@ class SearchViewModel: NSObject {
     weak var delegate: SearchViewModelDelegate?
 
     private enum Constants {
-        static let minTimeBetweenFetchCities = 0.1
+        static let minTimeBetweenFetchCities = 1.2
     }
 
     func searchTextDidChange(_ text: String) {

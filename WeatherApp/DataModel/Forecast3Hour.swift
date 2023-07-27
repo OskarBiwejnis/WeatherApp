@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 struct Forecast3HourData: Decodable {
     var list: [Forecast3Hour]
@@ -45,4 +46,23 @@ enum WeatherType: String, Decodable {
     case atmosphere = "Atmosphere"
     case clear = "Clear"
     case clouds = "Clouds"
+
+    var image: UIImage {
+        switch self {
+        case .thunderstorm:
+            return R.image.thunderstorm()!
+        case .drizzle:
+            return R.image.drizzle()!
+        case .rain:
+            return R.image.rain()!
+        case .snow:
+            return R.image.snow()!
+        case .atmosphere:
+            return R.image.atmosphere()!
+        case .clear:
+            return R.image.clear()!
+        case .clouds:
+            return R.image.clouds()!
+        }
+    }
 }

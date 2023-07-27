@@ -33,24 +33,7 @@ class ForecastViewModel: NSObject {
         let temperature = String(Int(forecast3Hour[index].main.temp - Constants.kelvinUnitOffset)) + Constants.degreeSign
         let humidity = String(forecast3Hour[index].main.humidity) + Constants.percentSign
         let wind = String(Int(forecast3Hour[index].wind.speed)) + Constants.speedUnit
-        var skyImage: UIImage?
-
-        switch forecast3Hour[index].weather[Constants.weatherMainPart].weatherType  {
-        case .thunderstorm:
-            skyImage = R.image.thunderstorm()
-        case .drizzle:
-            skyImage = R.image.drizzle()
-        case .rain:
-            skyImage = R.image.rain()
-        case .snow:
-            skyImage = R.image.snow()
-        case .atmosphere:
-            skyImage = R.image.atmosphere()
-        case .clear:
-            skyImage = R.image.clear()
-        case .clouds:
-            skyImage = R.image.clouds()
-        }
+        let skyImage = forecast3Hour[index].weather[Constants.weatherMainPart].weatherType.image
 
         return FormattedForecast3Hour(hour: hour, temperature: temperature, humidity: humidity, wind: wind, skyImage: skyImage)
     }
