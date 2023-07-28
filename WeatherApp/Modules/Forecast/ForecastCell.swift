@@ -10,9 +10,9 @@ class ForecastCell: UICollectionViewCell {
         static let bigFontSize: CGFloat = 32
         static let smallFontSize: CGFloat = 16
         static let hourLabelOffset = 10
-        static let temperatureLabelOffset = 115
-        static let humidityLabelOffset = 175
-        static let windLabelOffset = 225
+        static let temperatureLabelOffset = 105
+        static let humidityLabelOffset = 60
+        static let windLabelOffset = 50
         static let reuseIdentifier = "forecastCell"
     }
 
@@ -79,17 +79,17 @@ class ForecastCell: UICollectionViewCell {
         }
 
         temperatureLabel.snp.makeConstraints { make -> Void in
-            make.left.equalToSuperview().offset(Constants.temperatureLabelOffset)
+            make.left.equalTo(hourLabel).offset(Constants.temperatureLabelOffset)
             make.centerY.equalToSuperview()
         }
 
         humidityLabel.snp.makeConstraints { make -> Void in
-            make.left.equalToSuperview().offset(Constants.humidityLabelOffset)
+            make.left.equalTo(temperatureLabel).offset(Constants.humidityLabelOffset)
             make.centerY.equalToSuperview()
         }
 
         windLabel.snp.makeConstraints { make -> Void in
-            make.left.equalToSuperview().offset(Constants.windLabelOffset)
+            make.left.equalTo(humidityLabel).offset(Constants.windLabelOffset)
             make.centerY.equalToSuperview()
         }
 

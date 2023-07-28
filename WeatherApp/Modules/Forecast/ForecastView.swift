@@ -5,9 +5,9 @@ class ForecastView: UIView {
 
     private enum Constants {
         static let hourLabelOffset = 10
-        static let temperatureLabelOffset = 115
-        static let humidityLabelOffset = 175
-        static let windLabelOffset = 225
+        static let temperatureLabelOffset = 105
+        static let humidityLabelOffset = 60
+        static let windLabelOffset = 50
         static let collectionViewTopMargin = 10
         static let hourLabelText = "Hour"
         static let temperatureLabelText = "Temp"
@@ -81,17 +81,17 @@ class ForecastView: UIView {
 
         temperatureLabel.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide)
-            make.left.equalToSuperview().offset(Constants.temperatureLabelOffset)
+            make.left.equalTo(hourLabel).offset(Constants.temperatureLabelOffset)
         }
 
         humidityLabel.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide)
-            make.left.equalToSuperview().offset(Constants.humidityLabelOffset)
+            make.left.equalTo(temperatureLabel).offset(Constants.humidityLabelOffset)
         }
 
         windLabel.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide)
-            make.left.equalToSuperview().offset(Constants.windLabelOffset)
+            make.left.equalTo(humidityLabel).offset(Constants.windLabelOffset)
         }
     }
 
