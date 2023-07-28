@@ -14,13 +14,18 @@ class ForecastViewModel: NSObject {
         static let weatherMainPart = 0
     }
 
-    var forecast3Hour: [ThreeHourForecast] = []
+    var threeHourForecasts: [ThreeHourForecast] = []
     weak var delegate: ForecastViewModelDelegate?
 
-    func didInitialize(city: City) {
+    init(city: City) {
+        super.init()
+        loadWeather(city: city)
+    }
+
+    private func loadWeather(city: City) {
         Task {
             do {
-                forecast3Hour = try await NetworkingUtils.fetchForecast3Hour(city: city)
+                threeHourForecasts = try await NetworkingUtils.fetchThreeHourForecast(city: city)
                 delegate?.reloadTable()
             } catch {
                 delegate?.showError(error)
@@ -28,14 +33,16 @@ class ForecastViewModel: NSObject {
         }
     }
 
-    func getFormattedForecast3Hour(index: Int) -> FormattedForecast3Hour {
-        let hour = String(String(forecast3Hour[index].date.split(separator: Constants.space)[Constants.secondPartOfDateFormat]).prefix(Constants.hourFormatWithoutSeconds))
-        let temperature = String(Int(forecast3Hour[index].main.temp - Constants.kelvinUnitOffset)) + Constants.degreeSign
-        let humidity = String(forecast3Hour[index].main.humidity) + Constants.percentSign
-        let wind = String(Int(forecast3Hour[index].wind.speed)) + Constants.speedUnit
-        let skyImage = forecast3Hour[index].weather[Constants.weatherMainPart].weatherType.image
+    func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted {
+        let hour = String(String(threeHourForecasts[index].date
+            .split(separator: Constants.space)[Constants.secondPartOfDateFormat])
+            .prefix(Constants.hourFormatWithoutSeconds))
+        let temperature = String(Int(threeHourForecasts[index].main.temp - Constants.kelvinUnitOffset)) + Constants.degreeSign
+        let humidity = String(threeHourForecasts[index].main.humidity) + Constants.percentSign
+        let wind = String(Int(threeHourForecasts[index].wind.speed)) + Constants.speedUnit
+        let skyImage = threeHourForecasts[index].weather[Constants.weatherMainPart].weatherType.image
 
-        return FormattedForecast3Hour(hour: hour, temperature: temperature, humidity: humidity, wind: wind, skyImage: skyImage)
+        return ThreeHourForecastFormatted(hour: hour, temperature: temperature, humidity: humidity, wind: wind, skyImage: skyImage)
     }
 
 }
@@ -47,7 +54,7 @@ protocol ForecastViewModelDelegate: AnyObject {
 
 }
 
-struct FormattedForecast3Hour {
+struct ThreeHourForecastFormatted {
     var hour: String
     var temperature: String
     var humidity: String

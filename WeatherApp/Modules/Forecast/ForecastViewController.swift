@@ -9,15 +9,16 @@ class ForecastViewController: UIViewController {
     }
     
     let forecastView = ForecastView()
-    let forecastViewModel = ForecastViewModel()
+    let forecastViewModel: ForecastViewModel
 
     init(city: City) {
+        forecastViewModel = ForecastViewModel(city: city)
         super.init(nibName: nil, bundle: nil)
         forecastViewModel.delegate = self
         forecastView.collectionView.delegate = self
         forecastView.collectionView.dataSource = self
         self.title = city.name
-        forecastViewModel.didInitialize(city: city)
+
     }
 
     required init?(coder: NSCoder) {
@@ -36,18 +37,18 @@ class ForecastViewController: UIViewController {
 
 extension ForecastViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return forecastViewModel.forecast3Hour.isEmpty ? Constants.noCells : Constants.numberOfCells
+        return forecastViewModel.threeHourForecasts.isEmpty ? Constants.noCells : Constants.numberOfCells
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier,
             for: indexPath) as? ForecastCell else { return ForecastCell() }
-        let formattedForecast3Hour = forecastViewModel.getFormattedForecast3Hour(index: indexPath.row)
-        cell.setupWith(hour: formattedForecast3Hour.hour,
-                       temperature: formattedForecast3Hour.temperature,
-                       humidity: formattedForecast3Hour.humidity,
-                       wind: formattedForecast3Hour.wind,
-                       skyImage: formattedForecast3Hour.skyImage)
+        let threeHourForecastFormatted = forecastViewModel.getThreeHourForecastFormatted(index: indexPath.row)
+        cell.setupWith(hour: threeHourForecastFormatted.hour,
+                       temperature: threeHourForecastFormatted.temperature,
+                       humidity: threeHourForecastFormatted.humidity,
+                       wind: threeHourForecastFormatted.wind,
+                       skyImage: threeHourForecastFormatted.skyImage)
 
         return cell
     }
@@ -65,8 +66,8 @@ extension ForecastViewController: UICollectionViewDelegateFlowLayout {
 extension ForecastViewController: ForecastViewModelDelegate {
 
     func reloadTable() {
-        DispatchQueue.main.async {
-            self.forecastView.collectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.forecastView.collectionView.reloadData()
         }
     }
 
