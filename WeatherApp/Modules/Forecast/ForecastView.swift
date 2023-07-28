@@ -10,6 +10,10 @@ class ForecastView: UIView {
         static let humidityLabelOffset = 175
         static let windLabelOffset = 225
         static let collectionViewTopMargin = 10
+        static let hourLabelText = "Hour"
+        static let temperatureLabelText = "Temp"
+        static let humidityLabelText = "Hum"
+        static let windLabelText = "Wind"
     }
 
     let collectionView: UICollectionView = {
@@ -23,28 +27,28 @@ class ForecastView: UIView {
 
     let hourLabel = {
         let hourLabel = UILabel()
-        hourLabel.text = "Hour"
+        hourLabel.text = Constants.hourLabelText
         
         return hourLabel
     }()
 
     let temperatureLabel = {
         let temperatureLabel = UILabel()
-        temperatureLabel.text = "Temp"
+        temperatureLabel.text = Constants.temperatureLabelText
 
         return temperatureLabel
     }()
 
     let humidityLabel = {
         let humidityLabel = UILabel()
-        humidityLabel.text = "Hum"
+        humidityLabel.text = Constants.humidityLabelText
 
         return humidityLabel
     }()
 
     let windLabel = {
         let windLabel = UILabel()
-        windLabel.text = "Wind"
+        windLabel.text = Constants.windLabelText
 
         return windLabel
     }()
@@ -68,7 +72,6 @@ class ForecastView: UIView {
         addSubview(humidityLabel)
         addSubview(windLabel)
         addSubview(collectionView)
-
     }
 
     private func setupConstraints() {
