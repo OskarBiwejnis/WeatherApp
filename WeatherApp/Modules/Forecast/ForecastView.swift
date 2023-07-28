@@ -4,7 +4,6 @@ import UIKit
 class ForecastView: UIView {
 
     private enum Constants {
-        static let forecastReuseIdentifier = "forecastCell"
         static let hourLabelOffset = 10
         static let temperatureLabelOffset = 115
         static let humidityLabelOffset = 175
@@ -18,24 +17,20 @@ class ForecastView: UIView {
 
     let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: Constants.forecastReuseIdentifier)
-
+        collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: ForecastCell.reuseIdentifier)
         return collectionView
     }()
 
     let hourLabel = {
         let hourLabel = UILabel()
         hourLabel.text = Constants.hourLabelText
-        
         return hourLabel
     }()
 
     let temperatureLabel = {
         let temperatureLabel = UILabel()
         temperatureLabel.text = Constants.temperatureLabelText
-
         return temperatureLabel
     }()
 
@@ -49,7 +44,6 @@ class ForecastView: UIView {
     let windLabel = {
         let windLabel = UILabel()
         windLabel.text = Constants.windLabelText
-
         return windLabel
     }()
 

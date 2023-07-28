@@ -3,9 +3,6 @@ import UIKit
 class ForecastViewController: UIViewController {
 
     private enum Constants {
-        static let warsawLatitude = 52.23
-        static let warsawLongitude = 21.01
-        static let forecastReuseIdentifier = "forecastCell"
         static let rowHeight: CGFloat = 75
         static let numberOfCells = 8
         static let noCells = 0
@@ -43,7 +40,8 @@ extension ForecastViewController: UICollectionViewDelegate, UICollectionViewData
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.forecastReuseIdentifier, for: indexPath) as? ForecastCell else { return ForecastCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier,
+            for: indexPath) as? ForecastCell else { return ForecastCell() }
         let formattedForecast3Hour = forecastViewModel.getFormattedForecast3Hour(index: indexPath.row)
         cell.setupWith(hour: formattedForecast3Hour.hour,
                        temperature: formattedForecast3Hour.temperature,
@@ -76,7 +74,7 @@ extension ForecastViewController: ForecastViewModelDelegate {
         let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
         let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
         errorAlert.addAction(okButton)
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { 
             self.present(errorAlert, animated: true, completion: nil)
         }
     }

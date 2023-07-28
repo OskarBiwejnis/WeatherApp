@@ -3,6 +3,8 @@ import UIKit
 
 class ForecastCell: UICollectionViewCell {
 
+    static let reuseIdentifier = Constants.reuseIdentifier
+
     private enum Constants {
         static let spacingBetweenElements = 15
         static let bigFontSize: CGFloat = 32
@@ -11,6 +13,7 @@ class ForecastCell: UICollectionViewCell {
         static let temperatureLabelOffset = 115
         static let humidityLabelOffset = 175
         static let windLabelOffset = 225
+        static let reuseIdentifier = "forecastCell"
     }
 
     override init(frame: CGRect) {
@@ -26,7 +29,6 @@ class ForecastCell: UICollectionViewCell {
     let hourLabel = {
         let hourLabel = UILabel()
         hourLabel.font = UIFont.systemFont(ofSize: Constants.bigFontSize, weight: .bold)
-
         return hourLabel
     }()
 
@@ -34,7 +36,6 @@ class ForecastCell: UICollectionViewCell {
         let temperatureLabel = UILabel()
         temperatureLabel.textColor = .systemCyan
         temperatureLabel.font = UIFont.systemFont(ofSize: Constants.bigFontSize, weight: .bold)
-
         return temperatureLabel
     }()
 
@@ -42,7 +43,6 @@ class ForecastCell: UICollectionViewCell {
         let humidityLabel = UILabel()
         humidityLabel.textColor = .systemGray2
         humidityLabel.font = UIFont.systemFont(ofSize: Constants.smallFontSize, weight: .bold)
-
         return humidityLabel
     }()
 
@@ -50,15 +50,10 @@ class ForecastCell: UICollectionViewCell {
         let windLabel = UILabel()
         windLabel.textColor = .systemGray2
         windLabel.font = UIFont.systemFont(ofSize: Constants.smallFontSize, weight: .bold)
-
         return windLabel
     }()
 
-    let skyImageView = {
-        let skyImageView = UIImageView()
-
-        return skyImageView
-    }()
+    let skyImageView = UIImageView()
 
     func setupWith(hour: String, temperature: String, humidity: String, wind: String, skyImage: UIImage?) {
         hourLabel.text = hour
@@ -100,6 +95,7 @@ class ForecastCell: UICollectionViewCell {
 
         skyImageView.snp.makeConstraints { make -> Void in
             make.right.equalToSuperview()
+            make.left.greaterThanOrEqualTo(windLabel.snp.right)
             make.centerY.equalToSuperview()
         }
     }
