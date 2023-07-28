@@ -38,8 +38,8 @@ class NetworkingUtils {
         return cities
     }
 
-    static func fetchForecast3Hour(city: City) async throws -> [Forecast3Hour] {
-        var forecast3Hour: [Forecast3Hour] = []
+    static func fetchForecast3Hour(city: City) async throws -> [ThreeHourForecast] {
+        var forecast3Hour: [ThreeHourForecast] = []
 
         let urlString = Constants.openWeatherUrlBase + String(city.latitude) + Constants.openWeatherUrlLongitudePart + String(city.longitude) + Constants.openWeatherUrlApiKeyPart
         guard let url = URL(string: urlString) else { throw NetworkingError.invalidUrl }
@@ -50,7 +50,7 @@ class NetworkingUtils {
 
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        guard let decodedData = try? decoder.decode(Forecast3HourData.self, from: data) else { throw NetworkingError.decodingError }
+        guard let decodedData = try? decoder.decode(ThreeHourForecastData.self, from: data) else { throw NetworkingError.decodingError }
         forecast3Hour = decodedData.list
         
         return forecast3Hour

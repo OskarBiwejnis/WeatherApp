@@ -1,14 +1,14 @@
 import Foundation
 import UIKit
 
-struct Forecast3HourData: Decodable {
-    var list: [Forecast3Hour]
+struct ThreeHourForecastData: Decodable {
+    var list: [ThreeHourForecast]
 }
 
-struct Forecast3Hour: Decodable {
-    var main: Forecast3HourMain
-    var weather: [Forecast3HourWeather]
-    var wind: Forecast3HourWind
+struct ThreeHourForecast: Decodable {
+    var main: ThreeHourForecastMain
+    var weather: [ThreeHourForecastWeather]
+    var wind: ThreeHourForecastWind
     var date: String
 
     enum CodingKeys: String, CodingKey {
@@ -19,12 +19,12 @@ struct Forecast3Hour: Decodable {
     }
 }
 
-struct Forecast3HourMain: Decodable {
+struct ThreeHourForecastMain: Decodable {
     var temp: Double
     var humidity: Int
 }
 
-struct Forecast3HourWeather: Decodable {
+struct ThreeHourForecastWeather: Decodable {
     var id: Int
     var weatherType: WeatherType
 
@@ -34,7 +34,7 @@ struct Forecast3HourWeather: Decodable {
     }
 }
 
-struct Forecast3HourWind: Decodable {
+struct ThreeHourForecastWind: Decodable {
     var speed: Double
 }
 

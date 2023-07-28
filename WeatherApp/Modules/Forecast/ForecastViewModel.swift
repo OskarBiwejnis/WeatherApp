@@ -14,7 +14,7 @@ class ForecastViewModel: NSObject {
         static let weatherMainPart = 0
     }
 
-    var forecast3Hour: [Forecast3Hour] = []
+    var forecast3Hour: [ThreeHourForecast] = []
     weak var delegate: ForecastViewModelDelegate?
 
     func didInitialize(city: City) {
