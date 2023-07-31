@@ -1,13 +1,19 @@
-//
-//  NetworkingError.swift
-//  WeatherApp
-//
-//  Created by Oskar Biwejnis on 17/07/2023.
-//
-
 import Foundation
 
-enum NetworkingError: Error {
+enum NetworkingError: LocalizedError {
     case invalidResponse
+    case invalidUrl
     case decodingError
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidResponse:
+            return R.string.localizable.invalid_response_message()
+        case .invalidUrl:
+            return R.string.localizable.invalid_url_message()
+        case .decodingError:
+            return R.string.localizable.decoding_error_message()
+        }
+    }
 }
+

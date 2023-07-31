@@ -4,34 +4,31 @@ class WelcomeViewController: UIViewController {
 
     private let welcomeView = WelcomeView()
     private let welcomeViewModel = WelcomeViewModel()
-    private let mainViewController = SearchViewController()
 
     override func loadView() {
-        welcomeView.viewController = self
-        welcomeViewModel.welcomeViewControllerDelegate = self
+        welcomeView.delegate = self
+        welcomeViewModel.delegate = self
         view = welcomeView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+}
 
-    func proceedButtonTap() {
-        welcomeViewModel.pushViewController()
+extension WelcomeViewController: WelcomeViewModelDelegate {
+
+    func pushViewController() {
+        navigationController?.pushViewController(SearchViewController(), animated: true)
     }
 
 }
 
-protocol WelcomeViewControllerDelegate: AnyObject {
+extension WelcomeViewController: WelcomeViewDelegate {
 
-    func pushViewController()
-    
-}
-
-extension WelcomeViewController: WelcomeViewControllerDelegate {
-
-    func pushViewController() {
-        navigationController?.pushViewController(mainViewController, animated: true)
+    func proceedButtonTap() {
+        welcomeViewModel.pushViewController()
     }
 
 }

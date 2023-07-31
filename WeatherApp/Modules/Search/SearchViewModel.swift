@@ -3,11 +3,11 @@ import Foundation
 class SearchViewModel: NSObject {
 
     private var debounceTimer: Timer?
-    var searchResults: [String] = []
-    weak var searchViewControllerDelegate: SearchViewControllerDelegate?
+    var cities: [City] = []
+    weak var delegate: SearchViewModelDelegate?
 
     private enum Constants {
-        static let minTimeBetweenFetchCities = 0.35
+        static let minTimeBetweenFetchCities = 1.2
     }
 
     func searchTextDidChange(_ text: String) {
@@ -18,24 +18,30 @@ class SearchViewModel: NSObject {
     }
 
     private func fetchCities(_ text: String) {
-        searchResults = []
         guard text != "" else {
             return
         }
 
         Task {
             do {
-                let cities = try await NetworkingUtils.fetchCities(text)
-                for city in cities {
-                    searchResults.append(city.name)
-                }
-                searchViewControllerDelegate?.reloadTable()
-            } catch NetworkingError.decodingError {
-                print(NetworkingError.decodingError)
-            } catch NetworkingError.invalidResponse {
-                print(NetworkingError.invalidResponse)
+                cities = try await NetworkingUtils.fetchCities(text)
+                delegate?.reloadTable()
+            } catch {
+                delegate?.showError(error)
             }
         }
     }
+
+    func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
+        delegate?.pushForecastViewController(city: cities[indexPath.row])
+    }
+
+}
+
+protocol SearchViewModelDelegate: AnyObject {
+
+    func reloadTable()
+    func pushForecastViewController(city: City)
+    func showError(_ error: Error)
 
 }
