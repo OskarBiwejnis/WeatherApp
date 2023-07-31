@@ -22,30 +22,10 @@ class ForecastView: UIView {
         return collectionView
     }()
 
-    let hourLabel = {
-        let hourLabel = UILabel()
-        hourLabel.text = Constants.hourLabelText
-        return hourLabel
-    }()
-
-    let temperatureLabel = {
-        let temperatureLabel = UILabel()
-        temperatureLabel.text = Constants.temperatureLabelText
-        return temperatureLabel
-    }()
-
-    let humidityLabel = {
-        let humidityLabel = UILabel()
-        humidityLabel.text = Constants.humidityLabelText
-
-        return humidityLabel
-    }()
-
-    let windLabel = {
-        let windLabel = UILabel()
-        windLabel.text = Constants.windLabelText
-        return windLabel
-    }()
+    let hourLabel = ForecastLabel(text: Constants.hourLabelText)
+    let temperatureLabel = ForecastLabel(text: Constants.temperatureLabelText)
+    let humidityLabel = ForecastLabel(text: Constants.humidityLabelText)
+    let windLabel = ForecastLabel(text: Constants.windLabelText)
 
 
     init() {

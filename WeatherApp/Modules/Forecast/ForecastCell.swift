@@ -26,33 +26,10 @@ class ForecastCell: UICollectionViewCell {
         super.init(coder: coder)
     }
 
-    let hourLabel = {
-        let hourLabel = UILabel()
-        hourLabel.font = UIFont.systemFont(ofSize: Constants.bigFontSize, weight: .bold)
-        return hourLabel
-    }()
-
-    let temperatureLabel = {
-        let temperatureLabel = UILabel()
-        temperatureLabel.textColor = .systemCyan
-        temperatureLabel.font = UIFont.systemFont(ofSize: Constants.bigFontSize, weight: .bold)
-        return temperatureLabel
-    }()
-
-    let humidityLabel = {
-        let humidityLabel = UILabel()
-        humidityLabel.textColor = .systemGray2
-        humidityLabel.font = UIFont.systemFont(ofSize: Constants.smallFontSize, weight: .bold)
-        return humidityLabel
-    }()
-
-    let windLabel = {
-        let windLabel = UILabel()
-        windLabel.textColor = .systemGray2
-        windLabel.font = UIFont.systemFont(ofSize: Constants.smallFontSize, weight: .bold)
-        return windLabel
-    }()
-
+    let hourLabel = ForecastLabel(fontSize: Constants.bigFontSize, weight: .bold)
+    let temperatureLabel = ForecastLabel(textColor: .systemCyan, fontSize: Constants.bigFontSize, weight: .bold)
+    let humidityLabel = ForecastLabel(textColor: .systemGray2, fontSize: Constants.smallFontSize, weight: .bold)
+    let windLabel = ForecastLabel(textColor: .systemGray2, fontSize: Constants.smallFontSize, weight: .bold)
     let skyImageView = UIImageView()
 
     func setupWith(hour: String, temperature: String, humidity: String, wind: String, skyImage: UIImage?) {
