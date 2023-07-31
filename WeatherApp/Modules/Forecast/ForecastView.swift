@@ -5,9 +5,10 @@ class ForecastView: UIView {
 
     private enum Constants {
         static let hourLabelOffset = 10
-        static let temperatureLabelOffset = 105
-        static let humidityLabelOffset = 60
-        static let windLabelOffset = 50
+        static let hourLabelWidth = 105
+        static let temperatureLabelWidth = 60
+        static let humidityLabelWidth = 50
+        static let windLabelWidth = 60
         static let collectionViewTopMargin = 10
         static let hourLabelText = "Hour"
         static let temperatureLabelText = "Temp"
@@ -57,21 +58,25 @@ class ForecastView: UIView {
         hourLabel.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide)
             make.left.equalToSuperview().offset(Constants.hourLabelOffset)
+            make.width.equalTo(Constants.hourLabelWidth)
         }
 
         temperatureLabel.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide)
-            make.left.equalTo(hourLabel).offset(Constants.temperatureLabelOffset)
+            make.left.equalTo(hourLabel.snp.right)
+            make.width.equalTo(Constants.temperatureLabelWidth)
         }
 
         humidityLabel.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide)
-            make.left.equalTo(temperatureLabel).offset(Constants.humidityLabelOffset)
+            make.left.equalTo(temperatureLabel.snp.right)
+            make.width.equalTo(Constants.humidityLabelWidth)
         }
 
         windLabel.snp.makeConstraints { make -> Void in
             make.top.equalTo(safeAreaLayoutGuide)
-            make.left.equalTo(humidityLabel).offset(Constants.windLabelOffset)
+            make.left.equalTo(humidityLabel.snp.right)
+            make.width.equalTo(Constants.windLabelWidth)
         }
     }
 

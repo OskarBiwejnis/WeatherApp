@@ -6,12 +6,11 @@ class ForecastCell: UICollectionViewCell {
     static let reuseIdentifier = Constants.reuseIdentifier
 
     private enum Constants {
-        static let spacingBetweenElements = 15
-
         static let hourLabelOffset = 10
-        static let temperatureLabelOffset = 105
-        static let humidityLabelOffset = 60
-        static let windLabelOffset = 50
+        static let hourLabelWidth = 105
+        static let temperatureLabelWidth = 60
+        static let humidityLabelWidth = 50
+        static let windLabelWidth = 60
         static let reuseIdentifier = "forecastCell"
     }
 
@@ -51,21 +50,25 @@ class ForecastCell: UICollectionViewCell {
     private func setupConstraints() {
         hourLabel.snp.makeConstraints { make -> Void in
             make.left.equalToSuperview().offset(Constants.hourLabelOffset)
+            make.width.equalTo(Constants.hourLabelWidth)
             make.centerY.equalToSuperview()
         }
 
         temperatureLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(hourLabel).offset(Constants.temperatureLabelOffset)
+            make.left.equalTo(hourLabel.snp.right)
+            make.width.equalTo(Constants.temperatureLabelWidth)
             make.centerY.equalToSuperview()
         }
 
         humidityLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(temperatureLabel).offset(Constants.humidityLabelOffset)
+            make.left.equalTo(temperatureLabel.snp.right)
+            make.width.equalTo(Constants.humidityLabelWidth)
             make.centerY.equalToSuperview()
         }
 
         windLabel.snp.makeConstraints { make -> Void in
-            make.left.equalTo(humidityLabel).offset(Constants.windLabelOffset)
+            make.left.equalTo(humidityLabel.snp.right)
+            make.width.equalTo(Constants.windLabelWidth)
             make.centerY.equalToSuperview()
         }
 
