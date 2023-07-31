@@ -2,10 +2,6 @@ import UIKit
 
 class Label: UILabel {
 
-    enum Constants {
-        static let defaultFontSize: CGFloat = 17
-    }
-
     init(text: String = "", textColor: UIColor = .black, font: UIFont = FontProvider.defaultFont) {
         super.init(frame: .zero)
         self.text = text
