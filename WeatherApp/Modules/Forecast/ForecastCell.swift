@@ -7,8 +7,7 @@ class ForecastCell: UICollectionViewCell {
 
     private enum Constants {
         static let spacingBetweenElements = 15
-        static let bigFontSize: CGFloat = 32
-        static let smallFontSize: CGFloat = 16
+
         static let hourLabelOffset = 10
         static let temperatureLabelOffset = 105
         static let humidityLabelOffset = 60
@@ -26,10 +25,10 @@ class ForecastCell: UICollectionViewCell {
         super.init(coder: coder)
     }
 
-    let hourLabel = ForecastLabel(fontSize: Constants.bigFontSize, weight: .bold)
-    let temperatureLabel = ForecastLabel(textColor: .systemCyan, fontSize: Constants.bigFontSize, weight: .bold)
-    let humidityLabel = ForecastLabel(textColor: .systemGray2, fontSize: Constants.smallFontSize, weight: .bold)
-    let windLabel = ForecastLabel(textColor: .systemGray2, fontSize: Constants.smallFontSize, weight: .bold)
+    let hourLabel = Label(font: FontProvider.bigBoldFont)
+    let temperatureLabel = Label(textColor: .systemCyan, font: FontProvider.bigBoldFont)
+    let humidityLabel = Label(textColor: .systemGray2, font: FontProvider.defaultBoldFont)
+    let windLabel = Label(textColor: .systemGray2, font: FontProvider.defaultBoldFont)
     let skyImageView = UIImageView()
 
     func setupWith(hour: String, temperature: String, humidity: String, wind: String, skyImage: UIImage?) {
