@@ -1,14 +1,14 @@
-import Foundation
+import UIKit
 
 class WelcomeViewModel: NSObject {
 
     weak var delegate: WelcomeViewModelDelegate?
 
-    func pushViewController() {
-        delegate?.pushViewController()
+    func proceedButtonTap() {
+        delegate?.pushViewController(viewController: SearchViewController())
     }
 
-    func reloadRecents() {
+    func viewWillAppear() {
         delegate?.reloadRecentsWith(getStoredCities())
     }
 
@@ -18,11 +18,15 @@ class WelcomeViewModel: NSObject {
         return decodedData
     }
 
+    func recentButtonTap(tag: Int) {
+        let storedCities = getStoredCities()
+        delegate?.pushViewController(viewController: ForecastViewController(city: storedCities[tag]))
+    }
 }
 
 protocol WelcomeViewModelDelegate: AnyObject {
 
-    func pushViewController()
     func reloadRecentsWith(_ cities: [City])
-
+    func pushViewController(viewController: UIViewController)
+    
 }

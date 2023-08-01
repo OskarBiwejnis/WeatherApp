@@ -16,15 +16,15 @@ class WelcomeViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        welcomeViewModel.reloadRecents()
+        welcomeViewModel.viewWillAppear()
     }
 
 }
 
 extension WelcomeViewController: WelcomeViewModelDelegate {
 
-    func pushViewController() {
-        navigationController?.pushViewController(SearchViewController(), animated: true)
+    func pushViewController(viewController: UIViewController) {
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     func reloadRecentsWith(_ cities: [City]) {
@@ -36,7 +36,10 @@ extension WelcomeViewController: WelcomeViewModelDelegate {
 extension WelcomeViewController: WelcomeViewDelegate {
 
     func proceedButtonTap() {
-        welcomeViewModel.pushViewController()
+        welcomeViewModel.proceedButtonTap()
     }
 
+    func recentButtonTap(tag: Int) {
+        welcomeViewModel.recentButtonTap(tag: tag)
+    }
 }

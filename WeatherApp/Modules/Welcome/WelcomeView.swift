@@ -145,7 +145,7 @@ class WelcomeView: UIView {
 
     @objc
     private func recentButtonTap(_ sender: UIButton) {
-
+        delegate?.recentButtonTap(tag: sender.tag)
     }
 
 }
@@ -153,5 +153,6 @@ class WelcomeView: UIView {
 protocol WelcomeViewDelegate: AnyObject {
 
     func proceedButtonTap()
-    
+    func recentButtonTap(tag: Int)
+
 }
