@@ -33,7 +33,21 @@ class SearchViewModel: NSObject {
     }
 
     func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
-        delegate?.pushForecastViewController(city: cities[indexPath.row])
+        let selectedCity = cities[indexPath.row]
+        delegate?.pushForecastViewController(city: selectedCity)
+
+        var storedCities: [City] = []
+        if let fetchedData = UserDefaults.standard.data(forKey: City.storedCitiesKey),
+           let decodedData = try? JSONDecoder().decode([City].self, from: fetchedData) {
+            storedCities = decodedData
+        }
+
+        if let index = storedCities.firstIndex(of: selectedCity) { storedCities.remove(at: index) }
+        storedCities.insert(selectedCity, at: storedCities.startIndex)
+        if storedCities.count > 3 { storedCities.removeLast() }
+
+        guard let encodedData = try? JSONEncoder().encode(storedCities) else { return }
+        UserDefaults.standard.set(encodedData, forKey: City.storedCitiesKey)
     }
 
 }
