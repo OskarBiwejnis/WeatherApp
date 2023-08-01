@@ -14,13 +14,21 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        welcomeViewModel.reloadRecents()
+    }
+
 }
 
 extension WelcomeViewController: WelcomeViewModelDelegate {
 
     func pushViewController() {
         navigationController?.pushViewController(SearchViewController(), animated: true)
+    }
+
+    func reloadRecentsWith(_ cities: [City]) {
+        welcomeView.reloadRecentsWith(cities)
     }
 
 }
