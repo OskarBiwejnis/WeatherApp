@@ -3,6 +3,8 @@ import Foundation
 protocol StorageServiceType {
     func getStoredCities() -> [City]
     func pushCity(_ city: City)
+    func getNumberOfStoredCities() -> Int
+    func getStoredCity(index: Int) -> City?
 }
 
 
@@ -19,8 +21,17 @@ class StorageService: StorageServiceType {
         return decodedData
     }
 
+    func getStoredCity(index: Int) -> City? {
+        let storedCities = getStoredCities()
+        if storedCities.count > index {
+            return storedCities[index]
+        } else {
+            return nil
+        }
+    }
+
     func pushCity(_ city: City) {
-        var storedCities: [City] = getStoredCities()
+        var storedCities = getStoredCities()
 
         if let index = storedCities.firstIndex(of: city) { storedCities.remove(at: index) }
         storedCities.insert(city, at: storedCities.startIndex)
@@ -30,4 +41,7 @@ class StorageService: StorageServiceType {
         UserDefaults.standard.set(encodedData, forKey: Constants.storedCitiesKey)
     }
 
+    func getNumberOfStoredCities() -> Int {
+        return getStoredCities().count
+    }
 }

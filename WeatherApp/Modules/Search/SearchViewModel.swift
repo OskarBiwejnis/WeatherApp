@@ -37,7 +37,7 @@ class SearchViewModel: NSObject {
     func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
         let selectedCity = cities[indexPath.row]
         delegate?.pushForecastViewController(city: selectedCity)
-        storageService.pushCity(selectedCity)
+
     }
 
 }

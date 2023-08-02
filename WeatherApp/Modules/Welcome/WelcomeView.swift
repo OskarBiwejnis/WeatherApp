@@ -31,6 +31,10 @@ class WelcomeView: UIView {
         static let stackViewWidth = 250
         static let stackViewHeight = 160
         static let recentLabelOffset = 40
+        static let tableViewWidth = 250
+        static let tableViewHeight = 150
+        static let tableViewRowHeight: CGFloat = 50
+        static let tableViewCornerRadius: CGFloat = 40
     }
 
     private let iconImageView: UIImageView = {
@@ -64,30 +68,19 @@ class WelcomeView: UIView {
 
     private let recentLabel = Label(text: R.string.localizable.recent_label_text(), textColor: .systemGray5, font: FontProvider.defaultFont)
 
-    private var stackView = UIStackView()
-    private var recentButtons: [UIButton] = []
+    var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.rowHeight = Constants.tableViewRowHeight
+        tableView.register(RecentCityCell.self, forCellReuseIdentifier: RecentCityCell.reuseIdentifier)
+        tableView.layer.cornerRadius = Constants.tableViewCornerRadius
+        tableView.isScrollEnabled = false
+        tableView.backgroundColor = .systemGray4
+        return tableView
+    }()
 
     private func setup() {
-        setupStackView()
         setupView()
         setupConstraints()
-    }
-
-    private func setupStackView() {
-        stackView.layer.cornerRadius = Constants.stackViewCornerRadius
-        stackView.axis = .vertical
-        stackView.spacing = Constants.stackViewSpacing
-        stackView.distribution = .fillEqually
-        for index in 0 ..< Constants.numberOfButtons {
-            let button = UIButton()
-            button.setTitle("", for: .normal)
-            button.backgroundColor = .systemGray2
-            button.layer.cornerRadius = Constants.recentButtonCornerRadius
-            button.tag = index
-            button.addTarget(self, action: #selector(recentButtonTap), for: .touchUpInside)
-            stackView.addArrangedSubview(button)
-            recentButtons.append(button)
-        }
     }
 
     private func setupView() {
@@ -95,7 +88,7 @@ class WelcomeView: UIView {
         addSubview(proceedButton)
         addSubview(titleLabel)
         addSubview(iconImageView)
-        addSubview(stackView)
+        addSubview(tableView)
         addSubview(recentLabel)
     }
 
@@ -118,11 +111,11 @@ class WelcomeView: UIView {
             make.size.equalTo(Constants.proceedButtonSize)
         }
 
-        stackView.snp.makeConstraints { make -> Void in
+        tableView.snp.makeConstraints { make -> Void in
             make.centerX.equalToSuperview()
             make.top.equalTo(recentLabel.snp.bottom)
-            make.width.equalTo(Constants.stackViewWidth)
-            make.height.equalTo(Constants.stackViewHeight)
+            make.width.equalTo(Constants.tableViewWidth)
+            make.height.equalTo(Constants.tableViewHeight)
         }
 
         recentLabel.snp.makeConstraints { make -> Void in
@@ -132,9 +125,7 @@ class WelcomeView: UIView {
     }
 
     func reloadRecentCities(_ cities: [City]) {
-        for index in 0 ..< cities.count {
-            recentButtons[index].setTitle(cities[index].name, for: .normal)
-        }
+        
     }
 
     @objc
@@ -142,16 +133,10 @@ class WelcomeView: UIView {
         delegate?.proceedButtonTap()
     }
 
-    @objc
-    private func recentButtonTap(_ sender: UIButton) {
-        delegate?.recentButtonTap(tag: sender.tag)
-    }
-
 }
 
 protocol WelcomeViewDelegate: AnyObject {
 
     func proceedButtonTap()
-    func recentButtonTap(tag: Int)
 
 }

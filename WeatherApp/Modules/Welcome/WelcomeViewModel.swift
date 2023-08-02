@@ -13,10 +13,20 @@ class WelcomeViewModel: NSObject {
         delegate?.reloadRecentCities(storageService.getStoredCities())
     }
 
-    func recentButtonTap(tag: Int) {
-        let storedCities = storageService.getStoredCities()
-        delegate?.pushViewController(viewController: ForecastViewController(city: storedCities[tag]))
+    func getRecentCityName(index: Int) -> String {
+        guard let recentCity = storageService.getStoredCity(index: index) else { return "" }
+        return recentCity.name
     }
+
+    func getNumberOfRecentCities() -> Int {
+        return storageService.getNumberOfStoredCities()
+    }
+
+    func didSelectRecentCityCell(didSelectRowAt indexPath: IndexPath) {
+        guard let recentCity = storageService.getStoredCity(index: indexPath.row) else { return }
+        delegate?.pushViewController(viewController: ForecastViewController(city: recentCity))
+    }
+
 }
 
 protocol WelcomeViewModelDelegate: AnyObject {

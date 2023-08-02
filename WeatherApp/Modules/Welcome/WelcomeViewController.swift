@@ -8,6 +8,8 @@ class WelcomeViewController: UIViewController {
     override func loadView() {
         welcomeView.delegate = self
         welcomeViewModel.delegate = self
+        welcomeView.tableView.delegate = self
+        welcomeView.tableView.dataSource = self
         view = welcomeView
     }
 
@@ -16,7 +18,9 @@ class WelcomeViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        welcomeViewModel.viewWillAppear()
+        DispatchQueue.main.async { [weak self] in
+            self?.welcomeView.tableView.reloadData()
+        }
     }
 
 }
@@ -38,8 +42,26 @@ extension WelcomeViewController: WelcomeViewDelegate {
     func proceedButtonTap() {
         welcomeViewModel.proceedButtonTap()
     }
+}
 
-    func recentButtonTap(tag: Int) {
-        welcomeViewModel.recentButtonTap(tag: tag)
+
+extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
+
+
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return welcomeViewModel.getNumberOfRecentCities()
     }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier) as? RecentCityCell else { return RecentCityCell() }
+        cell.label.text = welcomeViewModel.getRecentCityName(index: indexPath.row)
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        welcomeViewModel.didSelectRecentCityCell(didSelectRowAt: indexPath)
+    }
+
 }
