@@ -10,8 +10,6 @@ struct City: Codable, Equatable {
     var latitude: Double
     var longitude: Double
 
-    static let storedCitiesKey = "storedCities"
-
     static func ==(lhs: Self, rhs: Self) -> Bool {
         return lhs.name == rhs.name
         && lhs.country == rhs.country

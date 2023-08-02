@@ -74,7 +74,6 @@ class WelcomeView: UIView {
     }
 
     private func setupStackView() {
-        stackView = UIStackView()
         stackView.layer.cornerRadius = Constants.stackViewCornerRadius
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewSpacing
@@ -132,7 +131,7 @@ class WelcomeView: UIView {
         }
     }
 
-    func reloadRecentsWith(_ cities: [City]) {
+    func reloadRecentCities(_ cities: [City]) {
         for index in 0 ..< cities.count {
             recentButtons[index].setTitle(cities[index].name, for: .normal)
         }

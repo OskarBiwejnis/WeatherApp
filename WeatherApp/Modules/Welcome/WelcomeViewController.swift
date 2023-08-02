@@ -27,8 +27,8 @@ extension WelcomeViewController: WelcomeViewModelDelegate {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    func reloadRecentsWith(_ cities: [City]) {
-        welcomeView.reloadRecentsWith(cities)
+    func reloadRecentCities(_ cities: [City]) {
+        welcomeView.reloadRecentCities(cities)
     }
 
 }

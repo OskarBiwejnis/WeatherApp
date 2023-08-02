@@ -3,30 +3,25 @@ import UIKit
 class WelcomeViewModel: NSObject {
 
     weak var delegate: WelcomeViewModelDelegate?
+    let storageService: StorageServiceType = StorageService()
 
     func proceedButtonTap() {
         delegate?.pushViewController(viewController: SearchViewController())
     }
 
     func viewWillAppear() {
-        delegate?.reloadRecentsWith(getStoredCities())
-    }
-
-    private func getStoredCities() -> [City] {
-        guard let fetchedData = UserDefaults.standard.data(forKey: City.storedCitiesKey) else { return [] }
-        guard let decodedData = try? JSONDecoder().decode([City].self, from: fetchedData) else { return [] }
-        return decodedData
+        delegate?.reloadRecentCities(storageService.getStoredCities())
     }
 
     func recentButtonTap(tag: Int) {
-        let storedCities = getStoredCities()
+        let storedCities = storageService.getStoredCities()
         delegate?.pushViewController(viewController: ForecastViewController(city: storedCities[tag]))
     }
 }
 
 protocol WelcomeViewModelDelegate: AnyObject {
 
-    func reloadRecentsWith(_ cities: [City])
+    func reloadRecentCities(_ cities: [City])
     func pushViewController(viewController: UIViewController)
     
 }
