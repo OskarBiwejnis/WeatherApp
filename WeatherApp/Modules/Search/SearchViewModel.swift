@@ -8,7 +8,6 @@ class SearchViewModel: NSObject {
 
     private enum Constants {
         static let minTimeBetweenFetchCities = 1.2
-        static let maxNumberOfStoredCities = 3
     }
 
     func searchTextDidChange(_ text: String) {

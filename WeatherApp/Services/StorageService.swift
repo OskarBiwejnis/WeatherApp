@@ -9,25 +9,25 @@ protocol StorageServiceType {
 class StorageService: StorageServiceType {
 
     enum Constants {
-        static let maxNumberOfStoredCities = 3
-        static let storedCitiesKey = "storedCities"
+        static let maxNumberOfRecentCities = 3
+        static let recentCitiesKey = "recentCities"
     }
 
     func getRecentCities() -> [City] {
-        guard let fetchedData = UserDefaults.standard.data(forKey: Constants.storedCitiesKey) else { return [] }
+        guard let fetchedData = UserDefaults.standard.data(forKey: Constants.recentCitiesKey) else { return [] }
         guard let decodedData = try? JSONDecoder().decode([City].self, from: fetchedData) else { return [] }
         return decodedData
     }
 
     func addRecentCity(_ city: City) {
-        var storedCities = getRecentCities()
+        var recentCities = getRecentCities()
 
-        if let index = storedCities.firstIndex(of: city) { storedCities.remove(at: index) }
-        storedCities.insert(city, at: storedCities.startIndex)
-        if storedCities.count > Constants.maxNumberOfStoredCities { storedCities.removeLast() }
+        if let index = recentCities.firstIndex(of: city) { recentCities.remove(at: index) }
+        recentCities.insert(city, at: recentCities.startIndex)
+        if recentCities.count > Constants.maxNumberOfRecentCities { recentCities.removeLast() }
 
-        guard let encodedData = try? JSONEncoder().encode(storedCities) else { return }
-        UserDefaults.standard.set(encodedData, forKey: Constants.storedCitiesKey)
+        guard let encodedData = try? JSONEncoder().encode(recentCities) else { return }
+        UserDefaults.standard.set(encodedData, forKey: Constants.recentCitiesKey)
     }
 
 }
