@@ -124,10 +124,6 @@ class WelcomeView: UIView {
         }
     }
 
-    func reloadRecentCities(_ cities: [City]) {
-        
-    }
-
     @objc
     private func proceedButtonTap() {
         delegate?.proceedButtonTap()

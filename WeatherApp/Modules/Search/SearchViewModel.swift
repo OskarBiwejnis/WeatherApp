@@ -5,7 +5,6 @@ class SearchViewModel: NSObject {
     private var debounceTimer: Timer?
     var cities: [City] = []
     weak var delegate: SearchViewModelDelegate?
-    let storageService: StorageServiceType = StorageService()
 
     private enum Constants {
         static let minTimeBetweenFetchCities = 1.2

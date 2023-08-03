@@ -4,6 +4,7 @@ class WelcomeViewController: UIViewController {
 
     private let welcomeView = WelcomeView()
     private let welcomeViewModel = WelcomeViewModel()
+    var recentCities: [City] = []
 
     override func loadView() {
         welcomeView.delegate = self
@@ -18,9 +19,7 @@ class WelcomeViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            self?.welcomeView.tableView.reloadData()
-        }
+        welcomeViewModel.viewWillAppear()
     }
 
 }
@@ -32,7 +31,10 @@ extension WelcomeViewController: WelcomeViewModelDelegate {
     }
 
     func reloadRecentCities(_ cities: [City]) {
-        welcomeView.reloadRecentCities(cities)
+        recentCities = cities
+        DispatchQueue.main.async { [weak self] in
+            self?.welcomeView.tableView.reloadData()
+        }
     }
 
 }
@@ -47,21 +49,19 @@ extension WelcomeViewController: WelcomeViewDelegate {
 
 extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
 
-
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return welcomeViewModel.getNumberOfRecentCities()
+        return recentCities.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier) as? RecentCityCell else { return RecentCityCell() }
-        cell.label.text = welcomeViewModel.getRecentCityName(index: indexPath.row)
+        cell.label.text = recentCities[indexPath.row].name
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        welcomeViewModel.didSelectRecentCityCell(didSelectRowAt: indexPath)
+        welcomeViewModel.didSelectRecentCity(recentCities[indexPath.row])
     }
 
 }

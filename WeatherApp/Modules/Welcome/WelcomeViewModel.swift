@@ -10,28 +10,18 @@ class WelcomeViewModel: NSObject {
     }
 
     func viewWillAppear() {
-        delegate?.reloadRecentCities(storageService.getStoredCities())
+        delegate?.reloadRecentCities(storageService.getRecentCities())
     }
 
-    func getRecentCityName(index: Int) -> String {
-        guard let recentCity = storageService.getStoredCity(index: index) else { return "" }
-        return recentCity.name
-    }
-
-    func getNumberOfRecentCities() -> Int {
-        return storageService.getNumberOfStoredCities()
-    }
-
-    func didSelectRecentCityCell(didSelectRowAt indexPath: IndexPath) {
-        guard let recentCity = storageService.getStoredCity(index: indexPath.row) else { return }
-        delegate?.pushViewController(viewController: ForecastViewController(city: recentCity))
+    func didSelectRecentCity(_ city: City) {
+        delegate?.pushViewController(viewController: ForecastViewController(city: city))
     }
 
 }
 
 protocol WelcomeViewModelDelegate: AnyObject {
 
-    func reloadRecentCities(_ cities: [City])
     func pushViewController(viewController: UIViewController)
+    func reloadRecentCities(_  cities: [City])
     
 }

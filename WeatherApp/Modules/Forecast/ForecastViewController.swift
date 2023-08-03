@@ -13,7 +13,7 @@ class ForecastViewController: UIViewController {
     let storageService: StorageServiceType = StorageService()
 
     init(city: City) {
-        storageService.pushCity(city)
+        storageService.addRecentCity(city)
         forecastViewModel = ForecastViewModel(city: city)
         super.init(nibName: nil, bundle: nil)
         forecastViewModel.delegate = self

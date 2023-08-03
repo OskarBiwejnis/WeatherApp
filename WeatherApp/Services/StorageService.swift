@@ -1,10 +1,8 @@
 import Foundation
 
 protocol StorageServiceType {
-    func getStoredCities() -> [City]
-    func pushCity(_ city: City)
-    func getNumberOfStoredCities() -> Int
-    func getStoredCity(index: Int) -> City?
+    func getRecentCities() -> [City]
+    func addRecentCity(_ city: City)
 }
 
 
@@ -15,23 +13,14 @@ class StorageService: StorageServiceType {
         static let storedCitiesKey = "storedCities"
     }
 
-    func getStoredCities() -> [City] {
+    func getRecentCities() -> [City] {
         guard let fetchedData = UserDefaults.standard.data(forKey: Constants.storedCitiesKey) else { return [] }
         guard let decodedData = try? JSONDecoder().decode([City].self, from: fetchedData) else { return [] }
         return decodedData
     }
 
-    func getStoredCity(index: Int) -> City? {
-        let storedCities = getStoredCities()
-        if storedCities.count > index {
-            return storedCities[index]
-        } else {
-            return nil
-        }
-    }
-
-    func pushCity(_ city: City) {
-        var storedCities = getStoredCities()
+    func addRecentCity(_ city: City) {
+        var storedCities = getRecentCities()
 
         if let index = storedCities.firstIndex(of: city) { storedCities.remove(at: index) }
         storedCities.insert(city, at: storedCities.startIndex)
@@ -41,7 +30,4 @@ class StorageService: StorageServiceType {
         UserDefaults.standard.set(encodedData, forKey: Constants.storedCitiesKey)
     }
 
-    func getNumberOfStoredCities() -> Int {
-        return getStoredCities().count
-    }
 }
