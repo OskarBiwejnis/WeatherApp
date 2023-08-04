@@ -1,10 +1,6 @@
 import UIKit
 
 class SearchViewController: UIViewController {
-
-    private enum Constants {
-        static let reuseIdentifier = "searchCell"
-    }
     
     private let searchView = SearchView()
     private let searchViewModel = SearchViewModel()
@@ -30,7 +26,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? SearchCell else { return SearchCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier) as? SearchCell else { return SearchCell() }
         cell.label.text = searchViewModel.cities[indexPath.row].name
         
         return cell

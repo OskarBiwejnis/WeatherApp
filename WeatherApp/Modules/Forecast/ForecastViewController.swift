@@ -10,8 +10,10 @@ class ForecastViewController: UIViewController {
     
     let forecastView = ForecastView()
     let forecastViewModel: ForecastViewModel
+    let storageService: StorageServiceType = StorageService()
 
     init(city: City) {
+        storageService.addRecentCity(city)
         forecastViewModel = ForecastViewModel(city: city)
         super.init(nibName: nil, bundle: nil)
         forecastViewModel.delegate = self

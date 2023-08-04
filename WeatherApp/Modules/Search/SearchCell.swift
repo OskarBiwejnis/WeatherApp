@@ -2,6 +2,8 @@ import UIKit
 
 class SearchCell: UITableViewCell {
 
+    static let reuseIdentifier = "searchCell"
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(label)
@@ -24,7 +26,7 @@ class SearchCell: UITableViewCell {
 
         return label
     }()
-
+    
     private func setupConstraints() {
         label.snp.makeConstraints { make -> Void in
             make.centerY.equalToSuperview()
