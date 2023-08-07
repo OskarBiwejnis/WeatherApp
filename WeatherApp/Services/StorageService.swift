@@ -9,7 +9,7 @@ protocol StorageServiceType {
 
 class StorageService: StorageServiceType {
 
-    let realm = try? Realm()
+    private let realm = try! Realm()
 
     enum Constants {
         static let maxNumberOfRecentCities = 3
@@ -17,56 +17,35 @@ class StorageService: StorageServiceType {
     }
 
     func getRecentCities() -> [City] {
-        var recentCities: [City] = []
-        guard let persistedCities = realm?.objects(PersistedCity.self) else { return [] }
-
-        for persistedCity in persistedCities {
-            recentCities.append(City(from: persistedCity))
+        var recentCities: [City] = realm.objects(PersistedCity.self).compactMap { persistedCity -> City in
+            return City(from: persistedCity)
         }
 
-        print(recentCities)
         return recentCities.reversed()
     }
 
     func addRecentCity(_ recentCity: City) {
-        guard let persistedCities = realm?.objects(PersistedCity.self) else { return }
+        let persistedCities = realm.objects(PersistedCity.self) 
 
         for persistedCity in persistedCities {
             let city = City(from: persistedCity)
             if city == recentCity {
-                try? realm?.write {
-                    realm?.delete(persistedCity)
+                try? realm.write {
+                    realm.delete(persistedCity)
                 }
             }
         }
 
-        try? realm?.write {
-            realm?.add(PersistedCity(from: recentCity))
+        try? realm.write {
+            realm.add(PersistedCity(from: recentCity))
         }
 
         if persistedCities.count > Constants.maxNumberOfRecentCities {
             let firstPersistedCity: PersistedCity! = persistedCities.first
-            try? realm?.write {
-                realm?.delete(firstPersistedCity)
+            try? realm.write {
+                realm.delete(firstPersistedCity)
             }
         }
     }
 
-}
-
-
-class PersistedCity: Object {
-    @Persisted(primaryKey: true) var id: ObjectId
-    @Persisted var name: String
-    @Persisted var country: String
-    @Persisted var latitude: Double
-    @Persisted var longitude: Double
-
-    convenience init(from city: City) {
-        self.init()
-        self.name = city.name
-        self.country = city.country
-        self.latitude = city.latitude
-        self.longitude = city.longitude
-    }
 }
