@@ -1,4 +1,5 @@
 import Foundation
+import RealmSwift
 
 protocol StorageServiceType {
     func getRecentCities() -> [City]
@@ -8,26 +9,43 @@ protocol StorageServiceType {
 
 class StorageService: StorageServiceType {
 
+    private let realm = try! Realm()
+
     enum Constants {
         static let maxNumberOfRecentCities = 3
         static let recentCitiesKey = "recentCities"
     }
 
     func getRecentCities() -> [City] {
-        guard let fetchedData = UserDefaults.standard.data(forKey: Constants.recentCitiesKey) else { return [] }
-        guard let decodedData = try? JSONDecoder().decode([City].self, from: fetchedData) else { return [] }
-        return decodedData
+        var recentCities: [City] = realm.objects(PersistedCity.self).compactMap { persistedCity -> City in
+            return City(from: persistedCity)
+        }
+
+        return recentCities.reversed()
     }
 
-    func addRecentCity(_ city: City) {
-        var recentCities = getRecentCities()
+    func addRecentCity(_ recentCity: City) {
+        let persistedCities = realm.objects(PersistedCity.self) 
 
-        if let index = recentCities.firstIndex(of: city) { recentCities.remove(at: index) }
-        recentCities.insert(city, at: recentCities.startIndex)
-        if recentCities.count > Constants.maxNumberOfRecentCities { recentCities.removeLast() }
+        for persistedCity in persistedCities {
+            let city = City(from: persistedCity)
+            if city == recentCity {
+                try? realm.write {
+                    realm.delete(persistedCity)
+                }
+            }
+        }
 
-        guard let encodedData = try? JSONEncoder().encode(recentCities) else { return }
-        UserDefaults.standard.set(encodedData, forKey: Constants.recentCitiesKey)
+        try? realm.write {
+            realm.add(PersistedCity(from: recentCity))
+        }
+
+        if persistedCities.count > Constants.maxNumberOfRecentCities {
+            let firstPersistedCity: PersistedCity! = persistedCities.first
+            try? realm.write {
+                realm.delete(firstPersistedCity)
+            }
+        }
     }
 
 }
