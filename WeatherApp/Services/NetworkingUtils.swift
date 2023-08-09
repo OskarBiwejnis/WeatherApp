@@ -20,8 +20,8 @@ class NetworkingUtils {
     static func fetchCities(_ searchText: String) async throws -> [City] {
         var cities: [City] = []
 
-        let url = Constants.geoDbUrlBase + searchText
-        let request = NSMutableURLRequest(url: NSURL(string: url)! as URL,
+        guard let url = URL(string: Constants.geoDbUrlBase + searchText) else { throw NetworkingError.invalidUrl}
+        let request = NSMutableURLRequest(url: url,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: Constants.geoDbTimeoutInterval)
         request.httpMethod = Constants.geoDbHttpMethod
