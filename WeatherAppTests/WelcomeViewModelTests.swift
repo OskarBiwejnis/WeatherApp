@@ -3,31 +3,55 @@ import XCTest
 
 final class WelcomeViewModelTests: XCTestCase {
 
-    var welcomeViewController: WelcomeViewController!
-    var navigationController: UINavigationController!
+    var welcomeViewModel: WelcomeViewModel!
+    var mockWelcomeViewModelDelegate: MockWelcomeViewModelDelegate!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        welcomeViewController = WelcomeViewController()
-        welcomeViewController.loadViewIfNeeded()
-        navigationController = UINavigationController(rootViewController: welcomeViewController)
+        welcomeViewModel = WelcomeViewModel()
+        mockWelcomeViewModelDelegate = MockWelcomeViewModelDelegate()
+        welcomeViewModel.delegate = mockWelcomeViewModelDelegate
     }
 
     override  func tearDown() {
-        welcomeViewController = nil
-        navigationController = nil
+        welcomeViewModel = nil
+        mockWelcomeViewModelDelegate = nil
         super.tearDown()
     }
 
-    func testShouldOpenSearchViewWhenProceedButtonTap() throws {
-        let topViewControllerBefore = navigationController.topViewController
+    func testShouldCallDelegateFunctionWhenProceedButtonTap() throws {
+        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallPushViewController)
+        welcomeViewModel.proceedButtonTap()
+        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallPushViewController)
+    }
 
-        welcomeViewController.proceedButtonTap()
+    func testShouldCallDelegateFunctionWhenViewWillAppear() throws {
+        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallReloadRecentCities)
+        welcomeViewModel.viewWillAppear()
+        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallReloadRecentCities)
+    }
 
-        let topViewControllerAfter = navigationController.topViewController
-        XCTAssertNotEqual(topViewControllerBefore, topViewControllerAfter)
-        XCTAssertNotIdentical(topViewControllerBefore, topViewControllerAfter)
-        XCTAssert(topViewControllerAfter is SearchViewController)
+    func testShouldCallDelegateFunctionWhendidSelectRecentCity() throws {
+        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallPushViewController)
+        welcomeViewModel.didSelectRecentCity(City())
+        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallPushViewController)
     }
 
 }
+
+class MockWelcomeViewModelDelegate: WelcomeViewModelDelegate {
+
+    var didCallPushViewController = false
+    var didCallReloadRecentCities = false
+
+    func pushViewController(viewController: UIViewController) {
+        didCallPushViewController = true
+    }
+
+    func reloadRecentCities(_ cities: [City]) {
+        didCallReloadRecentCities = true
+    }
+
+}
+
+
