@@ -46,7 +46,7 @@ extension SearchViewController: SearchViewModelDelegate {
         }
     }
 
-    func pushForecastViewController(city: City) {
+    func openCityForecast(city: City) {
         navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
     }
 

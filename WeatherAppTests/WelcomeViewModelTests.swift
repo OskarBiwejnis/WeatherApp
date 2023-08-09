@@ -20,9 +20,9 @@ final class WelcomeViewModelTests: XCTestCase {
     }
 
     func testShouldCallDelegateFunctionWhenProceedButtonTap() throws {
-        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallPushViewController)
+        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallOpenSearchScreen)
         welcomeViewModel.proceedButtonTap()
-        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallPushViewController)
+        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallOpenSearchScreen)
     }
 
     func testShouldCallDelegateFunctionWhenViewWillAppear() throws {
@@ -32,20 +32,25 @@ final class WelcomeViewModelTests: XCTestCase {
     }
 
     func testShouldCallDelegateFunctionWhendidSelectRecentCity() throws {
-        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallPushViewController)
+        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallOpenCityForecast)
         welcomeViewModel.didSelectRecentCity(City())
-        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallPushViewController)
+        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallOpenCityForecast)
     }
 
 }
 
 class MockWelcomeViewModelDelegate: WelcomeViewModelDelegate {
 
-    var didCallPushViewController = false
+    var didCallOpenCityForecast = false
+    var didCallOpenSearchScreen = false
     var didCallReloadRecentCities = false
 
-    func pushViewController(viewController: UIViewController) {
-        didCallPushViewController = true
+    func openCityForecast(_ city: City) {
+        didCallOpenCityForecast = true
+    }
+
+    func openSearchScreen() {
+        didCallOpenSearchScreen = true
     }
 
     func reloadRecentCities(_ cities: [City]) {
