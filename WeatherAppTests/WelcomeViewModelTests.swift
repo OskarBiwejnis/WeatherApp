@@ -31,10 +31,21 @@ final class WelcomeViewModelTests: XCTestCase {
         XCTAssertTrue(mockWelcomeViewModelDelegate.didCallReloadRecentCities)
     }
 
-    func testShouldCallDelegateFunctionWhendidSelectRecentCity() throws {
+    func testShouldCallDelegateFunctionWhenDidSelectRecentCity() throws {
         XCTAssertFalse(mockWelcomeViewModelDelegate.didCallOpenCityForecast)
         welcomeViewModel.didSelectRecentCity(City())
         XCTAssertTrue(mockWelcomeViewModelDelegate.didCallOpenCityForecast)
+    }
+
+    func testShouldOpenProperCityWhenDidSelectRecentCity() throws {
+        let cityInput = City()
+        XCTAssertNil(mockWelcomeViewModelDelegate.city)
+
+        welcomeViewModel.didSelectRecentCity(cityInput)
+
+        let cityOutput = mockWelcomeViewModelDelegate.city
+        XCTAssertNotNil(cityOutput)
+        XCTAssertEqual(cityInput, cityOutput)
     }
 
 }
@@ -44,9 +55,11 @@ class MockWelcomeViewModelDelegate: WelcomeViewModelDelegate {
     var didCallOpenCityForecast = false
     var didCallOpenSearchScreen = false
     var didCallReloadRecentCities = false
+    var city: City?
 
     func openCityForecast(_ city: City) {
         didCallOpenCityForecast = true
+        self.city = city
     }
 
     func openSearchScreen() {
