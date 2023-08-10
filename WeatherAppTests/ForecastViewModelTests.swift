@@ -45,7 +45,7 @@ final class ForecastViewModelTests: XCTestCase {
         let expectation = self.expectation(description: "Show Error")
         mockForecastViewModelDelegate.expectationShowError = expectation
         var cityThatThrowsError = City()
-        cityThatThrowsError.name = "IWillThrowError"
+        cityThatThrowsError.name = MockNetworkingService.nameThatThrowsError
 
         forecastViewModel = ForecastViewModel(city: cityThatThrowsError, networkingService: mockNetworkingService)
         forecastViewModel.delegate = mockForecastViewModelDelegate
@@ -78,13 +78,15 @@ final class ForecastViewModelTests: XCTestCase {
 
     class MockNetworkingService: NetworkingServiceType {
 
+        static let nameThatThrowsError = "IWillThrowError"
+
         func fetchCities(_ searchText: String) async throws -> [City] {
             return []
         }
 
         func fetchThreeHourForecast(city: WeatherApp.City) async throws -> [ThreeHourForecast] {
             var cityThatThrowsError = City()
-            cityThatThrowsError.name = "IWillThrowError"
+            cityThatThrowsError.name = Self.nameThatThrowsError
             if city == cityThatThrowsError { throw MockError() }
             return []
         }

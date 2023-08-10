@@ -67,7 +67,7 @@ final class SearchViewModelTests: XCTestCase {
         let expectation = self.expectation(description: "Show Error")
         mockSearchViewModelDelegate.expectationShowError = expectation
 
-        searchViewModel.searchTextDidChange("ThisStringThrowsError")
+        searchViewModel.searchTextDidChange(MockNetworkingService.stringThatThrowsError)
 
         waitForExpectations(timeout: 5)
         XCTAssertTrue(mockSearchViewModelDelegate.didCallShowError)
@@ -104,8 +104,10 @@ final class SearchViewModelTests: XCTestCase {
 
     class MockNetworkingService: NetworkingServiceType {
 
+        static let stringThatThrowsError = "ThisStringThrowsError"
+
         func fetchCities(_ searchText: String) async throws -> [City] {
-            if searchText == "ThisStringThrowsError" { throw MockError() }
+            if searchText == Self.stringThatThrowsError { throw MockError() }
             return []
         }
 
