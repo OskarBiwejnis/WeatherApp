@@ -14,7 +14,7 @@ class ForecastViewController: UIViewController {
 
     init(city: City) {
         storageService.addRecentCity(city)
-        forecastViewModel = ForecastViewModel(city: city)
+        forecastViewModel = ForecastViewModel(city: city, networkingService: NetworkingService())
         super.init(nibName: nil, bundle: nil)
         forecastViewModel.delegate = self
         forecastView.collectionView.delegate = self

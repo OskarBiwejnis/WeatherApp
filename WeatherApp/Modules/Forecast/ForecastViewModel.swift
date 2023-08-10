@@ -16,16 +16,19 @@ class ForecastViewModel: NSObject {
 
     var threeHourForecasts: [ThreeHourForecast] = []
     weak var delegate: ForecastViewModelDelegate?
+    private let networkingService: NetworkingServiceType
 
-    init(city: City) {
+    init(city: City, networkingService: NetworkingServiceType) {
+        self.networkingService = networkingService
         super.init()
         loadWeather(city: city)
+
     }
 
     private func loadWeather(city: City) {
         Task {
             do {
-                threeHourForecasts = try await NetworkingUtils.fetchThreeHourForecast(city: city)
+                threeHourForecasts = try await networkingService.fetchThreeHourForecast(city: city)
                 delegate?.reloadTable()
             } catch {
                 delegate?.showError(error)

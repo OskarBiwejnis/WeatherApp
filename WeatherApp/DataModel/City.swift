@@ -24,4 +24,11 @@ struct City: Codable, Equatable {
         self.latitude = persistedCity.latitude
         self.longitude = persistedCity.longitude
     }
+
+    init() {
+        self.name = ""
+        self.country = ""
+        self.latitude = 0.0
+        self.longitude = 0.0
+    }
 }

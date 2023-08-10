@@ -3,7 +3,7 @@ import UIKit
 class SearchViewController: UIViewController {
     
     private let searchView = SearchView()
-    private let searchViewModel = SearchViewModel()
+    private let searchViewModel = SearchViewModel(networkingService: NetworkingService())
 
     override func loadView() {
         searchView.delegate = self
@@ -46,7 +46,7 @@ extension SearchViewController: SearchViewModelDelegate {
         }
     }
 
-    func pushForecastViewController(city: City) {
+    func openCityForecast(city: City) {
         navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
     }
 

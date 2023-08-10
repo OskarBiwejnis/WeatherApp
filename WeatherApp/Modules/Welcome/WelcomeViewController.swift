@@ -26,8 +26,12 @@ class WelcomeViewController: UIViewController {
 
 extension WelcomeViewController: WelcomeViewModelDelegate {
 
-    func pushViewController(viewController: UIViewController) {
-        navigationController?.pushViewController(viewController, animated: true)
+    func openCityForecast(_ city: City) {
+        navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
+    }
+
+    func openSearchScreen() {
+        navigationController?.pushViewController(SearchViewController(), animated: true)
     }
 
     func reloadRecentCities(_ cities: [City]) {

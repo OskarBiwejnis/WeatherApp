@@ -6,7 +6,7 @@ class WelcomeViewModel: NSObject {
     let storageService: StorageServiceType = StorageService()
 
     func proceedButtonTap() {
-        delegate?.pushViewController(viewController: SearchViewController())
+        delegate?.openSearchScreen()
     }
 
     func viewWillAppear() {
@@ -14,14 +14,15 @@ class WelcomeViewModel: NSObject {
     }
 
     func didSelectRecentCity(_ city: City) {
-        delegate?.pushViewController(viewController: ForecastViewController(city: city))
+        delegate?.openCityForecast(city)
     }
 
 }
 
 protocol WelcomeViewModelDelegate: AnyObject {
 
-    func pushViewController(viewController: UIViewController)
+    func openCityForecast(_ city: City)
+    func openSearchScreen()
     func reloadRecentCities(_  cities: [City])
     
 }

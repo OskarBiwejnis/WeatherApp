@@ -5,9 +5,14 @@ class SearchViewModel: NSObject {
     private var debounceTimer: Timer?
     var cities: [City] = []
     weak var delegate: SearchViewModelDelegate?
+    private var networkingService: NetworkingServiceType
 
     private enum Constants {
         static let minTimeBetweenFetchCities = 1.2
+    }
+
+    init(networkingService: NetworkingServiceType) {
+        self.networkingService = networkingService
     }
 
     func searchTextDidChange(_ text: String) {
@@ -24,7 +29,7 @@ class SearchViewModel: NSObject {
 
         Task {
             do {
-                cities = try await NetworkingUtils.fetchCities(text)
+                cities = try await networkingService.fetchCities(text)
                 delegate?.reloadTable()
             } catch {
                 delegate?.showError(error)
@@ -34,7 +39,7 @@ class SearchViewModel: NSObject {
 
     func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
         let selectedCity = cities[indexPath.row]
-        delegate?.pushForecastViewController(city: selectedCity)
+        delegate?.openCityForecast(city: selectedCity)
 
     }
 
@@ -43,7 +48,7 @@ class SearchViewModel: NSObject {
 protocol SearchViewModelDelegate: AnyObject {
 
     func reloadTable()
-    func pushForecastViewController(city: City)
+    func openCityForecast(city: City)
     func showError(_ error: Error)
 
 }
