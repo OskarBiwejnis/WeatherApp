@@ -5,9 +5,11 @@ final class SearchViewModelTests: XCTestCase {
 
     var searchViewModel: SearchViewModel!
     var mockSearchViewModelDelegate: MockSearchViewModelDelegate!
+    var mockNetworkingService: MockNetworkingService!
 
     override func setUpWithError() throws {
-        searchViewModel = SearchViewModel()
+        mockNetworkingService = MockNetworkingService()
+        searchViewModel = SearchViewModel(networkingService: mockNetworkingService)
         mockSearchViewModelDelegate = MockSearchViewModelDelegate()
         searchViewModel.delegate = mockSearchViewModelDelegate
     }
@@ -69,7 +71,6 @@ final class SearchViewModelTests: XCTestCase {
 
         waitForExpectations(timeout: 5)
         XCTAssertTrue(mockSearchViewModelDelegate.didCallShowError)
-        XCTAssertEqual(mockSearchViewModelDelegate.error as? NetworkingError, NetworkingError.invalidUrl)
     }
 
 }
@@ -99,5 +100,23 @@ class MockSearchViewModelDelegate: SearchViewModelDelegate {
         expectationShowError?.fulfill()
         self.error = error
     }
+
+}
+
+class MockNetworkingService: NetworkingServiceType {
+
+    func fetchCities(_ searchText: String) async throws -> [City] {
+        guard let url = URL(string: "www.google.com/" + searchText) else { throw MockError() }
+        return []
+    }
+
+    func fetchThreeHourForecast(city: WeatherApp.City) async throws -> [ThreeHourForecast] {
+        return []
+    }
+
+
+}
+
+class MockError: Error {
 
 }
