@@ -44,7 +44,6 @@ final class WelcomeViewModelTests: XCTestCase {
         welcomeViewModel.didSelectRecentCity(cityInput)
 
         let cityOutput = mockWelcomeViewModelDelegate.city
-        XCTAssertNotNil(cityOutput)
         XCTAssertEqual(cityInput, cityOutput)
     }
 

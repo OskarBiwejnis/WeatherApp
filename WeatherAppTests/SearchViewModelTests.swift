@@ -28,15 +28,22 @@ final class SearchViewModelTests: XCTestCase {
     }
 
     func testShouldSelectProperCityWhenDidSelectSearchCell() throws {
-        let cityZero = City()
-        let cityOne = City()
-        let cityTwo = City()
+        var cityZero = City()
+        cityZero.name = "Zero"
+        cityZero.latitude = 0.0
+        var cityOne = City()
+        cityOne.name = "One"
+        cityOne.latitude = 1.1
+        var cityTwo = City()
+        cityTwo.name = "Two"
+        cityTwo.latitude = 2.2
         searchViewModel.cities = [cityZero, cityOne, cityTwo]
+        XCTAssertNotEqual(cityZero, cityOne)
+        XCTAssertNotEqual(cityOne, cityTwo)
         XCTAssertNil(mockSearchViewModelDelegate.city)
 
         searchViewModel.didSelectSearchCell(didSelectRowAt: IndexPath(row: 1, section: 0))
 
-        XCTAssertNotNil(mockSearchViewModelDelegate.city)
         XCTAssertEqual(mockSearchViewModelDelegate.city, cityOne)
     }
 

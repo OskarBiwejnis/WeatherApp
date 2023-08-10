@@ -3,7 +3,7 @@ import UIKit
 class SearchViewController: UIViewController {
     
     private let searchView = SearchView()
-    private let searchViewModel = SearchViewModel()
+    private let searchViewModel = SearchViewModel(networkingService: NetworkingService())
 
     override func loadView() {
         searchView.delegate = self

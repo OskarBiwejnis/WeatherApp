@@ -5,9 +5,14 @@ class SearchViewModel: NSObject {
     private var debounceTimer: Timer?
     var cities: [City] = []
     weak var delegate: SearchViewModelDelegate?
+    private var networkingService: NetworkingServiceType
 
     private enum Constants {
         static let minTimeBetweenFetchCities = 1.2
+    }
+
+    init(networkingService: NetworkingServiceType) {
+        self.networkingService = networkingService
     }
 
     func searchTextDidChange(_ text: String) {
@@ -24,7 +29,7 @@ class SearchViewModel: NSObject {
 
         Task {
             do {
-                cities = try await NetworkingUtils.fetchCities(text)
+                cities = try await networkingService.fetchCities(text)
                 delegate?.reloadTable()
             } catch {
                 delegate?.showError(error)

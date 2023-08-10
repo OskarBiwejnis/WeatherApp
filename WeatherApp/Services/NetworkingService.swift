@@ -1,6 +1,12 @@
 import Foundation
 
-class NetworkingUtils {
+protocol NetworkingServiceType {
+    func fetchCities(_ searchText: String) async throws -> [City]
+    func fetchThreeHourForecast(city: City) async throws -> [ThreeHourForecast]
+}
+
+
+class NetworkingService: NetworkingServiceType {
 
     private enum Constants {
         static let geoDbHeaders = [
@@ -17,7 +23,7 @@ class NetworkingUtils {
         static let openWeatherUrlApiKeyPart = "&appid=ac65470224290f0854e9e6a757500205"
     }
 
-    static func fetchCities(_ searchText: String) async throws -> [City] {
+    func fetchCities(_ searchText: String) async throws -> [City] {
         var cities: [City] = []
 
         guard let url = URL(string: Constants.geoDbUrlBase + searchText) else { throw NetworkingError.invalidUrl}
@@ -38,7 +44,7 @@ class NetworkingUtils {
         return cities
     }
 
-    static func fetchThreeHourForecast(city: City) async throws -> [ThreeHourForecast] {
+    func fetchThreeHourForecast(city: City) async throws -> [ThreeHourForecast] {
         var threeHourForecast: [ThreeHourForecast] = []
 
         let urlString = Constants.openWeatherUrlBase + String(city.latitude) + Constants.openWeatherUrlLongitudePart + String(city.longitude) + Constants.openWeatherUrlApiKeyPart

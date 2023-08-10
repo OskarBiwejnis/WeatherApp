@@ -32,7 +32,7 @@
 		46C758E52A5FE615008B52A5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 46C758E72A5FE615008B52A5 /* Localizable.strings */; };
 		46C758EA2A600065008B52A5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758E92A600065008B52A5 /* SearchViewController.swift */; };
 		46C758ED2A600088008B52A5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758EC2A600088008B52A5 /* SearchView.swift */; };
-		46C758F42A614E55008B52A5 /* NetworkingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758F32A614E55008B52A5 /* NetworkingUtils.swift */; };
+		46C758F42A614E55008B52A5 /* NetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758F32A614E55008B52A5 /* NetworkingService.swift */; };
 		46D1FEA82A652B43003A71C4 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEA72A652B43003A71C4 /* SearchCell.swift */; };
 		46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEAA2A655FE1003A71C4 /* City.swift */; };
 		46D1FEB42A659B35003A71C4 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEB32A659B35003A71C4 /* NetworkingError.swift */; };
@@ -95,7 +95,7 @@
 		46C758E82A5FE6C3008B52A5 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		46C758E92A600065008B52A5 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		46C758EC2A600088008B52A5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		46C758F32A614E55008B52A5 /* NetworkingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingUtils.swift; sourceTree = "<group>"; };
+		46C758F32A614E55008B52A5 /* NetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingService.swift; sourceTree = "<group>"; };
 		46D1FEA72A652B43003A71C4 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		46D1FEAA2A655FE1003A71C4 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		46D1FEB32A659B35003A71C4 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
@@ -193,7 +193,7 @@
 		464975C32A66B53900DC78FB /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				46C758F32A614E55008B52A5 /* NetworkingUtils.swift */,
+				46C758F32A614E55008B52A5 /* NetworkingService.swift */,
 				4639AB372A7A4739007AA0FA /* StorageService.swift */,
 				46F770CF2A77B92F00C148FE /* FontProvider.swift */,
 			);
@@ -606,7 +606,7 @@
 				4602D1D52A67FFA8001E11F0 /* ThreeHourForecast.swift in Sources */,
 				46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */,
 				4602D1CF2A67F0B2001E11F0 /* ForecastViewModel.swift in Sources */,
-				46C758F42A614E55008B52A5 /* NetworkingUtils.swift in Sources */,
+				46C758F42A614E55008B52A5 /* NetworkingService.swift in Sources */,
 				46C758D32A5D521D008B52A5 /* WelcomeViewController.swift in Sources */,
 				4602D1CD2A67F09B001E11F0 /* ForecastView.swift in Sources */,
 				46F770CA2A77ABF800C148FE /* Label.swift in Sources */,
