@@ -1,8 +1,9 @@
+import Combine
 import Foundation
 
 protocol NetworkingServiceType {
     func fetchCities(_ searchText: String) async throws -> [City]
-    func fetchThreeHourForecast(city: City) async throws -> [ThreeHourForecast]
+    func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, Error>
 }
 
 
@@ -44,22 +45,17 @@ class NetworkingService: NetworkingServiceType {
         return cities
     }
 
-    func fetchThreeHourForecast(city: City) async throws -> [ThreeHourForecast] {
-        var threeHourForecast: [ThreeHourForecast] = []
-
+    func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, Error> {
         let urlString = Constants.openWeatherUrlBase + String(city.latitude) + Constants.openWeatherUrlLongitudePart + String(city.longitude) + Constants.openWeatherUrlApiKeyPart
-        guard let url = URL(string: urlString) else { throw NetworkingError.invalidUrl }
-
-        let session = URLSession.shared
-        let (data, response) = try await session.data(from: url)
-        guard let response = response as? HTTPURLResponse, Constants.acceptedResponses.contains(response.statusCode) else { throw NetworkingError.invalidResponse }
-
+        guard let url = URL(string: urlString) else { return Empty().eraseToAnyPublisher() }
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        guard let decodedData = try? decoder.decode(ThreeHourForecastData.self, from: data) else { throw NetworkingError.decodingError }
-        threeHourForecast = decodedData.list
-        
-        return threeHourForecast
+
+        return URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.0 }
+            .decode(type: ThreeHourForecastData.self, decoder: decoder)
+            .catch { _ in Empty() }
+            .eraseToAnyPublisher()
     }
 
 }

@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 import UIKit
 
@@ -14,9 +15,16 @@ class ForecastViewModel: NSObject {
         static let weatherMainPart = 0
     }
 
+    var threeHourForecastData = ThreeHourForecastData(list: []) {
+        didSet {
+            threeHourForecasts = threeHourForecastData.list
+            delegate?.reloadTable()
+        }
+      }
     var threeHourForecasts: [ThreeHourForecast] = []
     weak var delegate: ForecastViewModelDelegate?
     private let networkingService: NetworkingServiceType
+    private var subscriptions: [AnyCancellable] = []
 
     init(city: City, networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
@@ -26,14 +34,10 @@ class ForecastViewModel: NSObject {
     }
 
     private func loadWeather(city: City) {
-        Task {
-            do {
-                threeHourForecasts = try await networkingService.fetchThreeHourForecast(city: city)
-                delegate?.reloadTable()
-            } catch {
-                delegate?.showError(error)
-            }
-        }
+        networkingService.threeHourForecastPublisher(city: city)
+          .catch { _ in Empty() }
+          .assign(to: \.threeHourForecastData, on: self)
+          .store(in: &subscriptions)
     }
 
     func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted {
