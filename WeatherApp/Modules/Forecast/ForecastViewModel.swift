@@ -35,7 +35,10 @@ class ForecastViewModel: NSObject {
 
     private func loadWeather(city: City) {
         networkingService.threeHourForecastPublisher(city: city)
-          .catch { _ in Empty() }
+            .catch {
+                self.delegate?.showError($0)
+                return Empty<ThreeHourForecastData, Never>()
+            }
           .assign(to: \.threeHourForecastData, on: self)
           .store(in: &subscriptions)
     }

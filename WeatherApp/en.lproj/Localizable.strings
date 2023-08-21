@@ -5,5 +5,6 @@
 "invalid_response_message" = "Invalid response from server";
 "invalid_url_message" = "Invalid URL";
 "decoding_error_message" = "Decoding error occured";
+"unknown_error_message" = "Unknown error occured";
 "ok_button_text" = "OK";
 "recent_label_text" = "recent searches";

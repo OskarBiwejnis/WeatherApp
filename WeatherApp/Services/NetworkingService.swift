@@ -2,8 +2,8 @@ import Combine
 import Foundation
 
 protocol NetworkingServiceType {
-    func fetchCities(_ searchText: String) async throws -> [City]
-    func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, Error>
+    func citiesPublisher(_ searchText: String) -> AnyPublisher<CitiesData, NetworkingError>
+    func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, NetworkingError>
 }
 
 
@@ -24,37 +24,60 @@ class NetworkingService: NetworkingServiceType {
         static let openWeatherUrlApiKeyPart = "&appid=ac65470224290f0854e9e6a757500205"
     }
 
-    func fetchCities(_ searchText: String) async throws -> [City] {
-        var cities: [City] = []
-
-        guard let url = URL(string: Constants.geoDbUrlBase + searchText) else { throw NetworkingError.invalidUrl}
+    func citiesPublisher(_ searchText: String) -> AnyPublisher<CitiesData, NetworkingError> {
+        guard let url = URL(string: Constants.geoDbUrlBase + searchText) else { return Fail<CitiesData, NetworkingError>(error: .invalidUrl).eraseToAnyPublisher() }
         let request = NSMutableURLRequest(url: url,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: Constants.geoDbTimeoutInterval)
         request.httpMethod = Constants.geoDbHttpMethod
         request.allHTTPHeaderFields = Constants.geoDbHeaders
-
-        let session = URLSession.shared
-        let (data, response) = try await session.data(for: request as URLRequest)
-        guard let response = response as? HTTPURLResponse, Constants.acceptedResponses.contains(response.statusCode) else { throw NetworkingError.invalidResponse }
-
         let decoder = JSONDecoder()
-        guard let decodedData = try? decoder.decode(CitiesData.self, from: data) else { throw NetworkingError.decodingError }
-        cities = decodedData.data
 
-        return cities
+        return URLSession.shared.dataTaskPublisher(for: request as URLRequest)
+            .tryMap { data, response -> Data in
+                guard let response = response as? HTTPURLResponse, Constants.acceptedResponses.contains(response.statusCode) else { throw NetworkingError.invalidResponse }
+                return data
+            }
+            .decode(type: CitiesData.self, decoder: decoder)
+            .mapError { error -> NetworkingError in
+                switch error {
+                case is URLError:
+                    return .invalidUrl
+                case is DecodingError:
+                    return .decodingError
+                case is NetworkingError:
+                    return .invalidResponse
+                default:
+                    return .unknownError
+                }
+            }
+            .eraseToAnyPublisher()
     }
 
-    func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, Error> {
+    func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, NetworkingError> {
         let urlString = Constants.openWeatherUrlBase + String(city.latitude) + Constants.openWeatherUrlLongitudePart + String(city.longitude) + Constants.openWeatherUrlApiKeyPart
-        guard let url = URL(string: urlString) else { return Empty().eraseToAnyPublisher() }
+        guard let url = URL(string: urlString) else { return Fail<ThreeHourForecastData, NetworkingError>(error: .invalidUrl).eraseToAnyPublisher() }
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
 
         return URLSession.shared.dataTaskPublisher(for: url)
-            .map { $0.0 }
+            .tryMap { data, response -> Data in
+                guard let response = response as? HTTPURLResponse, Constants.acceptedResponses.contains(response.statusCode) else { throw NetworkingError.invalidResponse }
+                return data
+            }
             .decode(type: ThreeHourForecastData.self, decoder: decoder)
-            .catch { _ in Empty() }
+            .mapError { error -> NetworkingError in
+                switch error {
+                case is URLError:
+                    return .invalidUrl
+                case is DecodingError:
+                    return .decodingError
+                case is NetworkingError:
+                    return .invalidResponse
+                default:
+                    return .unknownError
+                }
+            }
             .eraseToAnyPublisher()
     }
 

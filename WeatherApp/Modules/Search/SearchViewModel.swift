@@ -1,9 +1,17 @@
+import Combine
 import Foundation
 
 class SearchViewModel: NSObject {
 
     private var debounceTimer: Timer?
+    var citiesData = CitiesData(data: []) {
+        didSet {
+            cities = citiesData.data
+            delegate?.reloadTable()
+        }
+    }
     var cities: [City] = []
+    private var subscriptions: [AnyCancellable] = [] 
     weak var delegate: SearchViewModelDelegate?
     private var networkingService: NetworkingServiceType
 
@@ -27,20 +35,18 @@ class SearchViewModel: NSObject {
             return
         }
 
-        Task {
-            do {
-                cities = try await networkingService.fetchCities(text)
-                delegate?.reloadTable()
-            } catch {
-                delegate?.showError(error)
+        networkingService.citiesPublisher(text)
+            .catch {
+                self.delegate?.showError($0)
+                return Empty<CitiesData, Never>()
             }
-        }
+            .assign(to: \.citiesData, on: self)
+            .store(in: &subscriptions)
     }
 
     func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
         let selectedCity = cities[indexPath.row]
         delegate?.openCityForecast(city: selectedCity)
-
     }
 
 }
