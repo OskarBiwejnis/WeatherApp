@@ -46,7 +46,7 @@ class WelcomeView: UIView {
         return titleLabel
     }()
 
-    private lazy var proceedButton: UIButton = {
+     let proceedButton: UIButton = {
         let proceedButton = UIButton(type: .system)
         proceedButton.backgroundColor = .systemGray5
         proceedButton.layer.cornerRadius = Constants.proceedButtonCornerRadius
@@ -55,8 +55,6 @@ class WelcomeView: UIView {
 
         return proceedButton
     }()
-
-    var proceedButtonTapPublisher: AnyPublisher<Void, Never> = Empty<Void, Never>().eraseToAnyPublisher()
 
     private let recentLabel = Label(text: R.string.localizable.recent_label_text(), textColor: .systemGray5, font: FontProvider.defaultFont)
 
@@ -72,7 +70,6 @@ class WelcomeView: UIView {
 
     init() {
         super.init(frame: .zero)
-        proceedButtonTapPublisher = proceedButton.tapPublisher
         setupView()
         setupConstraints()
     }

@@ -31,11 +31,8 @@ class SearchView: UIView {
         return searchTextField
     }()
 
-    var searchTextFieldPublisher: AnyPublisher<String?, Never> = Empty<String?, Never>().eraseToAnyPublisher()
-
     init() {
         super.init(frame: .zero)
-        searchTextFieldPublisher = searchTextField.textPublisher
         setupView()
         setupConstraints()
     }

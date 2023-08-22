@@ -7,32 +7,33 @@ class SearchViewController: UIViewController {
     private let searchView = SearchView()
     private let searchViewModel = SearchViewModel(networkingService: NetworkingService())
     var subscriptions: [AnyCancellable] = []
-    var textChangedPublisher = CurrentValueSubject<String, Never>("")
-    var didSelectSearchCellPublisher = PassthroughSubject<Int, Never>()
 
     override func loadView() {
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
         searchViewModel.delegate = self
-        searchViewModel.searchViewController = self
         view = searchView
 
-        searchView.searchTextFieldPublisher
-            .sink(receiveValue: { text in
-                self.textChangedPublisher.send(text ?? "")
-            })
-            .store(in: &subscriptions)
-
-        searchViewModel.openCityForecastPublisher
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { city in
-                self.navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
-            })
-            .store(in: &subscriptions)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindActions()
+    }
+
+    private func bindActions() {
+        searchView.searchTextField.textPublisher
+            .sink { [self] text in
+                searchViewModel.eventsInputSubject.send(.textChanged(text: text ?? ""))
+            }
+            .store(in: &subscriptions)
+
+        searchViewModel.openCityForecastPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {  [self] city in
+                navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
+            }
+            .store(in: &subscriptions)
     }
 
 }
@@ -51,7 +52,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didSelectSearchCellPublisher.send(indexPath.row)
+        searchViewModel.eventsInputSubject.send(.didSelectCity(row: indexPath.row))
     }
 
 }

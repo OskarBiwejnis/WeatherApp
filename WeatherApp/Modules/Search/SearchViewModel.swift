@@ -1,7 +1,11 @@
 import Combine
 import Foundation
 
-class SearchViewModel: NSObject {
+class SearchViewModel {
+
+    private enum Constants {
+        static let minTimeBetweenFetchCities = 1.2
+    }
 
     var cities: [City] = []
     var citiesData = CitiesData(data: []) {
@@ -10,36 +14,37 @@ class SearchViewModel: NSObject {
             delegate?.reloadTable()
         }
     }
+    weak var delegate: SearchViewModelDelegate?
+    private var networkingService: NetworkingServiceType
 
     private var subscriptions: [AnyCancellable] = []
     var openCityForecastPublisher = PassthroughSubject<City, Never>()
-    weak var delegate: SearchViewModelDelegate?
-    weak var searchViewController: SearchViewController? {
-        didSet {
-            searchViewController?.textChangedPublisher
-                .debounce(for: .seconds(1.2), scheduler: DispatchQueue.global())
-                .sink(receiveValue: { text in
-                    self.fetchCities(text)
-                })
-                .store(in: &subscriptions)
-
-            searchViewController?.didSelectSearchCellPublisher
-                .sink(receiveValue: { row in
-                    self.openCityForecastPublisher.send(self.cities[row])
-                })
-                .store(in: &subscriptions)
-        }
-    }
-
-    private var networkingService: NetworkingServiceType
-
-    private enum Constants {
-        static let minTimeBetweenFetchCities = 1.2
-    }
+    var eventsInputSubject = PassthroughSubject<EventInput, Never>()
+    var fetchCitiesSubject = PassthroughSubject<String, Never>()
 
     init(networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
+        bindActions()
+    }
 
+    private func bindActions() {
+        eventsInputSubject
+            .sink { [self] eventInput in
+                switch eventInput {
+                case .textChanged(let text):
+                    fetchCitiesSubject.send(text)
+                case .didSelectCity(let row):
+                    openCityForecastPublisher.send(cities[row])
+                }
+            }
+            .store(in: &subscriptions)
+
+        fetchCitiesSubject
+            .debounce(for: .seconds(1.2), scheduler: DispatchQueue.global())
+            .sink { [self] text in
+                fetchCities(text)
+            }
+            .store(in: &subscriptions)
     }
 
     private func fetchCities(_ text: String) {
@@ -56,6 +61,10 @@ class SearchViewModel: NSObject {
             .store(in: &subscriptions)
     }
 
+    enum EventInput: Equatable {
+        case textChanged(text: String)
+        case didSelectCity(row: Int)
+    }
 
 }
 
