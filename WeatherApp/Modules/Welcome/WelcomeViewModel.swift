@@ -1,28 +1,20 @@
+import Combine
 import UIKit
 
 class WelcomeViewModel: NSObject {
 
-    weak var delegate: WelcomeViewModelDelegate?
+    weak var welcomeViewController: WelcomeViewController? {
+        didSet {
+            welcomeViewController!.viewWillAppearPublisher
+                .sink(receiveValue: {
+                    self.reloadRecentCitiesPublisher.value = self.storageService.getRecentCities()
+                })
+                .store(in: &subscriptions)
+        }
+    }
+
     let storageService: StorageServiceType = StorageService()
+    var subscriptions: [AnyCancellable] = []
+    var reloadRecentCitiesPublisher = CurrentValueSubject<[City], Never>([])
 
-    func proceedButtonTap() {
-        delegate?.openSearchScreen()
-    }
-
-    func viewWillAppear() {
-        delegate?.reloadRecentCities(storageService.getRecentCities())
-    }
-
-    func didSelectRecentCity(_ city: City) {
-        delegate?.openCityForecast(city)
-    }
-
-}
-
-protocol WelcomeViewModelDelegate: AnyObject {
-
-    func openCityForecast(_ city: City)
-    func openSearchScreen()
-    func reloadRecentCities(_  cities: [City])
-    
 }

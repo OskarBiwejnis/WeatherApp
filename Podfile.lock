@@ -1,4 +1,6 @@
 PODS:
+  - CombineCocoa (0.4.1)
+  - CombineExt (1.8.0)
   - R.swift (7.3.2)
   - Realm (10.42.0):
     - Realm/Headers (= 10.42.0)
@@ -9,6 +11,8 @@ PODS:
   - SwiftLint (0.52.4)
 
 DEPENDENCIES:
+  - CombineCocoa
+  - CombineExt
   - R.swift
   - RealmSwift (~> 10)
   - SnapKit (~> 5.6.0)
@@ -16,6 +20,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - CombineCocoa
+    - CombineExt
     - R.swift
     - Realm
     - RealmSwift
@@ -23,12 +29,14 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
+  CombineCocoa: e5210dbfb480ff251078929459ac17e750e7af1d
+  CombineExt: c4daa97ef75754d8ef319bd79edeef82652f3eea
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
   Realm: 490aad28f1360e58fc22256d5d686d3a36525346
   RealmSwift: f6a9b56d747bbdd7931de1835896c5f024b6898a
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftLint: 1cc5cd61ba9bacb2194e340aeb47a2a37fda00b3
 
-PODFILE CHECKSUM: 4aefeeaa5bde563bb253ca136b106acb7489eba0
+PODFILE CHECKSUM: 9900cf0e3adcc70acc87b5e18289e5471e72c306
 
 COCOAPODS: 1.12.1

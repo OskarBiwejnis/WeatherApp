@@ -1,18 +1,9 @@
+import Combine
+import CombineCocoa
 import SnapKit
 import UIKit
 
 class WelcomeView: UIView {
-
-    init() {
-        super.init(frame: .zero)
-        setup()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: NSCoder())
-    }
-
-    unowned var delegate: WelcomeViewDelegate?
 
     private enum Constants {
         static let imageCornerRadius: CGFloat = 30
@@ -61,10 +52,11 @@ class WelcomeView: UIView {
         proceedButton.layer.cornerRadius = Constants.proceedButtonCornerRadius
         proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
         proceedButton.setTitle(R.string.localizable.button_text(), for: .normal)
-        proceedButton.addTarget(self, action: #selector(proceedButtonTap), for: .touchUpInside)
 
         return proceedButton
     }()
+
+    var proceedButtonTapPublisher: AnyPublisher<Void, Never> = Empty<Void, Never>().eraseToAnyPublisher()
 
     private let recentLabel = Label(text: R.string.localizable.recent_label_text(), textColor: .systemGray5, font: FontProvider.defaultFont)
 
@@ -78,9 +70,15 @@ class WelcomeView: UIView {
         return tableView
     }()
 
-    private func setup() {
+    init() {
+        super.init(frame: .zero)
+        proceedButtonTapPublisher = proceedButton.tapPublisher
         setupView()
         setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: NSCoder())
     }
 
     private func setupView() {
@@ -123,16 +121,5 @@ class WelcomeView: UIView {
             make.top.equalTo(titleLabel.snp.bottom).offset(Constants.recentLabelOffset)
         }
     }
-
-    @objc
-    private func proceedButtonTap() {
-        delegate?.proceedButtonTap()
-    }
-
-}
-
-protocol WelcomeViewDelegate: AnyObject {
-
-    func proceedButtonTap()
 
 }

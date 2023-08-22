@@ -1,3 +1,4 @@
+import Combine
 import UIKit
 
 class WelcomeViewController: UIViewController {
@@ -5,13 +6,34 @@ class WelcomeViewController: UIViewController {
     private let welcomeView = WelcomeView()
     private let welcomeViewModel = WelcomeViewModel()
     var recentCities: [City] = []
+    var subscriptions: [AnyCancellable] = []
+    var didSelectRecentCityPublisher = PassthroughSubject<City, Never>()
+    var viewWillAppearPublisher = PassthroughSubject<Void, Never>()
 
     override func loadView() {
-        welcomeView.delegate = self
-        welcomeViewModel.delegate = self
+        welcomeViewModel.welcomeViewController = self
         welcomeView.tableView.delegate = self
         welcomeView.tableView.dataSource = self
         view = welcomeView
+        welcomeView.proceedButtonTapPublisher
+            .sink(receiveValue: {
+                self.navigationController?.pushViewController(SearchViewController(), animated: true)
+            })
+            .store(in: &subscriptions)
+
+        didSelectRecentCityPublisher
+            .sink(receiveValue: { city in
+                self.navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
+            })
+            .store(in: &subscriptions)
+
+        welcomeViewModel.reloadRecentCitiesPublisher
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { cities in
+                self.recentCities = cities
+                self.welcomeView.tableView.reloadData()
+            })
+            .store(in: &subscriptions)
     }
 
     override func viewDidLoad() {
@@ -19,37 +41,10 @@ class WelcomeViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        welcomeViewModel.viewWillAppear()
+        viewWillAppearPublisher.send()
     }
 
 }
-
-extension WelcomeViewController: WelcomeViewModelDelegate {
-
-    func openCityForecast(_ city: City) {
-        navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
-    }
-
-    func openSearchScreen() {
-        navigationController?.pushViewController(SearchViewController(), animated: true)
-    }
-
-    func reloadRecentCities(_ cities: [City]) {
-        recentCities = cities
-        DispatchQueue.main.async { [weak self] in
-            self?.welcomeView.tableView.reloadData()
-        }
-    }
-
-}
-
-extension WelcomeViewController: WelcomeViewDelegate {
-
-    func proceedButtonTap() {
-        welcomeViewModel.proceedButtonTap()
-    }
-}
-
 
 extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
 
@@ -65,7 +60,7 @@ extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        welcomeViewModel.didSelectRecentCity(recentCities[indexPath.row])
+        didSelectRecentCityPublisher.send(recentCities[indexPath.row])
     }
 
 }
