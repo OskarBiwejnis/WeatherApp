@@ -3,16 +3,34 @@ import Foundation
 
 class SearchViewModel: NSObject {
 
-    private var debounceTimer: Timer?
+    var cities: [City] = []
     var citiesData = CitiesData(data: []) {
         didSet {
             cities = citiesData.data
             delegate?.reloadTable()
         }
     }
-    var cities: [City] = []
-    private var subscriptions: [AnyCancellable] = [] 
+
+    private var subscriptions: [AnyCancellable] = []
+    var openCityForecastPublisher = PassthroughSubject<City, Never>()
     weak var delegate: SearchViewModelDelegate?
+    weak var searchViewController: SearchViewController? {
+        didSet {
+            searchViewController?.textChangedPublisher
+                .debounce(for: .seconds(1.2), scheduler: DispatchQueue.global())
+                .sink(receiveValue: { text in
+                    self.fetchCities(text)
+                })
+                .store(in: &subscriptions)
+
+            searchViewController?.didSelectSearchCellPublisher
+                .sink(receiveValue: { row in
+                    self.openCityForecastPublisher.send(self.cities[row])
+                })
+                .store(in: &subscriptions)
+        }
+    }
+
     private var networkingService: NetworkingServiceType
 
     private enum Constants {
@@ -21,13 +39,7 @@ class SearchViewModel: NSObject {
 
     init(networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
-    }
 
-    func searchTextDidChange(_ text: String) {
-        debounceTimer?.invalidate()
-        debounceTimer = Timer.scheduledTimer(withTimeInterval: Constants.minTimeBetweenFetchCities, repeats: false) { [weak self] timer in
-            self?.fetchCities(text)
-        }
     }
 
     private func fetchCities(_ text: String) {
@@ -44,17 +56,12 @@ class SearchViewModel: NSObject {
             .store(in: &subscriptions)
     }
 
-    func didSelectSearchCell(didSelectRowAt indexPath: IndexPath) {
-        let selectedCity = cities[indexPath.row]
-        delegate?.openCityForecast(city: selectedCity)
-    }
 
 }
 
 protocol SearchViewModelDelegate: AnyObject {
 
     func reloadTable()
-    func openCityForecast(city: City)
     func showError(_ error: Error)
 
 }

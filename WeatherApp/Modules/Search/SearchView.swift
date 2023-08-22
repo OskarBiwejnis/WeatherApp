@@ -1,18 +1,9 @@
+import Combine
+import CombineCocoa
 import SnapKit
 import UIKit
 
 class SearchView: UIView {
-
-    init() {
-        super.init(frame: .zero)
-        setup()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
-    weak var delegate: SearchViewDelegate?
 
     private enum Constants {
         static let textFieldFontSize = 32
@@ -36,14 +27,21 @@ class SearchView: UIView {
         searchTextField.textAlignment = .left
         searchTextField.textColor = .black
         searchTextField.font = .systemFont(ofSize: CGFloat(Constants.textFieldFontSize))
-        searchTextField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
         return searchTextField
     }()
 
-    private func setup() {
+    var searchTextFieldPublisher: AnyPublisher<String?, Never> = Empty<String?, Never>().eraseToAnyPublisher()
+
+    init() {
+        super.init(frame: .zero)
+        searchTextFieldPublisher = searchTextField.textPublisher
         setupView()
         setupConstraints()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 
     private func setupView() {
@@ -63,16 +61,5 @@ class SearchView: UIView {
             make.bottom.left.right.equalToSuperview()
         }
     }
-
-    @objc
-    private func textChanged() {
-        delegate?.textChanged(searchTextField.text ?? "")
-    }
     
-}
-
-protocol SearchViewDelegate: AnyObject {
-
-    func textChanged(_ text: String)
-
 }

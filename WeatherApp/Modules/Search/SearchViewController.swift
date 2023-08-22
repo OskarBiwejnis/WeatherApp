@@ -1,16 +1,34 @@
+import Combine
+import CombineCocoa
 import UIKit
 
 class SearchViewController: UIViewController {
     
     private let searchView = SearchView()
     private let searchViewModel = SearchViewModel(networkingService: NetworkingService())
+    var subscriptions: [AnyCancellable] = []
+    var textChangedPublisher = CurrentValueSubject<String, Never>("")
+    var didSelectSearchCellPublisher = PassthroughSubject<Int, Never>()
 
     override func loadView() {
-        searchView.delegate = self
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
         searchViewModel.delegate = self
+        searchViewModel.searchViewController = self
         view = searchView
+
+        searchView.searchTextFieldPublisher
+            .sink(receiveValue: { text in
+                self.textChangedPublisher.send(text ?? "")
+            })
+            .store(in: &subscriptions)
+
+        searchViewModel.openCityForecastPublisher
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { city in
+                self.navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
+            })
+            .store(in: &subscriptions)
     }
 
     override func viewDidLoad() {
@@ -33,7 +51,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        searchViewModel.didSelectSearchCell(didSelectRowAt: indexPath)
+        didSelectSearchCellPublisher.send(indexPath.row)
     }
 
 }
@@ -46,10 +64,6 @@ extension SearchViewController: SearchViewModelDelegate {
         }
     }
 
-    func openCityForecast(city: City) {
-        navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
-    }
-
     func showError(_ error: Error) {
         let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
         let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
@@ -57,14 +71,6 @@ extension SearchViewController: SearchViewModelDelegate {
         DispatchQueue.main.async {
             self.present(errorAlert, animated: true, completion: nil)
         }
-    }
-
-}
-
-extension SearchViewController: SearchViewDelegate {
-
-    func textChanged(_ text: String) {
-        searchViewModel.searchTextDidChange(text)
     }
 
 }
