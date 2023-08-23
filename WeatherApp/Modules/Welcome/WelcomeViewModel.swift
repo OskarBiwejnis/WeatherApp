@@ -4,11 +4,11 @@ import UIKit
 class WelcomeViewModel {
 
     let storageService: StorageServiceType = StorageService()
-    var subscriptions: [AnyCancellable] = []
-    var reloadRecentCitiesSubject = CurrentValueSubject<[City], Never>([])
-    var openSearchScreenSubject = PassthroughSubject<Void, Never>()
-    var openForecastSubject = PassthroughSubject<Int, Never>()
-    var eventsInputSubject = PassthroughSubject<EventInput, Never>()
+    private var subscriptions: [AnyCancellable] = []
+    let reloadRecentCitiesSubject = CurrentValueSubject<[City], Never>([])
+    let openSearchScreenSubject = PassthroughSubject<Void, Never>()
+    let openForecastSubject = PassthroughSubject<Int, Never>()
+    let eventsInputSubject = PassthroughSubject<EventInput, Never>()
 
     init() {
         eventsInputSubject

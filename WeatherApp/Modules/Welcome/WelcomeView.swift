@@ -58,7 +58,7 @@ class WelcomeView: UIView {
 
     private let recentLabel = Label(text: R.string.localizable.recent_label_text(), textColor: .systemGray5, font: FontProvider.defaultFont)
 
-    var tableView: UITableView = {
+    let tableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = Constants.tableViewRowHeight
         tableView.register(RecentCityCell.self, forCellReuseIdentifier: RecentCityCell.reuseIdentifier)

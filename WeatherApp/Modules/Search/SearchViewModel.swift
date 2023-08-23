@@ -8,7 +8,7 @@ class SearchViewModel {
     }
 
     var cities: [City] = []
-    var citiesData = CitiesData(data: []) {
+    private var citiesData = CitiesData(data: []) {
         didSet {
             cities = citiesData.data
             reloadTableSubject.send()
@@ -17,11 +17,11 @@ class SearchViewModel {
     private var networkingService: NetworkingServiceType
 
     private var subscriptions: [AnyCancellable] = []
-    var eventsInputSubject = PassthroughSubject<EventInput, Never>()
-    var openForecastSubject = PassthroughSubject<City, Never>()
-    var fetchCitiesSubject = PassthroughSubject<String, Never>()
-    var reloadTableSubject = PassthroughSubject<Void, Never>()
-    var showErrorSubject = PassthroughSubject<NetworkingError, Never>()
+    let eventsInputSubject = PassthroughSubject<EventInput, Never>()
+    let openForecastSubject = PassthroughSubject<City, Never>()
+    let fetchCitiesSubject = PassthroughSubject<String, Never>()
+    let reloadTableSubject = PassthroughSubject<Void, Never>()
+    let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
 
     init(networkingService: NetworkingServiceType) {
         self.networkingService = networkingService

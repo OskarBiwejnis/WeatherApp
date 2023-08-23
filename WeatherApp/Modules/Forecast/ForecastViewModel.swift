@@ -15,7 +15,7 @@ class ForecastViewModel: NSObject {
         static let weatherMainPart = 0
     }
 
-    var threeHourForecastData = ThreeHourForecastData(list: []) {
+    private var threeHourForecastData = ThreeHourForecastData(list: []) {
         didSet {
             threeHourForecasts = threeHourForecastData.list
             reloadTableSubject.send()
@@ -25,8 +25,8 @@ class ForecastViewModel: NSObject {
     private let networkingService: NetworkingServiceType
     
     private var subscriptions: [AnyCancellable] = []
-    var reloadTableSubject = PassthroughSubject<Void, Never>()
-    var showErrorSubject = PassthroughSubject<NetworkingError, Never>()
+    let reloadTableSubject = PassthroughSubject<Void, Never>()
+    let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
     
     init(city: City, networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
