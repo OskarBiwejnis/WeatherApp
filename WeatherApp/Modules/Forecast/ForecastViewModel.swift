@@ -18,14 +18,16 @@ class ForecastViewModel: NSObject {
     var threeHourForecastData = ThreeHourForecastData(list: []) {
         didSet {
             threeHourForecasts = threeHourForecastData.list
-            delegate?.reloadTable()
+            reloadTableSubject.send()
         }
       }
     var threeHourForecasts: [ThreeHourForecast] = []
-    weak var delegate: ForecastViewModelDelegate?
     private let networkingService: NetworkingServiceType
+    
     private var subscriptions: [AnyCancellable] = []
-
+    var reloadTableSubject = PassthroughSubject<Void, Never>()
+    var showErrorSubject = PassthroughSubject<NetworkingError, Never>()
+    
     init(city: City, networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
         super.init()
@@ -35,8 +37,8 @@ class ForecastViewModel: NSObject {
 
     private func loadWeather(city: City) {
         networkingService.threeHourForecastPublisher(city: city)
-            .catch {
-                self.delegate?.showError($0)
+            .catch { [self] error in
+                showErrorSubject.send(error)
                 return Empty<ThreeHourForecastData, Never>()
             }
           .assign(to: \.threeHourForecastData, on: self)
@@ -54,13 +56,6 @@ class ForecastViewModel: NSObject {
 
         return ThreeHourForecastFormatted(hour: hour, temperature: temperature, humidity: humidity, wind: wind, skyImage: skyImage)
     }
-
-}
-
-protocol ForecastViewModelDelegate: AnyObject {
-
-    func reloadTable()
-    func showError(_ error: Error)
 
 }
 

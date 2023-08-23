@@ -11,16 +11,17 @@ class SearchViewModel {
     var citiesData = CitiesData(data: []) {
         didSet {
             cities = citiesData.data
-            delegate?.reloadTable()
+            reloadTableSubject.send()
         }
     }
-    weak var delegate: SearchViewModelDelegate?
     private var networkingService: NetworkingServiceType
 
     private var subscriptions: [AnyCancellable] = []
-    var openCityForecastPublisher = PassthroughSubject<City, Never>()
     var eventsInputSubject = PassthroughSubject<EventInput, Never>()
+    var openForecastSubject = PassthroughSubject<City, Never>()
     var fetchCitiesSubject = PassthroughSubject<String, Never>()
+    var reloadTableSubject = PassthroughSubject<Void, Never>()
+    var showErrorSubject = PassthroughSubject<NetworkingError, Never>()
 
     init(networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
@@ -34,7 +35,7 @@ class SearchViewModel {
                 case .textChanged(let text):
                     fetchCitiesSubject.send(text)
                 case .didSelectCity(let row):
-                    openCityForecastPublisher.send(cities[row])
+                    openForecastSubject.send(cities[row])
                 }
             }
             .store(in: &subscriptions)
@@ -53,8 +54,8 @@ class SearchViewModel {
         }
 
         networkingService.citiesPublisher(text)
-            .catch {
-                self.delegate?.showError($0)
+            .catch { [self] error in
+                showErrorSubject.send(error)
                 return Empty<CitiesData, Never>()
             }
             .assign(to: \.citiesData, on: self)
@@ -65,12 +66,5 @@ class SearchViewModel {
         case textChanged(text: String)
         case didSelectCity(row: Int)
     }
-
-}
-
-protocol SearchViewModelDelegate: AnyObject {
-
-    func reloadTable()
-    func showError(_ error: Error)
 
 }

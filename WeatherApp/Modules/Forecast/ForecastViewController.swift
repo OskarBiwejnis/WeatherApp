@@ -1,3 +1,4 @@
+import Combine
 import UIKit
 
 class ForecastViewController: UIViewController {
@@ -12,11 +13,13 @@ class ForecastViewController: UIViewController {
     let forecastViewModel: ForecastViewModel
     let storageService: StorageServiceType = StorageService()
 
+    private var subscriptions: [AnyCancellable] = []
+    
+
     init(city: City) {
         storageService.addRecentCity(city)
         forecastViewModel = ForecastViewModel(city: city, networkingService: NetworkingService())
         super.init(nibName: nil, bundle: nil)
-        forecastViewModel.delegate = self
         forecastView.collectionView.delegate = self
         forecastView.collectionView.dataSource = self
         self.title = city.name
@@ -33,6 +36,29 @@ class ForecastViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindActions()
+    }
+
+    private func bindActions() {
+        forecastViewModel.reloadTableSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [self] in
+                forecastView.collectionView.reloadData()
+            }
+            .store(in: &subscriptions)
+
+        forecastViewModel.showErrorSubject
+            .map { error -> UIAlertController in
+                let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
+                let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
+                errorAlert.addAction(okButton)
+                return errorAlert
+            }
+            .receive(on: DispatchQueue.main)
+            .sink { [self] errorAlert in
+                present(errorAlert, animated: true, completion: nil)
+            }
+            .store(in: &subscriptions)
     }
 
 }
@@ -64,23 +90,3 @@ extension ForecastViewController: UICollectionViewDelegateFlowLayout {
     }
 
 }
-
-extension ForecastViewController: ForecastViewModelDelegate {
-
-    func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            self?.forecastView.collectionView.reloadData()
-        }
-    }
-
-    func showError(_ error: Error) {
-        let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
-        let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
-        errorAlert.addAction(okButton)
-        DispatchQueue.main.async { 
-            self.present(errorAlert, animated: true, completion: nil)
-        }
-    }
-
-}
-

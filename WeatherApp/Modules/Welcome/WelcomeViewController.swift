@@ -5,8 +5,8 @@ class WelcomeViewController: UIViewController {
 
     private let welcomeView = WelcomeView()
     private let welcomeViewModel = WelcomeViewModel()
-    var recentCities: [City] = []
-    var subscriptions: [AnyCancellable] = []
+    private var recentCities: [City] = []
+    private var subscriptions: [AnyCancellable] = []
 
     override func loadView() {
         welcomeView.tableView.delegate = self
@@ -24,7 +24,7 @@ class WelcomeViewController: UIViewController {
         welcomeViewModel.eventsInputSubject.send(WelcomeViewModel.EventInput.viewWillAppear)
     }
 
-    func bindActions() {
+    private func bindActions() {
         welcomeView.proceedButton.tapPublisher
             .sink { [self] in
                 welcomeViewModel.eventsInputSubject.send(WelcomeViewModel.EventInput.proceedButtonTap)
