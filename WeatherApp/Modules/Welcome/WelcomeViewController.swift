@@ -2,11 +2,15 @@ import Combine
 import UIKit
 
 class WelcomeViewController: UIViewController {
+    
+    // MARK: - Variables -
+
+    private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
     private let welcomeViewModel = WelcomeViewModel()
-    private var recentCities: [City] = []
-    private var subscriptions: [AnyCancellable] = []
+
+
 
     override func loadView() {
         welcomeView.tableView.delegate = self
@@ -39,14 +43,14 @@ class WelcomeViewController: UIViewController {
 
         welcomeViewModel.openForecastSubject
             .sink { [self] row in
-                navigationController?.pushViewController(ForecastViewController(city: recentCities[row]), animated: true)
+                navigationController?.pushViewController(ForecastViewController(city: welcomeViewModel.recentCities[row]), animated: true)
             }
             .store(in: &subscriptions)
 
         welcomeViewModel.reloadRecentCitiesSubject
             .receive(on: DispatchQueue.main)
             .sink { [self] cities in
-                recentCities = cities
+                welcomeViewModel.recentCities = cities
                 welcomeView.tableView.reloadData()
             }
             .store(in: &subscriptions)
@@ -57,12 +61,12 @@ class WelcomeViewController: UIViewController {
 extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recentCities.count
+        return welcomeViewModel.recentCities.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier) as? RecentCityCell else { return RecentCityCell() }
-        cell.label.text = recentCities[indexPath.row].name
+        cell.label.text = welcomeViewModel.recentCities[indexPath.row].name
 
         return cell
     }

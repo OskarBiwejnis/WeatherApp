@@ -3,30 +3,45 @@ import Foundation
 
 class SearchViewModel {
 
+    // MARK: - Constants -
+
     private enum Constants {
         static let minTimeBetweenFetchCities = 1.2
     }
 
-    var cities: [City] = []
+    enum EventInput: Equatable {
+        case textChanged(text: String)
+        case didSelectCity(row: Int)
+    }
+
+    // MARK: - Variables -
+
+    private var subscriptions: [AnyCancellable] = []
     private var citiesData = CitiesData(data: []) {
         didSet {
             cities = citiesData.data
             reloadTableSubject.send()
         }
     }
-    private var networkingService: NetworkingServiceType
 
-    private var subscriptions: [AnyCancellable] = []
+    var cities: [City] = []
+
     let eventsInputSubject = PassthroughSubject<EventInput, Never>()
     let openForecastSubject = PassthroughSubject<City, Never>()
     let fetchCitiesSubject = PassthroughSubject<String, Never>()
     let reloadTableSubject = PassthroughSubject<Void, Never>()
     let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
 
+    private var networkingService: NetworkingServiceType
+
+    // MARK: - Initialization -
+
     init(networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
         bindActions()
     }
+
+    // MARK: - Private -
 
     private func bindActions() {
         eventsInputSubject
@@ -60,11 +75,6 @@ class SearchViewModel {
             }
             .assign(to: \.citiesData, on: self)
             .store(in: &subscriptions)
-    }
-
-    enum EventInput: Equatable {
-        case textChanged(text: String)
-        case didSelectCity(row: Int)
     }
 
 }

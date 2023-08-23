@@ -3,18 +3,23 @@ import UIKit
 
 class ForecastViewController: UIViewController {
 
+    // MARK: - Constants -
+
     private enum Constants {
         static let rowHeight: CGFloat = 75
         static let numberOfCells = 8
         static let noCells = 0
     }
-    
-    let forecastView = ForecastView()
-    let forecastViewModel: ForecastViewModel
-    let storageService: StorageServiceType = StorageService()
+
+    // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
-    
+
+    private let forecastView = ForecastView()
+    private let forecastViewModel: ForecastViewModel
+    private let storageService: StorageServiceType = StorageService()
+
+    // MARK: - Initialization -
 
     init(city: City) {
         storageService.addRecentCity(city)
@@ -23,12 +28,13 @@ class ForecastViewController: UIViewController {
         forecastView.collectionView.delegate = self
         forecastView.collectionView.dataSource = self
         self.title = city.name
-
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Public -
 
     override func loadView() {
         view = forecastView
@@ -39,31 +45,10 @@ class ForecastViewController: UIViewController {
         bindActions()
     }
 
-    private func bindActions() {
-        forecastViewModel.reloadTableSubject
-            .receive(on: DispatchQueue.main)
-            .sink { [self] in
-                forecastView.collectionView.reloadData()
-            }
-            .store(in: &subscriptions)
-
-        forecastViewModel.showErrorSubject
-            .map { error -> UIAlertController in
-                let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
-                let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
-                errorAlert.addAction(okButton)
-                return errorAlert
-            }
-            .receive(on: DispatchQueue.main)
-            .sink { [self] errorAlert in
-                present(errorAlert, animated: true, completion: nil)
-            }
-            .store(in: &subscriptions)
-    }
-
 }
 
 extension ForecastViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return forecastViewModel.threeHourForecasts.isEmpty ? Constants.noCells : Constants.numberOfCells
     }
@@ -90,3 +75,32 @@ extension ForecastViewController: UICollectionViewDelegateFlowLayout {
     }
 
 }
+
+    // MARK: - Private -
+
+extension ForecastViewController {
+
+    private func bindActions() {
+        forecastViewModel.reloadTableSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [self] in
+                forecastView.collectionView.reloadData()
+            }
+            .store(in: &subscriptions)
+
+        forecastViewModel.showErrorSubject
+            .map { error -> UIAlertController in
+                let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
+                let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
+                errorAlert.addAction(okButton)
+                return errorAlert
+            }
+            .receive(on: DispatchQueue.main)
+            .sink { [self] errorAlert in
+                present(errorAlert, animated: true, completion: nil)
+            }
+            .store(in: &subscriptions)
+    }
+
+}
+

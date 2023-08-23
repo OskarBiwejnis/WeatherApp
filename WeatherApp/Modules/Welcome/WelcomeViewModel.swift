@@ -3,13 +3,20 @@ import UIKit
 
 class WelcomeViewModel {
 
-    let storageService: StorageServiceType = StorageService()
+    // MARK: - Variables -
+
     private var subscriptions: [AnyCancellable] = []
+
+    var recentCities: [City] = []
+    let eventsInputSubject = PassthroughSubject<EventInput, Never>()
     let reloadRecentCitiesSubject = CurrentValueSubject<[City], Never>([])
     let openSearchScreenSubject = PassthroughSubject<Void, Never>()
     let openForecastSubject = PassthroughSubject<Int, Never>()
-    let eventsInputSubject = PassthroughSubject<EventInput, Never>()
 
+    private let storageService: StorageServiceType = StorageService()
+
+    // MARK: - Initialization -
+    
     init() {
         eventsInputSubject
             .sink { [self] eventInput in

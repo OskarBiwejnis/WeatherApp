@@ -5,6 +5,8 @@ import UIKit
 
 class SearchView: UIView {
 
+    // MARK: - Constants -
+
     private enum Constants {
         static let textFieldFontSize = 32
         static let textFieldMargin = 20
@@ -12,13 +14,7 @@ class SearchView: UIView {
         
     }
 
-    let tableView = {
-        let tableView = UITableView()
-        tableView.rowHeight = Constants.rowHeight
-        tableView.register(SearchCell.self, forCellReuseIdentifier: SearchCell.reuseIdentifier)
-
-        return tableView
-    }()
+    // MARK: - Variables -
 
     let searchTextField = {
         let searchTextField = UITextField()
@@ -31,6 +27,16 @@ class SearchView: UIView {
         return searchTextField
     }()
 
+    let tableView = {
+        let tableView = UITableView()
+        tableView.rowHeight = Constants.rowHeight
+        tableView.register(SearchCell.self, forCellReuseIdentifier: SearchCell.reuseIdentifier)
+
+        return tableView
+    }()
+
+    // MARK: - Initialization -
+
     init() {
         super.init(frame: .zero)
         setupView()
@@ -40,6 +46,8 @@ class SearchView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+
+    // MARK: - Private -
 
     private func setupView() {
         backgroundColor = .systemGray6

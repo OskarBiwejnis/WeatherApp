@@ -4,6 +4,8 @@ import UIKit
 
 class ForecastViewModel: NSObject {
 
+    // MARK: - Constants -
+
     private enum Constants {
         static let degreeSign = "°"
         static let percentSign = "%"
@@ -15,19 +17,32 @@ class ForecastViewModel: NSObject {
         static let weatherMainPart = 0
     }
 
+    struct ThreeHourForecastFormatted {
+        var hour: String
+        var temperature: String
+        var humidity: String
+        var wind: String
+        var skyImage: UIImage?
+    }
+
+    // MARK: - Variables -
+
+    private var subscriptions: [AnyCancellable] = []
     private var threeHourForecastData = ThreeHourForecastData(list: []) {
         didSet {
             threeHourForecasts = threeHourForecastData.list
             reloadTableSubject.send()
         }
-      }
+    }
+
     var threeHourForecasts: [ThreeHourForecast] = []
-    private let networkingService: NetworkingServiceType
-    
-    private var subscriptions: [AnyCancellable] = []
     let reloadTableSubject = PassthroughSubject<Void, Never>()
     let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
-    
+
+    private let networkingService: NetworkingServiceType
+
+    // MARK: - Initialization -
+
     init(city: City, networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
         super.init()
@@ -35,15 +50,7 @@ class ForecastViewModel: NSObject {
 
     }
 
-    private func loadWeather(city: City) {
-        networkingService.threeHourForecastPublisher(city: city)
-            .catch { [self] error in
-                showErrorSubject.send(error)
-                return Empty<ThreeHourForecastData, Never>()
-            }
-          .assign(to: \.threeHourForecastData, on: self)
-          .store(in: &subscriptions)
-    }
+    //MARK: - Public -
 
     func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted {
         let hour = String(String(threeHourForecasts[index].date
@@ -57,12 +64,17 @@ class ForecastViewModel: NSObject {
         return ThreeHourForecastFormatted(hour: hour, temperature: temperature, humidity: humidity, wind: wind, skyImage: skyImage)
     }
 
+    // MARK: - Private -
+
+    private func loadWeather(city: City) {
+        networkingService.threeHourForecastPublisher(city: city)
+            .catch { [self] error in
+                showErrorSubject.send(error)
+                return Empty<ThreeHourForecastData, Never>()
+            }
+          .assign(to: \.threeHourForecastData, on: self)
+          .store(in: &subscriptions)
+    }
+
 }
 
-struct ThreeHourForecastFormatted {
-    var hour: String
-    var temperature: String
-    var humidity: String
-    var wind: String
-    var skyImage: UIImage?
-}

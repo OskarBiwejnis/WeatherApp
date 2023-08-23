@@ -3,7 +3,7 @@ import UIKit
 
 class ForecastCell: UICollectionViewCell {
 
-    static let reuseIdentifier = Constants.reuseIdentifier
+    // MARK: - Constants -
 
     private enum Constants {
         static let hourLabelOffset = 10
@@ -13,6 +13,18 @@ class ForecastCell: UICollectionViewCell {
         static let windLabelWidth = 60
         static let reuseIdentifier = "forecastCell"
     }
+
+    static let reuseIdentifier = Constants.reuseIdentifier
+
+    // MARK: - Variables -
+
+    let hourLabel = Label(font: FontProvider.bigBoldFont)
+    let temperatureLabel = Label(textColor: .systemCyan, font: FontProvider.bigBoldFont)
+    let humidityLabel = Label(textColor: .systemGray2, font: FontProvider.defaultBoldFont)
+    let windLabel = Label(textColor: .systemGray2, font: FontProvider.defaultBoldFont)
+    let skyImageView = UIImageView()
+
+    // MARK: - Initialization -
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,11 +36,7 @@ class ForecastCell: UICollectionViewCell {
         super.init(coder: coder)
     }
 
-    let hourLabel = Label(font: FontProvider.bigBoldFont)
-    let temperatureLabel = Label(textColor: .systemCyan, font: FontProvider.bigBoldFont)
-    let humidityLabel = Label(textColor: .systemGray2, font: FontProvider.defaultBoldFont)
-    let windLabel = Label(textColor: .systemGray2, font: FontProvider.defaultBoldFont)
-    let skyImageView = UIImageView()
+    // MARK: - Public -
 
     func setupWith(hour: String, temperature: String, humidity: String, wind: String, skyImage: UIImage?) {
         hourLabel.text = hour
@@ -38,6 +46,8 @@ class ForecastCell: UICollectionViewCell {
         skyImageView.image = skyImage
     }
 
+    // MARK: - Private -
+    
     private func setupView() {
         backgroundColor = .systemGray5
         addSubview(hourLabel)

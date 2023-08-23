@@ -3,10 +3,15 @@ import CombineCocoa
 import UIKit
 
 class SearchViewController: UIViewController {
-    
+
+    // MARK: - Variables -
+
+    private var subscriptions: [AnyCancellable] = []
+
     private let searchView = SearchView()
     private let searchViewModel = SearchViewModel(networkingService: NetworkingService())
-    private var subscriptions: [AnyCancellable] = []
+
+    // MARK: - Public -
 
     override func loadView() {
         searchView.tableView.delegate = self
@@ -18,6 +23,30 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         bindActions()
     }
+}
+
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchViewModel.cities.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier) as? SearchCell else { return SearchCell() }
+        cell.label.text = searchViewModel.cities[indexPath.row].name
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        searchViewModel.eventsInputSubject.send(.didSelectCity(row: indexPath.row))
+    }
+
+}
+
+    // MARK: - Private -
+
+extension SearchViewController {
 
     private func bindActions() {
         searchView.searchTextField.textPublisher
@@ -56,21 +85,3 @@ class SearchViewController: UIViewController {
 
 }
 
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchViewModel.cities.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier) as? SearchCell else { return SearchCell() }
-        cell.label.text = searchViewModel.cities[indexPath.row].name
-        
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        searchViewModel.eventsInputSubject.send(.didSelectCity(row: indexPath.row))
-    }
-
-}
