@@ -26,6 +26,17 @@ fileprivate func compareArrays<T>(lhs: [T], rhs: [T], compare: (_ lhs: T, _ rhs:
 // MARK: - AutoEquatable for classes, protocols, structs
 
 // MARK: - AutoEquatable for Enums
+// MARK: - SearchViewController.EventInput AutoEquatable
+extension SearchViewController.EventInput: Equatable {}
+internal func == (lhs: SearchViewController.EventInput, rhs: SearchViewController.EventInput) -> Bool {
+    switch (lhs, rhs) {
+    case let (.textChanged(lhs), .textChanged(rhs)):
+        return lhs == rhs
+    case let (.didSelectCity(lhs), .didSelectCity(rhs)):
+        return lhs == rhs
+    default: return false
+    }
+}
 // MARK: - WelcomeViewController.EventInput AutoEquatable
 extension WelcomeViewController.EventInput: Equatable {}
 internal func == (lhs: WelcomeViewController.EventInput, rhs: WelcomeViewController.EventInput) -> Bool {
