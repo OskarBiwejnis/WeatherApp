@@ -3,4 +3,4 @@ sources:
 templates:
   - ./Pods/Sourcery/Templates/AutoEquatable.stencil
 output:
-    ./WeatherApp/AutoEquatable.swift
+    ./WeatherApp/Generated/AutoEquatable.swift
