@@ -4,6 +4,13 @@ import UIKit
 
 class SearchViewController: UIViewController {
 
+    // MARK: - Constants -
+
+    enum EventInput: Equatable {
+        case textChanged(text: String)
+        case didSelectCity(row: Int)
+    }
+    
     // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
@@ -55,7 +62,7 @@ extension SearchViewController {
             }
             .store(in: &subscriptions)
 
-        searchViewModel.openForecastSubject
+        searchViewModel.openForecastPublisher
             .receive(on: DispatchQueue.main)
             .sink {  [self] city in
                 navigationController?.pushViewController(ForecastViewController(city: city), animated: true)

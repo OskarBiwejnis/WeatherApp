@@ -1,17 +1,20 @@
 import Combine
 import Foundation
 
+protocol SearchViewModelContract {
+
+    var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
+    var reloadTableSubject: PassthroughSubject<Void, Never> { get }
+    var showErrorSubject: PassthroughSubject<NetworkingError, Never> { get }
+    var openForecastPublisher: AnyPublisher<City, Never>  { get }
+
+}
 class SearchViewModel {
 
     // MARK: - Constants -
 
     private enum Constants {
-        static let minTimeBetweenFetchCities = 1.2
-    }
-
-    enum EventInput: Equatable {
-        case textChanged(text: String)
-        case didSelectCity(row: Int)
+        static let debounceTime = 1.2
     }
 
     // MARK: - Variables -
@@ -26,11 +29,24 @@ class SearchViewModel {
 
     var cities: [City] = []
 
-    let eventsInputSubject = PassthroughSubject<EventInput, Never>()
-    let openForecastSubject = PassthroughSubject<City, Never>()
-    let fetchCitiesSubject = PassthroughSubject<String, Never>()
+    let eventsInputSubject = PassthroughSubject<SearchViewController.EventInput, Never>()
     let reloadTableSubject = PassthroughSubject<Void, Never>()
     let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
+    lazy var openForecastPublisher: AnyPublisher<City, Never> = eventsInputSubject
+        .compactMap { [weak self] event in
+            if case .didSelectCity(let row) = event {
+                return self?.cities[row]
+            } else { return nil }
+        }
+        .eraseToAnyPublisher()
+    private lazy var fetchCitiesPublisher: AnyPublisher<String, Never> = eventsInputSubject
+        .compactMap { [weak self] event in
+            if case .textChanged(let text) = event {
+                return text == "" ? nil : text
+            } else { return nil }
+        }
+        .debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
+        .eraseToAnyPublisher()
 
     private var networkingService: NetworkingServiceType
 
@@ -44,30 +60,14 @@ class SearchViewModel {
     // MARK: - Private -
 
     private func bindActions() {
-        eventsInputSubject
-            .sink { [self] eventInput in
-                switch eventInput {
-                case .textChanged(let text):
-                    fetchCitiesSubject.send(text)
-                case .didSelectCity(let row):
-                    openForecastSubject.send(cities[row])
-                }
-            }
-            .store(in: &subscriptions)
-
-        fetchCitiesSubject
-            .debounce(for: .seconds(1.2), scheduler: DispatchQueue.global())
-            .sink { [self] text in
-                fetchCities(text)
+        fetchCitiesPublisher
+            .sink { [weak self] text in
+                self?.fetchCities(text)
             }
             .store(in: &subscriptions)
     }
 
     private func fetchCities(_ text: String) {
-        guard text != "" else {
-            return
-        }
-
         networkingService.citiesPublisher(text)
             .catch { [self] error in
                 showErrorSubject.send(error)
@@ -76,5 +76,4 @@ class SearchViewModel {
             .assign(to: \.citiesData, on: self)
             .store(in: &subscriptions)
     }
-
 }

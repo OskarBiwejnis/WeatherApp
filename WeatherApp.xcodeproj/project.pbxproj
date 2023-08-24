@@ -36,6 +36,7 @@
 		46D1FEA82A652B43003A71C4 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEA72A652B43003A71C4 /* SearchCell.swift */; };
 		46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEAA2A655FE1003A71C4 /* City.swift */; };
 		46D1FEB42A659B35003A71C4 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEB32A659B35003A71C4 /* NetworkingError.swift */; };
+		46D9020F2A9767AC00417ABD /* AutoEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D9020E2A9767AC00417ABD /* AutoEquatable.swift */; };
 		46F770CA2A77ABF800C148FE /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770C92A77ABF800C148FE /* Label.swift */; };
 		46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770CF2A77B92F00C148FE /* FontProvider.swift */; };
 		5CB114C0C95858668BA33ABB /* Pods_WeatherApp_WeatherAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0748B236273F74780BE0760B /* Pods_WeatherApp_WeatherAppUITests.framework */; };
@@ -99,6 +100,7 @@
 		46D1FEA72A652B43003A71C4 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		46D1FEAA2A655FE1003A71C4 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		46D1FEB32A659B35003A71C4 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
+		46D9020E2A9767AC00417ABD /* AutoEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoEquatable.swift; sourceTree = "<group>"; };
 		46F770C92A77ABF800C148FE /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		46F770CF2A77B92F00C148FE /* FontProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontProvider.swift; sourceTree = "<group>"; };
 		5CE19633D95897EC7905168E /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -242,6 +244,7 @@
 		46C7589F2A5D4D51008B52A5 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				46D9020E2A9767AC00417ABD /* AutoEquatable.swift */,
 				464975C42A66B55D00DC78FB /* Supporting Files */,
 				464975BF2A66B4F300DC78FB /* Modules */,
 				464975C32A66B53900DC78FB /* Services */,
@@ -527,7 +530,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n\n\"$PODS_ROOT/Sourcery/bin/sourcery\"\n";
 		};
 		B8DBC9FC106EAD07A05A752E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -611,6 +614,7 @@
 				4602D1CD2A67F09B001E11F0 /* ForecastView.swift in Sources */,
 				46F770CA2A77ABF800C148FE /* Label.swift in Sources */,
 				46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */,
+				46D9020F2A9767AC00417ABD /* AutoEquatable.swift in Sources */,
 				4602D1CB2A67F05B001E11F0 /* ForecastViewController.swift in Sources */,
 				46C758D52A5E8D32008B52A5 /* WelcomeView.swift in Sources */,
 				4639AB3B2A7A57FC007AA0FA /* RecentCityCell.swift in Sources */,
