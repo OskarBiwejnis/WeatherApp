@@ -518,7 +518,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n";
+			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n\n\"$PODS_ROOT/Sourcery/bin/sourcery\" --config \"$SRCROOT/sourcery_autoequatable_config.yml\"\n";
 		};
 		46C758D82A5FD32A008B52A5 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -538,7 +538,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n\n\"$PODS_ROOT/Sourcery/bin/sourcery\"\n";
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
 		};
 		B8DBC9FC106EAD07A05A752E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
