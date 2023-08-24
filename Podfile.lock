@@ -8,6 +8,9 @@ PODS:
   - RealmSwift (10.42.0):
     - Realm (= 10.42.0)
   - SnapKit (5.6.0)
+  - Sourcery (2.0.2):
+    - Sourcery/CLI-Only (= 2.0.2)
+  - Sourcery/CLI-Only (2.0.2)
   - SwiftLint (0.52.4)
 
 DEPENDENCIES:
@@ -16,6 +19,7 @@ DEPENDENCIES:
   - R.swift
   - RealmSwift (~> 10)
   - SnapKit (~> 5.6.0)
+  - Sourcery
   - SwiftLint
 
 SPEC REPOS:
@@ -26,6 +30,7 @@ SPEC REPOS:
     - Realm
     - RealmSwift
     - SnapKit
+    - Sourcery
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -35,8 +40,9 @@ SPEC CHECKSUMS:
   Realm: 490aad28f1360e58fc22256d5d686d3a36525346
   RealmSwift: f6a9b56d747bbdd7931de1835896c5f024b6898a
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  Sourcery: 9ae7eb711f830e8c3c02b98dc28fbd7e32e9d971
   SwiftLint: 1cc5cd61ba9bacb2194e340aeb47a2a37fda00b3
 
-PODFILE CHECKSUM: 9900cf0e3adcc70acc87b5e18289e5471e72c306
+PODFILE CHECKSUM: 9e54bde38988fb696e8b1f004d9d92c691117d6a
 
 COCOAPODS: 1.12.1

@@ -10,6 +10,7 @@ target 'WeatherApp' do
   pod 'RealmSwift', '~>10'
   pod 'CombineCocoa'
   pod 'CombineExt'
+  pod 'Sourcery'
 
   target 'WeatherAppTests' do
     inherit! :search_paths
