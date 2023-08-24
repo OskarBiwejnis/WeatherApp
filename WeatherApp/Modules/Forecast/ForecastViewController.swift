@@ -16,7 +16,7 @@ class ForecastViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let forecastView = ForecastView()
-    private let forecastViewModel: ForecastViewModel
+    private let forecastViewModel: ForecastViewModelContract
     private let storageService: StorageServiceType = StorageService()
 
     // MARK: - Initialization -

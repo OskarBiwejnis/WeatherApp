@@ -2,7 +2,17 @@ import Combine
 import Foundation
 import UIKit
 
-class ForecastViewModel: NSObject {
+protocol ForecastViewModelContract {
+
+    var threeHourForecasts: [ThreeHourForecast] { get }
+    var reloadTableSubject: PassthroughSubject<Void, Never> { get }
+    var showErrorSubject: PassthroughSubject<NetworkingError, Never> { get }
+
+    func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted 
+
+}
+
+class ForecastViewModel: ForecastViewModelContract {
 
     // MARK: - Constants -
 
@@ -17,13 +27,7 @@ class ForecastViewModel: NSObject {
         static let weatherMainPart = 0
     }
 
-    struct ThreeHourForecastFormatted {
-        var hour: String
-        var temperature: String
-        var humidity: String
-        var wind: String
-        var skyImage: UIImage?
-    }
+    
 
     // MARK: - Variables -
 
@@ -45,7 +49,6 @@ class ForecastViewModel: NSObject {
 
     init(city: City, networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
-        super.init()
         loadWeather(city: city)
 
     }

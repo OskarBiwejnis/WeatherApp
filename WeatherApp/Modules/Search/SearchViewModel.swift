@@ -3,13 +3,16 @@ import Foundation
 
 protocol SearchViewModelContract {
 
+    var cities: [City] { get }
+
     var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
     var reloadTableSubject: PassthroughSubject<Void, Never> { get }
     var showErrorSubject: PassthroughSubject<NetworkingError, Never> { get }
     var openForecastPublisher: AnyPublisher<City, Never>  { get }
 
 }
-class SearchViewModel {
+
+class SearchViewModel: SearchViewModelContract {
 
     // MARK: - Constants -
 

@@ -3,6 +3,8 @@ import UIKit
 
 protocol WelcomeViewModelContract {
 
+    var recentCities: [City] { get }
+    
     var eventsInputSubject: PassthroughSubject<WelcomeViewController.EventInput, Never> { get }
     var reloadRecentCitiesPublisher: AnyPublisher<Void, Never> { get }
     var openSearchScreenPublisher: AnyPublisher<Void, Never> { get }

@@ -17,7 +17,7 @@ class SearchViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let searchView = SearchView()
-    private let searchViewModel = SearchViewModel(networkingService: NetworkingService())
+    private let searchViewModel: SearchViewModelContract = SearchViewModel(networkingService: NetworkingService())
 
     // MARK: - Public -
 

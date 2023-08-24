@@ -17,7 +17,7 @@ class WelcomeViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
-    private let welcomeViewModel = WelcomeViewModel()
+    private let welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel()
 
     // MARK: - Public -
 
@@ -25,7 +25,6 @@ class WelcomeViewController: UIViewController {
         welcomeView.tableView.delegate = self
         welcomeView.tableView.dataSource = self
         view = welcomeView
-
     }
 
     override func viewDidLoad() {
