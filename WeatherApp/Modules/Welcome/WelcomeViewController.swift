@@ -33,7 +33,7 @@ class WelcomeViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        welcomeViewModel.eventsInputSubject.send(EventInput.viewWillAppear)
+        welcomeViewModel.eventsInputSubject.send(.viewWillAppear)
     }
 
 }
@@ -52,7 +52,7 @@ extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        welcomeViewModel.eventsInputSubject.send(EventInput.didSelectRecentCity(row: indexPath.row))
+        welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
     }
 
 }
@@ -64,7 +64,7 @@ extension WelcomeViewController {
     private func bindActions() {
         welcomeView.proceedButton.tapPublisher
             .sink { [weak self] in
-                self?.welcomeViewModel.eventsInputSubject.send(EventInput.proceedButtonTap)
+                self?.welcomeViewModel.eventsInputSubject.send(.proceedButtonTap)
             }
             .store(in: &subscriptions)
 

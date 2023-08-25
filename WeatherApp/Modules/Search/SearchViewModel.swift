@@ -8,7 +8,7 @@ protocol SearchViewModelContract {
     var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
     var reloadTableSubject: PassthroughSubject<Void, Never> { get }
     var showErrorSubject: PassthroughSubject<NetworkingError, Never> { get }
-    var openForecastPublisher: AnyPublisher<City, Never>  { get }
+    var openForecastPublisher: AnyPublisher<City, Never> { get }
 
 }
 
@@ -35,21 +35,6 @@ class SearchViewModel: SearchViewModelContract {
     let eventsInputSubject = PassthroughSubject<SearchViewController.EventInput, Never>()
     let reloadTableSubject = PassthroughSubject<Void, Never>()
     let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
-    lazy var openForecastPublisher: AnyPublisher<City, Never> = eventsInputSubject
-        .compactMap { [weak self] event in
-            if case .didSelectCity(let row) = event {
-                return self?.cities[row]
-            } else { return nil }
-        }
-        .eraseToAnyPublisher()
-    private lazy var fetchCitiesPublisher: AnyPublisher<String, Never> = eventsInputSubject
-        .compactMap { [weak self] event in
-            if case .textChanged(let text) = event {
-                return text == "" ? nil : text
-            } else { return nil }
-        }
-        .debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
-        .eraseToAnyPublisher()
 
     private var networkingService: NetworkingServiceType
 
@@ -60,23 +45,40 @@ class SearchViewModel: SearchViewModelContract {
         bindActions()
     }
 
+    // MARK: - Public -
+
+    lazy var openForecastPublisher: AnyPublisher<City, Never> = eventsInputSubject
+        .compactMap { [weak self] event in
+            if case .didSelectCity(let row) = event {
+                return self?.cities[row]
+            } else { return nil }
+        }
+        .eraseToAnyPublisher()
+
     // MARK: - Private -
 
     private func bindActions() {
-        fetchCitiesPublisher
-            .sink { [weak self] text in
-                self?.fetchCities(text)
+        eventsInputSubject
+            .compactMap { [weak self] event in
+                if case .textChanged(let text) = event {
+                    return text == "" ? nil : text
+                } else { return nil }
             }
-            .store(in: &subscriptions)
-    }
-
-    private func fetchCities(_ text: String) {
-        networkingService.citiesPublisher(text)
-            .catch { [self] error in
-                showErrorSubject.send(error)
-                return Empty<CitiesData, Never>()
+            .debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
+            .flatMap { [weak self] text in
+                self?.fetchCities(text) ?? Empty<CitiesData, Never>().eraseToAnyPublisher()
             }
             .assign(to: \.citiesData, on: self)
             .store(in: &subscriptions)
     }
+
+    private func fetchCities(_ text: String) -> AnyPublisher<CitiesData, Never> {
+        networkingService.citiesPublisher(text)
+            .catch { [weak self] error in
+                self?.showErrorSubject.send(error)
+                return Empty<CitiesData, Never>()
+            }
+            .eraseToAnyPublisher()
+    }
+    
 }

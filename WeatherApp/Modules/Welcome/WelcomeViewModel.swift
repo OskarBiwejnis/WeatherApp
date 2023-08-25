@@ -21,6 +21,10 @@ class WelcomeViewModel: WelcomeViewModelContract {
     var recentCities: [City] = []
     let eventsInputSubject = PassthroughSubject<WelcomeViewController.EventInput, Never>()
 
+    private let storageService: StorageServiceType = StorageService()
+
+    // MARK: - Public -
+
     lazy var reloadRecentCitiesPublisher: AnyPublisher<Void, Never> = eventsInputSubject
         .compactMap { [weak self] event in
             if case .viewWillAppear = event {
@@ -30,18 +34,13 @@ class WelcomeViewModel: WelcomeViewModelContract {
         }
         .eraseToAnyPublisher()
     lazy var openSearchScreenPublisher: AnyPublisher<Void, Never> = eventsInputSubject
-        .compactMap { [weak self] event in
-            if case .proceedButtonTap = event { return () }
-            else { return nil }
-        }
+        .filter { $0 == .proceedButtonTap }
+        .map { _ in return () }
         .eraseToAnyPublisher()
     lazy var openForecastPublisher: AnyPublisher<City, Never> = eventsInputSubject
             .compactMap { [weak self] event in
-                if case let .didSelectRecentCity(row) = event { return self?.recentCities[row] }
-                else { return nil }
+                if case let .didSelectRecentCity(row) = event { return self?.recentCities[row] } else { return nil }
             }
             .eraseToAnyPublisher()
 
-    private let storageService: StorageServiceType = StorageService()
-    
 }

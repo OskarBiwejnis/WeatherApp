@@ -8,7 +8,7 @@ protocol ForecastViewModelContract {
     var reloadTableSubject: PassthroughSubject<Void, Never> { get }
     var showErrorSubject: PassthroughSubject<NetworkingError, Never> { get }
 
-    func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted 
+    func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted
 
 }
 
@@ -26,8 +26,6 @@ class ForecastViewModel: ForecastViewModelContract {
         static let kelvinUnitOffset = 273.15
         static let weatherMainPart = 0
     }
-
-    
 
     // MARK: - Variables -
 
@@ -53,7 +51,7 @@ class ForecastViewModel: ForecastViewModelContract {
 
     }
 
-    //MARK: - Public -
+    // MARK: - Public -
 
     func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted {
         let hour = String(String(threeHourForecasts[index].date
@@ -80,4 +78,3 @@ class ForecastViewModel: ForecastViewModelContract {
     }
 
 }
-
