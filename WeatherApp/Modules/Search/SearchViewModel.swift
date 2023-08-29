@@ -6,8 +6,8 @@ protocol SearchViewModelContract {
     var cities: [City] { get }
 
     var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
-    var reloadTableSubject: PassthroughSubject<Void, Never> { get }
-    var showErrorSubject: PassthroughSubject<NetworkingError, Never> { get }
+    var reloadTablePublisher: AnyPublisher<Void, Never> { get }
+    var showErrorPublisher: AnyPublisher<Error, Never> { get }
     var openForecastPublisher: AnyPublisher<City, Never> { get }
 
 }
@@ -23,18 +23,10 @@ class SearchViewModel: SearchViewModelContract {
     // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
-    private var citiesData = CitiesData(data: []) {
-        didSet {
-            cities = citiesData.data
-            reloadTableSubject.send()
-        }
-    }
 
     var cities: [City] = []
 
     let eventsInputSubject = PassthroughSubject<SearchViewController.EventInput, Never>()
-    let reloadTableSubject = PassthroughSubject<Void, Never>()
-    let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
 
     private var networkingService: NetworkingServiceType
 
@@ -42,7 +34,6 @@ class SearchViewModel: SearchViewModelContract {
 
     init(networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
-        bindActions()
     }
 
     // MARK: - Public -
@@ -57,28 +48,33 @@ class SearchViewModel: SearchViewModelContract {
 
     // MARK: - Private -
 
-    private func bindActions() {
+    private lazy var searchResultPublisher: AnyPublisher<Result<CitiesData>, Never> =
         eventsInputSubject
-            .compactMap { [weak self] event in
-                if case .textChanged(let text) = event {
-                    return text == "" ? nil : text
-                } else { return nil }
-            }
-            .debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
-            .flatMap { [weak self] text in
-                self?.fetchCities(text) ?? Empty<CitiesData, Never>().eraseToAnyPublisher()
-            }
-            .assign(to: \.citiesData, on: self)
-            .store(in: &subscriptions)
-    }
+        .compactMap { [weak self] event in
+            if case .textChanged(let text) = event {
+                return text == "" ? nil : text
+            } else { return nil }
+        }
+        .debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
+        .flatMap { [weak self] text in
+            self?.networkingService.fetchCities(text).toResult() ?? .emptyOutput
+        }
+        .share()
+        .eraseToAnyPublisher()
 
-    private func fetchCities(_ text: String) -> AnyPublisher<CitiesData, Never> {
-        networkingService.citiesPublisher(text)
-            .catch { [weak self] error in
-                self?.showErrorSubject.send(error)
-                return Empty<CitiesData, Never>()
-            }
-            .eraseToAnyPublisher()
-    }
-    
+
+    lazy var reloadTablePublisher: AnyPublisher<Void, Never> = searchResultPublisher
+        .extractResult()
+        .handleOutputEvents { citiesData in
+                self.cities = citiesData.data
+        }
+        .map { _ in
+            return ()
+        }
+        .eraseToAnyPublisher()
+
+    lazy var showErrorPublisher: AnyPublisher<Error, Never> = searchResultPublisher
+        .extractFailure()
+        .eraseToAnyPublisher()
+
 }

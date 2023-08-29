@@ -4,7 +4,7 @@ import Foundation
 extension Publisher {
 
     static var emptyOutput: AnyPublisher<Output, Never> {
-        return Empty<Output,Never>(completeImmediately: true).eraseToAnyPublisher()
+        return Empty<Output, Never>(completeImmediately: true).eraseToAnyPublisher()
     }
 
     func toResult() -> AnyPublisher<Result<Output>, Never> {
@@ -30,9 +30,9 @@ extension Publisher {
 
 extension Publisher where Output: ResultProtocol, Failure == Never {
 
-    func extractResult<T>() -> AnyPublisher<T, Never> {
+    func extractResult() -> AnyPublisher<Output.T, Never> {
         return compactMap { resultProtocol in
-            if let result = resultProtocol as? Result<T>,
+            if let result = resultProtocol as? Result<Output.T>,
                 case let .success(resultItem) = result {
                 return resultItem
             } else {

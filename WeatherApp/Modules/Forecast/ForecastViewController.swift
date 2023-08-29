@@ -83,8 +83,8 @@ extension ForecastViewController {
     private func bindActions() {
         forecastViewModel.reloadTableSubject
             .receive(on: DispatchQueue.main)
-            .sink { [self] in
-                forecastView.collectionView.reloadData()
+            .sink { [weak self] in
+                self?.forecastView.collectionView.reloadData()
             }
             .store(in: &subscriptions)
 
@@ -96,8 +96,8 @@ extension ForecastViewController {
                 return errorAlert
             }
             .receive(on: DispatchQueue.main)
-            .sink { [self] errorAlert in
-                present(errorAlert, animated: true, completion: nil)
+            .sink { [weak self] errorAlert in
+                self?.present(errorAlert, animated: true, completion: nil)
             }
             .store(in: &subscriptions)
     }

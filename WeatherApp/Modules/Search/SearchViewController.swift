@@ -58,26 +58,26 @@ extension SearchViewController {
 
     private func bindActions() {
         searchView.searchTextField.textPublisher
-            .sink { [self] text in
-                searchViewModel.eventsInputSubject.send(.textChanged(text: text ?? ""))
+            .sink { [weak self] text in
+                self?.searchViewModel.eventsInputSubject.send(.textChanged(text: text ?? ""))
             }
             .store(in: &subscriptions)
 
         searchViewModel.openForecastPublisher
             .receive(on: DispatchQueue.main)
-            .sink {  [self] city in
-                navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
+            .sink {  [weak self] city in
+                self?.navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
             }
             .store(in: &subscriptions)
 
-        searchViewModel.reloadTableSubject
+        searchViewModel.reloadTablePublisher
             .receive(on: DispatchQueue.main)
-            .sink { [self] in
-                searchView.tableView.reloadData()
+            .sink { [weak self] in
+                self?.searchView.tableView.reloadData()
             }
             .store(in: &subscriptions)
 
-        searchViewModel.showErrorSubject
+        searchViewModel.showErrorPublisher
             .map { error -> UIAlertController in
                 let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
                 let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
@@ -85,8 +85,8 @@ extension SearchViewController {
                 return errorAlert
             }
             .receive(on: DispatchQueue.main)
-            .sink { [self] errorAlert in
-                present(errorAlert, animated: true, completion: nil)
+            .sink { [weak self] errorAlert in
+                self?.present(errorAlert, animated: true, completion: nil)
             }
             .store(in: &subscriptions)
     }

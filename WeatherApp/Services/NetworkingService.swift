@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 protocol NetworkingServiceType {
-    func citiesPublisher(_ searchText: String) -> AnyPublisher<CitiesData, NetworkingError>
+    func fetchCities(_ searchText: String) -> AnyPublisher<CitiesData, NetworkingError>
     func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, NetworkingError>
 }
 
@@ -24,7 +24,7 @@ class NetworkingService: NetworkingServiceType {
         static let openWeatherUrlApiKeyPart = "&appid=ac65470224290f0854e9e6a757500205"
     }
 
-    func citiesPublisher(_ searchText: String) -> AnyPublisher<CitiesData, NetworkingError> {
+    func fetchCities(_ searchText: String) -> AnyPublisher<CitiesData, NetworkingError> {
         guard let url = URL(string: Constants.geoDbUrlBase + searchText) else { return Fail<CitiesData, NetworkingError>(error: .invalidUrl).eraseToAnyPublisher() }
         let request = NSMutableURLRequest(url: url,
                                           cachePolicy: .useProtocolCachePolicy,
