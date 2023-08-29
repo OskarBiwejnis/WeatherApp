@@ -3,8 +3,8 @@ import Foundation
 
 extension Publisher {
 
-    func emptyOutput() -> AnyPublisher<Output, Never> {
-        return Empty<Output, Never>().eraseToAnyPublisher()
+    static var emptyOutput: AnyPublisher<Output, Never> {
+        return Empty<Output,Never>(completeImmediately: true).eraseToAnyPublisher()
     }
 
     func toResult() -> AnyPublisher<Result<Output>, Never> {
@@ -18,11 +18,11 @@ extension Publisher {
     }
 
     func handleOutputEvents(_ handler: @escaping (Output) -> Void) -> AnyPublisher<Output, Failure> {
-        return map { output in
-            handler(output)
-            return output
-        }
-        .eraseToAnyPublisher()
+        return handleEvents(receiveSubscription: nil,
+                            receiveOutput: handler,
+                            receiveCompletion: nil,
+                            receiveCancel: nil,
+                            receiveRequest: nil).eraseToAnyPublisher()
     }
 
 }
