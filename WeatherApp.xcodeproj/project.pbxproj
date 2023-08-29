@@ -16,6 +16,8 @@
 		4639AB3B2A7A57FC007AA0FA /* RecentCityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4639AB3A2A7A57FC007AA0FA /* RecentCityCell.swift */; };
 		464975BD2A668B2800DC78FB /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464975BC2A668B2800DC78FB /* SearchViewModel.swift */; };
 		464975C72A66D4CE00DC78FB /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */; };
+		467A516C2A9C99E600661714 /* Publisher+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516B2A9C99E600661714 /* Publisher+Ext.swift */; };
+		467A516F2A9CA29E00661714 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516E2A9CA29E00661714 /* Result.swift */; };
 		4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35A2A8121A10018C215 /* PersistedCity.swift */; };
 		4688F3602A813E940018C215 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35F2A813E940018C215 /* SearchViewModelTests.swift */; };
 		4688F3622A813EFE0018C215 /* ForecastViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */; };
@@ -76,6 +78,8 @@
 		4639AB3A2A7A57FC007AA0FA /* RecentCityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentCityCell.swift; sourceTree = "<group>"; };
 		464975BC2A668B2800DC78FB /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
+		467A516B2A9C99E600661714 /* Publisher+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Ext.swift"; sourceTree = "<group>"; };
+		467A516E2A9CA29E00661714 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		4688F35A2A8121A10018C215 /* PersistedCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedCity.swift; sourceTree = "<group>"; };
 		4688F35F2A813E940018C215 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
 		4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModelTests.swift; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 				46D1FEAA2A655FE1003A71C4 /* City.swift */,
 				46D1FEB32A659B35003A71C4 /* NetworkingError.swift */,
 				4602D1D42A67FFA8001E11F0 /* ThreeHourForecast.swift */,
+				467A516E2A9CA29E00661714 /* Result.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -209,6 +214,14 @@
 				46C758A22A5D4D51008B52A5 /* SceneDelegate.swift */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		467A516A2A9C99BC00661714 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				467A516B2A9C99E600661714 /* Publisher+Ext.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		4688F3592A8121850018C215 /* Persisted */ = {
@@ -244,6 +257,7 @@
 		46C7589F2A5D4D51008B52A5 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				467A516A2A9C99BC00661714 /* Extensions */,
 				46D902142A976A8000417ABD /* Generated */,
 				464975C42A66B55D00DC78FB /* Supporting Files */,
 				464975BF2A66B4F300DC78FB /* Modules */,
@@ -603,11 +617,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				467A516C2A9C99E600661714 /* Publisher+Ext.swift in Sources */,
 				464975BD2A668B2800DC78FB /* SearchViewModel.swift in Sources */,
 				464975C72A66D4CE00DC78FB /* WelcomeViewModel.swift in Sources */,
 				4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */,
 				46C758A12A5D4D51008B52A5 /* AppDelegate.swift in Sources */,
 				46C758EA2A600065008B52A5 /* SearchViewController.swift in Sources */,
+				467A516F2A9CA29E00661714 /* Result.swift in Sources */,
 				4602D1D22A67F0EB001E11F0 /* ForecastCell.swift in Sources */,
 				4639AB382A7A4739007AA0FA /* StorageService.swift in Sources */,
 				46C758A32A5D4D51008B52A5 /* SceneDelegate.swift in Sources */,
