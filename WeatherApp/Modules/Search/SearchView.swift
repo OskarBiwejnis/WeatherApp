@@ -1,18 +1,11 @@
+import Combine
+import CombineCocoa
 import SnapKit
 import UIKit
 
 class SearchView: UIView {
 
-    init() {
-        super.init(frame: .zero)
-        setup()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
-    weak var delegate: SearchViewDelegate?
+    // MARK: - Constants -
 
     private enum Constants {
         static let textFieldFontSize = 32
@@ -20,6 +13,19 @@ class SearchView: UIView {
         static let rowHeight: CGFloat = 50
         
     }
+
+    // MARK: - Variables -
+
+    let searchTextField = {
+        let searchTextField = UITextField()
+        searchTextField.placeholder = R.string.localizable.search_placeholder()
+        searchTextField.borderStyle = .roundedRect
+        searchTextField.textAlignment = .left
+        searchTextField.textColor = .black
+        searchTextField.font = .systemFont(ofSize: CGFloat(Constants.textFieldFontSize))
+
+        return searchTextField
+    }()
 
     let tableView = {
         let tableView = UITableView()
@@ -29,22 +35,19 @@ class SearchView: UIView {
         return tableView
     }()
 
-    let searchTextField = {
-        let searchTextField = UITextField()
-        searchTextField.placeholder = R.string.localizable.search_placeholder()
-        searchTextField.borderStyle = .roundedRect
-        searchTextField.textAlignment = .left
-        searchTextField.textColor = .black
-        searchTextField.font = .systemFont(ofSize: CGFloat(Constants.textFieldFontSize))
-        searchTextField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+    // MARK: - Initialization -
 
-        return searchTextField
-    }()
-
-    private func setup() {
+    init() {
+        super.init(frame: .zero)
         setupView()
         setupConstraints()
     }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    // MARK: - Private -
 
     private func setupView() {
         backgroundColor = .systemGray6
@@ -63,16 +66,5 @@ class SearchView: UIView {
             make.bottom.left.right.equalToSuperview()
         }
     }
-
-    @objc
-    private func textChanged() {
-        delegate?.textChanged(searchTextField.text ?? "")
-    }
     
-}
-
-protocol SearchViewDelegate: AnyObject {
-
-    func textChanged(_ text: String)
-
 }

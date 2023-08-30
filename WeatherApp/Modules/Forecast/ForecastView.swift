@@ -3,6 +3,8 @@ import UIKit
 
 class ForecastView: UIView {
 
+    // MARK: - Constants -
+
     private enum Constants {
         static let hourLabelOffset = 10
         static let hourLabelWidth = 105
@@ -16,6 +18,8 @@ class ForecastView: UIView {
         static let windLabelText = "Wind"
     }
 
+    // MARK: - Variables -
+
     let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -28,6 +32,7 @@ class ForecastView: UIView {
     let humidityLabel = Label(text: Constants.humidityLabelText)
     let windLabel = Label(text: Constants.windLabelText)
 
+    // MARK: - Initialization -
 
     init() {
         super.init(frame: .zero)
@@ -39,6 +44,7 @@ class ForecastView: UIView {
         super.init(coder: coder)
     }
 
+    // MARK: - Private -
     
     private func setupView() {
         backgroundColor = .systemGray6

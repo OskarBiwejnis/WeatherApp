@@ -2,7 +2,16 @@ import UIKit
 
 class SearchCell: UITableViewCell {
 
+    // MARK: - Constants -
+
+    private enum Constants {
+        static let fontSize: CGFloat = 24
+        static let labelLeftMargin = 20
+    }
+    
     static let reuseIdentifier = "searchCell"
+
+    // MARK: - Initialization -
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -14,10 +23,7 @@ class SearchCell: UITableViewCell {
         super.init(coder: coder)
     }
 
-    private enum Constants {
-        static let fontSize: CGFloat = 24
-        static let labelLeftMargin = 20
-    }
+    // MARK: - Variables -
 
     let label: UILabel = {
         let label = UILabel()
@@ -26,7 +32,9 @@ class SearchCell: UITableViewCell {
 
         return label
     }()
-    
+
+    // MARK: - Private -
+        
     private func setupConstraints() {
         label.snp.makeConstraints { make -> Void in
             make.centerY.equalToSuperview()

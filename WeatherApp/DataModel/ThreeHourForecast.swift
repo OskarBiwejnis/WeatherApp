@@ -66,3 +66,11 @@ enum WeatherType: String, Decodable {
         }
     }
 }
+
+struct ThreeHourForecastFormatted {
+    var hour: String
+    var temperature: String
+    var humidity: String
+    var wind: String
+    var skyImage: UIImage?
+}

@@ -1,7 +1,20 @@
+import Combine
 import Foundation
 import UIKit
 
-class ForecastViewModel: NSObject {
+protocol ForecastViewModelContract {
+
+    var threeHourForecasts: [ThreeHourForecast] { get }
+    var reloadTableSubject: PassthroughSubject<Void, Never> { get }
+    var showErrorSubject: PassthroughSubject<NetworkingError, Never> { get }
+
+    func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted
+
+}
+
+class ForecastViewModel: ForecastViewModelContract {
+
+    // MARK: - Constants -
 
     private enum Constants {
         static let degreeSign = "°"
@@ -14,27 +27,31 @@ class ForecastViewModel: NSObject {
         static let weatherMainPart = 0
     }
 
+    // MARK: - Variables -
+
+    private var subscriptions: [AnyCancellable] = []
+    private var threeHourForecastData = ThreeHourForecastData(list: []) {
+        didSet {
+            threeHourForecasts = threeHourForecastData.list
+            reloadTableSubject.send()
+        }
+    }
+
     var threeHourForecasts: [ThreeHourForecast] = []
-    weak var delegate: ForecastViewModelDelegate?
+    let reloadTableSubject = PassthroughSubject<Void, Never>()
+    let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
+
     private let networkingService: NetworkingServiceType
+
+    // MARK: - Initialization -
 
     init(city: City, networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
-        super.init()
         loadWeather(city: city)
 
     }
 
-    private func loadWeather(city: City) {
-        Task {
-            do {
-                threeHourForecasts = try await networkingService.fetchThreeHourForecast(city: city)
-                delegate?.reloadTable()
-            } catch {
-                delegate?.showError(error)
-            }
-        }
-    }
+    // MARK: - Public -
 
     func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted {
         let hour = String(String(threeHourForecasts[index].date
@@ -48,19 +65,16 @@ class ForecastViewModel: NSObject {
         return ThreeHourForecastFormatted(hour: hour, temperature: temperature, humidity: humidity, wind: wind, skyImage: skyImage)
     }
 
-}
+    // MARK: - Private -
 
-protocol ForecastViewModelDelegate: AnyObject {
+    private func loadWeather(city: City) {
+        networkingService.threeHourForecastPublisher(city: city)
+            .catch { [self] error in
+                showErrorSubject.send(error)
+                return Empty<ThreeHourForecastData, Never>()
+            }
+          .assign(to: \.threeHourForecastData, on: self)
+          .store(in: &subscriptions)
+    }
 
-    func reloadTable()
-    func showError(_ error: Error)
-
-}
-
-struct ThreeHourForecastFormatted {
-    var hour: String
-    var temperature: String
-    var humidity: String
-    var wind: String
-    var skyImage: UIImage?
 }

@@ -5,5 +5,6 @@
 "invalid_response_message" = "Niewłaściwa odpowiedź serwera";
 "invalid_url_message" = "Niewłaściwy URL";
 "decoding_error_message" = "Nastąpił błąd podczas dekodowania";
+"unknown_error_message" = "Wystąpił nieoczekiwany błąd";
 "ok_button_text" = "Okej";
 "recent_label_text" = "ostatnie wyszukiwania";

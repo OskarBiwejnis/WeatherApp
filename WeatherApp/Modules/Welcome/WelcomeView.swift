@@ -1,19 +1,12 @@
+import Combine
+import CombineCocoa
 import SnapKit
 import UIKit
 
 class WelcomeView: UIView {
 
-    init() {
-        super.init(frame: .zero)
-        setup()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: NSCoder())
-    }
-
-    unowned var delegate: WelcomeViewDelegate?
-
+    // MARK: - Constants -
+    
     private enum Constants {
         static let imageCornerRadius: CGFloat = 30
         static let proceedButtonCornerRadius: CGFloat = 20
@@ -37,6 +30,8 @@ class WelcomeView: UIView {
         static let tableViewCornerRadius: CGFloat = 40
     }
 
+    // MARK: - Variables -
+
     private let iconImageView: UIImageView = {
         let iconImageView = UIImageView(image: R.image.logo())
         iconImageView.layer.cornerRadius = Constants.imageCornerRadius
@@ -55,20 +50,9 @@ class WelcomeView: UIView {
         return titleLabel
     }()
 
-    private lazy var proceedButton: UIButton = {
-        let proceedButton = UIButton(type: .system)
-        proceedButton.backgroundColor = .systemGray5
-        proceedButton.layer.cornerRadius = Constants.proceedButtonCornerRadius
-        proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
-        proceedButton.setTitle(R.string.localizable.button_text(), for: .normal)
-        proceedButton.addTarget(self, action: #selector(proceedButtonTap), for: .touchUpInside)
-
-        return proceedButton
-    }()
-
     private let recentLabel = Label(text: R.string.localizable.recent_label_text(), textColor: .systemGray5, font: FontProvider.defaultFont)
 
-    var tableView: UITableView = {
+    let tableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = Constants.tableViewRowHeight
         tableView.register(RecentCityCell.self, forCellReuseIdentifier: RecentCityCell.reuseIdentifier)
@@ -78,11 +62,30 @@ class WelcomeView: UIView {
         return tableView
     }()
 
-    private func setup() {
+     let proceedButton: UIButton = {
+        let proceedButton = UIButton(type: .system)
+        proceedButton.backgroundColor = .systemGray5
+        proceedButton.layer.cornerRadius = Constants.proceedButtonCornerRadius
+        proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
+        proceedButton.setTitle(R.string.localizable.button_text(), for: .normal)
+
+        return proceedButton
+    }()
+
+    // MARK: - Initialization -
+
+    init() {
+        super.init(frame: .zero)
         setupView()
         setupConstraints()
     }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: NSCoder())
+    }
 
+    // MARK: - Private -
+    
     private func setupView() {
         backgroundColor = .systemGray3
         addSubview(proceedButton)
@@ -123,16 +126,5 @@ class WelcomeView: UIView {
             make.top.equalTo(titleLabel.snp.bottom).offset(Constants.recentLabelOffset)
         }
     }
-
-    @objc
-    private func proceedButtonTap() {
-        delegate?.proceedButtonTap()
-    }
-
-}
-
-protocol WelcomeViewDelegate: AnyObject {
-
-    func proceedButtonTap()
 
 }

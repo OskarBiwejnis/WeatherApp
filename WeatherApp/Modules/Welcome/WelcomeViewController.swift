@@ -1,14 +1,27 @@
+import Combine
 import UIKit
 
 class WelcomeViewController: UIViewController {
 
+    // MARK: - Constants -
+
+    //sourcery: AutoEquatable
+    enum EventInput {
+        case proceedButtonTap
+        case didSelectRecentCity(row: Int)
+        case viewWillAppear
+    }
+
+    // MARK: - Variables -
+
+    private var subscriptions: [AnyCancellable] = []
+
     private let welcomeView = WelcomeView()
-    private let welcomeViewModel = WelcomeViewModel()
-    var recentCities: [City] = []
+    private let welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel()
+
+    // MARK: - Public -
 
     override func loadView() {
-        welcomeView.delegate = self
-        welcomeViewModel.delegate = self
         welcomeView.tableView.delegate = self
         welcomeView.tableView.dataSource = self
         view = welcomeView
@@ -16,56 +29,63 @@ class WelcomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindActions()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        welcomeViewModel.viewWillAppear()
+        welcomeViewModel.eventsInputSubject.send(.viewWillAppear)
     }
 
 }
-
-extension WelcomeViewController: WelcomeViewModelDelegate {
-
-    func openCityForecast(_ city: City) {
-        navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
-    }
-
-    func openSearchScreen() {
-        navigationController?.pushViewController(SearchViewController(), animated: true)
-    }
-
-    func reloadRecentCities(_ cities: [City]) {
-        recentCities = cities
-        DispatchQueue.main.async { [weak self] in
-            self?.welcomeView.tableView.reloadData()
-        }
-    }
-
-}
-
-extension WelcomeViewController: WelcomeViewDelegate {
-
-    func proceedButtonTap() {
-        welcomeViewModel.proceedButtonTap()
-    }
-}
-
 
 extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recentCities.count
+        return welcomeViewModel.recentCities.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier) as? RecentCityCell else { return RecentCityCell() }
-        cell.label.text = recentCities[indexPath.row].name
+        cell.label.text = welcomeViewModel.recentCities[indexPath.row].name
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        welcomeViewModel.didSelectRecentCity(recentCities[indexPath.row])
+        welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
+    }
+
+}
+
+    // MARK: - Private -
+
+extension WelcomeViewController {
+
+    private func bindActions() {
+        welcomeView.proceedButton.tapPublisher
+            .sink { [weak self] in
+                self?.welcomeViewModel.eventsInputSubject.send(.proceedButtonTap)
+            }
+            .store(in: &subscriptions)
+
+        welcomeViewModel.openSearchScreenPublisher
+            .sink { [weak self] in
+                self?.navigationController?.pushViewController(SearchViewController(), animated: true)
+            }
+            .store(in: &subscriptions)
+
+        welcomeViewModel.openForecastPublisher
+            .sink { [weak self] city in
+                self?.navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
+            }
+            .store(in: &subscriptions)
+
+        welcomeViewModel.reloadRecentCitiesPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] cities in
+                self?.welcomeView.tableView.reloadData()
+            }
+            .store(in: &subscriptions)
     }
 
 }

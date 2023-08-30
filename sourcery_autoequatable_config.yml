@@ -1,0 +1,6 @@
+sources:
+  - ./WeatherApp
+templates:
+  - ./Pods/Sourcery/Templates/AutoEquatable.stencil
+output:
+    ./WeatherApp/Generated/AutoEquatable.swift
