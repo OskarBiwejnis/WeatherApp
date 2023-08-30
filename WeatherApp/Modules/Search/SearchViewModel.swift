@@ -1,4 +1,5 @@
 import Combine
+import CombineExt
 import Foundation
 
 protocol SearchViewModelContract {
@@ -56,7 +57,7 @@ class SearchViewModel: SearchViewModelContract {
             } else { return nil }
         }
         .debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
-        .flatMap { [weak self] text in
+        .flatMapLatest { [weak self] text in
             self?.networkingService.fetchCities(text).toResult() ?? .emptyOutput
         }
         .share()
