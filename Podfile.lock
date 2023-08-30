@@ -1,5 +1,6 @@
 PODS:
   - CombineCocoa (0.4.1)
+  - CombineDataSources (0.2.5)
   - CombineExt (1.8.0)
   - R.swift (7.3.2)
   - Realm (10.42.0):
@@ -15,6 +16,7 @@ PODS:
 
 DEPENDENCIES:
   - CombineCocoa
+  - CombineDataSources (from `https://github.com/Airnauts/CombineDataSources.git`)
   - CombineExt
   - R.swift
   - RealmSwift (~> 10)
@@ -33,8 +35,18 @@ SPEC REPOS:
     - Sourcery
     - SwiftLint
 
+EXTERNAL SOURCES:
+  CombineDataSources:
+    :git: https://github.com/Airnauts/CombineDataSources.git
+
+CHECKOUT OPTIONS:
+  CombineDataSources:
+    :commit: ac74034b7c6f6711b687ea74b11a9e770949d034
+    :git: https://github.com/Airnauts/CombineDataSources.git
+
 SPEC CHECKSUMS:
   CombineCocoa: e5210dbfb480ff251078929459ac17e750e7af1d
+  CombineDataSources: dcbc3b06a038ffdf620b3b4533d3ecaf76ca6a2e
   CombineExt: c4daa97ef75754d8ef319bd79edeef82652f3eea
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
   Realm: 490aad28f1360e58fc22256d5d686d3a36525346
@@ -43,6 +55,6 @@ SPEC CHECKSUMS:
   Sourcery: 9ae7eb711f830e8c3c02b98dc28fbd7e32e9d971
   SwiftLint: 1cc5cd61ba9bacb2194e340aeb47a2a37fda00b3
 
-PODFILE CHECKSUM: 9e54bde38988fb696e8b1f004d9d92c691117d6a
+PODFILE CHECKSUM: 2262310089241f186a73b24de08a1bf86ff37397
 
 COCOAPODS: 1.12.1

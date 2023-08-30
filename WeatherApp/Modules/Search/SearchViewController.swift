@@ -1,5 +1,6 @@
 import Combine
 import CombineCocoa
+import CombineDataSources
 import UIKit
 
 class SearchViewController: UIViewController {
@@ -23,7 +24,6 @@ class SearchViewController: UIViewController {
 
     override func loadView() {
         searchView.tableView.delegate = self
-        searchView.tableView.dataSource = self
         view = searchView
     }
 
@@ -33,18 +33,7 @@ class SearchViewController: UIViewController {
     }
 }
 
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchViewModel.cities.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier) as? SearchCell else { return SearchCell() }
-        cell.label.text = searchViewModel.cities[indexPath.row].name
-
-        return cell
-    }
+extension SearchViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         searchViewModel.eventsInputSubject.send(.didSelectCity(row: indexPath.row))
@@ -70,11 +59,11 @@ extension SearchViewController {
             }
             .store(in: &subscriptions)
 
-        searchViewModel.reloadTablePublisher
+        searchViewModel.foundCitiesPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                self?.searchView.tableView.reloadData()
-            }
+            .bind(subscriber: searchView.tableView.rowsSubscriber(cellIdentifier: SearchCell.reuseIdentifier, cellType: SearchCell.self, cellConfig: { cell, indexPath, model in
+                cell.label.text = model.name
+            }))
             .store(in: &subscriptions)
 
         searchViewModel.showErrorPublisher

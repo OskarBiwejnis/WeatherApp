@@ -5,7 +5,7 @@ struct CitiesData: Decodable {
     var data: [City]
 }
 
-struct City: Codable, Equatable {
+struct City: Codable, Equatable, Hashable {
     var name: String
     var country: String
     var latitude: Double

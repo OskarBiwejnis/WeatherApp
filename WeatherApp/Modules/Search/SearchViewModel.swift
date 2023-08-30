@@ -1,5 +1,6 @@
 import Combine
 import CombineExt
+import CombineDataSources
 import Foundation
 
 protocol SearchViewModelContract {
@@ -7,7 +8,7 @@ protocol SearchViewModelContract {
     var cities: [City] { get }
 
     var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
-    var reloadTablePublisher: AnyPublisher<Void, Never> { get }
+    var foundCitiesPublisher: AnyPublisher<[City], Never> { get }
     var showErrorPublisher: AnyPublisher<Error, Never> { get }
     var openForecastPublisher: AnyPublisher<City, Never> { get }
 
@@ -64,13 +65,13 @@ class SearchViewModel: SearchViewModelContract {
         .eraseToAnyPublisher()
 
 
-    lazy var reloadTablePublisher: AnyPublisher<Void, Never> = searchResultPublisher
+    lazy var foundCitiesPublisher: AnyPublisher<[City], Never> = searchResultPublisher
         .extractResult()
-        .handleOutputEvents { citiesData in
-                self.cities = citiesData.data
+        .map { citiesData in
+            return citiesData.data
         }
-        .map { _ in
-            return ()
+        .handleOutputEvents { cities in
+                self.cities = cities
         }
         .eraseToAnyPublisher()
 
