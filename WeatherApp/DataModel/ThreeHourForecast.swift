@@ -67,7 +67,7 @@ enum WeatherType: String, Decodable {
     }
 }
 
-struct ThreeHourForecastFormatted {
+struct ThreeHourForecastFormatted: Hashable {
     var hour: String
     var temperature: String
     var humidity: String

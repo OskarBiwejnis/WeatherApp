@@ -23,7 +23,6 @@ class WelcomeViewController: UIViewController {
 
     override func loadView() {
         welcomeView.tableView.delegate = self
-        welcomeView.tableView.dataSource = self
         view = welcomeView
     }
 
@@ -38,18 +37,7 @@ class WelcomeViewController: UIViewController {
 
 }
 
-extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return welcomeViewModel.recentCities.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier) as? RecentCityCell else { return RecentCityCell() }
-        cell.label.text = welcomeViewModel.recentCities[indexPath.row].name
-
-        return cell
-    }
+extension WelcomeViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
@@ -82,9 +70,9 @@ extension WelcomeViewController {
 
         welcomeViewModel.reloadRecentCitiesPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] cities in
-                self?.welcomeView.tableView.reloadData()
-            }
+            .bind(subscriber: welcomeView.tableView.rowsSubscriber(cellIdentifier: RecentCityCell.reuseIdentifier, cellType: RecentCityCell.self, cellConfig: { cell, indexPath, model in
+                cell.label.text = model.name
+              }))
             .store(in: &subscriptions)
     }
 

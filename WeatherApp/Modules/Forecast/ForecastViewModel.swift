@@ -4,11 +4,8 @@ import UIKit
 
 protocol ForecastViewModelContract {
 
-    var threeHourForecasts: [ThreeHourForecast] { get }
-    var reloadTableSubject: PassthroughSubject<Void, Never> { get }
-    var showErrorSubject: PassthroughSubject<NetworkingError, Never> { get }
-
-    func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted
+    var forecastPublisher: AnyPublisher<[ThreeHourForecastFormatted], Never> { get }
+    var showErrorPublisher: AnyPublisher<Error, Never> { get }
 
 }
 
@@ -29,17 +26,8 @@ class ForecastViewModel: ForecastViewModelContract {
 
     // MARK: - Variables -
 
+    private let city: City
     private var subscriptions: [AnyCancellable] = []
-    private var threeHourForecastData = ThreeHourForecastData(list: []) {
-        didSet {
-            threeHourForecasts = threeHourForecastData.list
-            reloadTableSubject.send()
-        }
-    }
-
-    var threeHourForecasts: [ThreeHourForecast] = []
-    let reloadTableSubject = PassthroughSubject<Void, Never>()
-    let showErrorSubject = PassthroughSubject<NetworkingError, Never>()
 
     private let networkingService: NetworkingServiceType
 
@@ -47,34 +35,43 @@ class ForecastViewModel: ForecastViewModelContract {
 
     init(city: City, networkingService: NetworkingServiceType) {
         self.networkingService = networkingService
-        loadWeather(city: city)
-
+        self.city = city
     }
 
     // MARK: - Public -
 
-    func getThreeHourForecastFormatted(index: Int) -> ThreeHourForecastFormatted {
-        let hour = String(String(threeHourForecasts[index].date
-            .split(separator: Constants.space)[Constants.secondPartOfDateFormat])
-            .prefix(Constants.hourFormatWithoutSeconds))
-        let temperature = String(Int(threeHourForecasts[index].main.temp - Constants.kelvinUnitOffset)) + Constants.degreeSign
-        let humidity = String(threeHourForecasts[index].main.humidity) + Constants.percentSign
-        let wind = String(Int(threeHourForecasts[index].wind.speed)) + Constants.speedUnit
-        let skyImage = threeHourForecasts[index].weather[Constants.weatherMainPart].weatherType.image
+    lazy var forecastPublisher: AnyPublisher<[ThreeHourForecastFormatted], Never> = fetchResultPublisher
+        .extractResult()
+        .map { forecastData in
+            let forecasts = forecastData.list
+            var formattedForecasts: [ThreeHourForecastFormatted] = []
 
-        return ThreeHourForecastFormatted(hour: hour, temperature: temperature, humidity: humidity, wind: wind, skyImage: skyImage)
-    }
+            for forecast in forecasts.prefix(5){
+                formattedForecasts.append(self.getThreeHourForecastFormatted(forecast: forecast))
+            }
+            return formattedForecasts
+        }
+        .eraseToAnyPublisher()
+
+    lazy var showErrorPublisher: AnyPublisher<Error, Never> = fetchResultPublisher
+        .extractFailure()
+        .eraseToAnyPublisher()
+
 
     // MARK: - Private -
 
-    private func loadWeather(city: City) {
-        networkingService.threeHourForecastPublisher(city: city)
-            .catch { [self] error in
-                showErrorSubject.send(error)
-                return Empty<ThreeHourForecastData, Never>()
-            }
-          .assign(to: \.threeHourForecastData, on: self)
-          .store(in: &subscriptions)
-    }
+    private lazy var fetchResultPublisher = networkingService.fetchThreeHourForecast(city: city).toResult()
+
+    private func getThreeHourForecastFormatted(forecast: ThreeHourForecast) -> ThreeHourForecastFormatted {
+       let hour = String(String(forecast.date
+           .split(separator: Constants.space)[Constants.secondPartOfDateFormat])
+           .prefix(Constants.hourFormatWithoutSeconds))
+       let temperature = String(Int(forecast.main.temp - Constants.kelvinUnitOffset)) + Constants.degreeSign
+       let humidity = String(forecast.main.humidity) + Constants.percentSign
+       let wind = String(Int(forecast.wind.speed)) + Constants.speedUnit
+       let skyImage = forecast.weather[Constants.weatherMainPart].weatherType.image
+
+       return ThreeHourForecastFormatted(hour: hour, temperature: temperature, humidity: humidity, wind: wind, skyImage: skyImage)
+   }
 
 }
