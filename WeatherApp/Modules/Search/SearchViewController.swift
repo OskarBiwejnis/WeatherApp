@@ -12,7 +12,7 @@ class SearchViewController: UIViewController {
         case textChanged(text: String)
         case didSelectCity(row: Int)
     }
-    
+
     // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
@@ -23,7 +23,6 @@ class SearchViewController: UIViewController {
     // MARK: - Public -
 
     override func loadView() {
-        searchView.tableView.delegate = self
         view = searchView
     }
 
@@ -33,19 +32,18 @@ class SearchViewController: UIViewController {
     }
 }
 
-extension SearchViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        searchViewModel.eventsInputSubject.send(.didSelectCity(row: indexPath.row))
-    }
-
-}
-
     // MARK: - Private -
 
 extension SearchViewController {
 
     private func bindActions() {
+
+        searchView.tableView.didSelectRowPublisher
+            .sink { [weak self] indexPath in
+                self?.searchViewModel.eventsInputSubject.send(.didSelectCity(row: indexPath.row))
+            }
+            .store(in: &subscriptions)
+
         searchView.searchTextField.textPublisher
             .sink { [weak self] text in
                 self?.searchViewModel.eventsInputSubject.send(.textChanged(text: text ?? ""))

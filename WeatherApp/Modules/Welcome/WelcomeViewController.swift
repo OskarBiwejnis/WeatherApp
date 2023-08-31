@@ -22,7 +22,6 @@ class WelcomeViewController: UIViewController {
     // MARK: - Public -
 
     override func loadView() {
-        welcomeView.tableView.delegate = self
         view = welcomeView
     }
 
@@ -37,19 +36,17 @@ class WelcomeViewController: UIViewController {
 
 }
 
-extension WelcomeViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
-    }
-
-}
-
     // MARK: - Private -
 
 extension WelcomeViewController {
 
     private func bindActions() {
+        welcomeView.tableView.didSelectRowPublisher
+            .sink { [weak self] indexPath in
+                self?.welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
+            }
+            .store(in: &subscriptions)
+
         welcomeView.proceedButton.tapPublisher
             .sink { [weak self] in
                 self?.welcomeViewModel.eventsInputSubject.send(.proceedButtonTap)
