@@ -14,7 +14,12 @@ class SearchViewController: UIViewController {
     }
 
     // MARK: - Variables -
-
+    private let itemsController = TableViewItemsController<[[City]]>(cellFactory: { _, tableView, indexPath, model -> UITableViewCell in
+        guard let cell: SearchCell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier, for: indexPath) as? SearchCell
+        else { return UITableViewCell() }
+        cell.label.text = model.name
+        return cell
+    })
     private var subscriptions: [AnyCancellable] = []
 
     private let searchView = SearchView()
@@ -59,9 +64,7 @@ extension SearchViewController {
 
         searchViewModel.foundCitiesPublisher
             .receive(on: DispatchQueue.main)
-            .bind(subscriber: searchView.tableView.rowsSubscriber(cellIdentifier: SearchCell.reuseIdentifier, cellType: SearchCell.self, cellConfig: { cell, indexPath, model in
-                cell.label.text = model.name
-            }))
+            .bind(subscriber: searchView.tableView.rowsSubscriber(itemsController))
             .store(in: &subscriptions)
 
         searchViewModel.showErrorPublisher

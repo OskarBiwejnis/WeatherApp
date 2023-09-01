@@ -1,4 +1,5 @@
 import Combine
+import CombineDataSources
 import UIKit
 
 class WelcomeViewController: UIViewController {
@@ -13,7 +14,12 @@ class WelcomeViewController: UIViewController {
     }
 
     // MARK: - Variables -
-
+    private let itemsController = TableViewItemsController<[[City]]>(cellFactory: { _, tableView, indexPath, model -> UITableViewCell in
+        guard let cell: RecentCityCell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier, for: indexPath) as? RecentCityCell
+        else { return UITableViewCell() }
+        cell.label.text = model.name
+        return cell
+    })
     private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
@@ -68,9 +74,7 @@ extension WelcomeViewController {
 
         welcomeViewModel.reloadRecentCitiesPublisher
             .receive(on: DispatchQueue.main)
-            .bind(subscriber: welcomeView.tableView.rowsSubscriber(cellIdentifier: RecentCityCell.reuseIdentifier, cellType: RecentCityCell.self, cellConfig: { cell, indexPath, model in
-                cell.label.text = model.name
-              }))
+            .bind(subscriber: welcomeView.tableView.rowsSubscriber(itemsController))
             .store(in: &subscriptions)
     }
 
