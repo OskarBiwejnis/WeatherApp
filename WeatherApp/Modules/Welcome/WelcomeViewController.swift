@@ -44,6 +44,7 @@ extension WelcomeViewController {
         welcomeView.tableView.didSelectRowPublisher
             .sink { [weak self] indexPath in
                 self?.welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
+                self?.welcomeView.tableView.deselectRow(at: indexPath, animated: false)
             }
             .store(in: &subscriptions)
 

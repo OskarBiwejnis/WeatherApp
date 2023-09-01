@@ -22,6 +22,7 @@ class ForecastViewModel: ForecastViewModelContract {
         static let secondPartOfDateFormat = 1
         static let kelvinUnitOffset = 273.15
         static let weatherMainPart = 0
+        static let numberOfDisplayedForecasts = 15
     }
 
     // MARK: - Variables -
@@ -46,7 +47,7 @@ class ForecastViewModel: ForecastViewModelContract {
             let forecasts = forecastData.list
             var formattedForecasts: [ThreeHourForecastFormatted] = []
 
-            for forecast in forecasts.prefix(5){
+            for forecast in forecasts.prefix(Constants.numberOfDisplayedForecasts){
                 formattedForecasts.append(self.getThreeHourForecastFormatted(forecast: forecast))
             }
             return formattedForecasts
