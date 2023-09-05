@@ -6,7 +6,7 @@ protocol WelcomeViewModelContract {
     var recentCities: [City] { get }
     
     var eventsInputSubject: PassthroughSubject<WelcomeViewController.EventInput, Never> { get }
-    var reloadRecentCitiesPublisher: AnyPublisher<Void, Never> { get }
+    var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> { get }
     var openSearchScreenPublisher: AnyPublisher<Void, Never> { get }
     var openForecastPublisher: AnyPublisher<City, Never> { get }
 
@@ -25,11 +25,12 @@ class WelcomeViewModel: WelcomeViewModelContract {
 
     // MARK: - Public -
 
-    lazy var reloadRecentCitiesPublisher: AnyPublisher<Void, Never> = eventsInputSubject
+    lazy var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> = eventsInputSubject
         .compactMap { [weak self] event in
             if case .viewWillAppear = event {
-                self?.recentCities = self?.storageService.getRecentCities() ?? []
-                return ()
+                let recentCities = self?.storageService.getRecentCities() ?? []
+                self?.recentCities = recentCities
+                return recentCities
             } else { return nil }
         }
         .eraseToAnyPublisher()

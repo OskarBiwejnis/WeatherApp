@@ -1,4 +1,5 @@
 import Combine
+import CombineDataSources
 import UIKit
 
 class WelcomeViewController: UIViewController {
@@ -13,7 +14,12 @@ class WelcomeViewController: UIViewController {
     }
 
     // MARK: - Variables -
-
+    private let itemsController = TableViewItemsController<[[City]]>(cellFactory: { _, tableView, indexPath, model -> UITableViewCell in
+        guard let cell: RecentCityCell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier, for: indexPath) as? RecentCityCell
+        else { return UITableViewCell() }
+        cell.label.text = model.name
+        return cell
+    })
     private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
@@ -22,8 +28,6 @@ class WelcomeViewController: UIViewController {
     // MARK: - Public -
 
     override func loadView() {
-        welcomeView.tableView.delegate = self
-        welcomeView.tableView.dataSource = self
         view = welcomeView
     }
 
@@ -38,30 +42,18 @@ class WelcomeViewController: UIViewController {
 
 }
 
-extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return welcomeViewModel.recentCities.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier) as? RecentCityCell else { return RecentCityCell() }
-        cell.label.text = welcomeViewModel.recentCities[indexPath.row].name
-
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
-    }
-
-}
-
     // MARK: - Private -
 
 extension WelcomeViewController {
 
     private func bindActions() {
+        welcomeView.tableView.didSelectRowPublisher
+            .sink { [weak self] indexPath in
+                self?.welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
+                self?.welcomeView.tableView.deselectRow(at: indexPath, animated: false)
+            }
+            .store(in: &subscriptions)
+
         welcomeView.proceedButton.tapPublisher
             .sink { [weak self] in
                 self?.welcomeViewModel.eventsInputSubject.send(.proceedButtonTap)
@@ -82,9 +74,7 @@ extension WelcomeViewController {
 
         welcomeViewModel.reloadRecentCitiesPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] cities in
-                self?.welcomeView.tableView.reloadData()
-            }
+            .bind(subscriber: welcomeView.tableView.rowsSubscriber(itemsController))
             .store(in: &subscriptions)
     }
 

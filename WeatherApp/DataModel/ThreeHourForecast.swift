@@ -67,10 +67,33 @@ enum WeatherType: String, Decodable {
     }
 }
 
-struct ThreeHourForecastFormatted {
+struct ThreeHourForecastFormatted: Hashable {
+
+    private enum Constants {
+        static let degreeSign = "°"
+        static let percentSign = "%"
+        static let speedUnit = " kmh"
+        static let hourFormatWithoutSeconds = 5
+        static let space = " "
+        static let secondPartOfDateFormat = 1
+        static let kelvinUnitOffset = 273.15
+        static let weatherMainPart = 0
+    }
+
     var hour: String
     var temperature: String
     var humidity: String
     var wind: String
     var skyImage: UIImage?
+
+    init(from forecast: ThreeHourForecast) {
+        self.hour = String(String(forecast.date
+               .split(separator: Constants.space)[Constants.secondPartOfDateFormat])
+               .prefix(Constants.hourFormatWithoutSeconds))
+        self.temperature = String(Int(forecast.main.temp - Constants.kelvinUnitOffset)) + Constants.degreeSign
+        self.humidity = String(forecast.main.humidity) + Constants.percentSign
+        self.wind = String(Int(forecast.wind.speed)) + Constants.speedUnit
+        self.skyImage = forecast.weather[Constants.weatherMainPart].weatherType.image
+    }
+    
 }

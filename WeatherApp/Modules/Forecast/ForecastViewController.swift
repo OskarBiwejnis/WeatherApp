@@ -1,4 +1,5 @@
 import Combine
+import CombineDataSources
 import UIKit
 
 class ForecastViewController: UIViewController {
@@ -13,6 +14,16 @@ class ForecastViewController: UIViewController {
 
     // MARK: - Variables -
 
+    private let itemsController = CollectionViewItemsController<[[ThreeHourForecastFormatted]]>(cellFactory: { _, collectionView, indexPath, threeHourForecastFormatted -> UICollectionViewCell in
+        guard let cell: ForecastCell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier, for: indexPath) as? ForecastCell
+        else { return UICollectionViewCell() }
+        cell.setupWith(hour: threeHourForecastFormatted.hour,
+                       temperature: threeHourForecastFormatted.temperature,
+                       humidity: threeHourForecastFormatted.humidity,
+                       wind: threeHourForecastFormatted.wind,
+                       skyImage: threeHourForecastFormatted.skyImage)
+        return cell
+    })
     private var subscriptions: [AnyCancellable] = []
 
     private let forecastView = ForecastView()
@@ -26,7 +37,6 @@ class ForecastViewController: UIViewController {
         forecastViewModel = ForecastViewModel(city: city, networkingService: NetworkingService())
         super.init(nibName: nil, bundle: nil)
         forecastView.collectionView.delegate = self
-        forecastView.collectionView.dataSource = self
         self.title = city.name
     }
 
@@ -47,27 +57,6 @@ class ForecastViewController: UIViewController {
 
 }
 
-extension ForecastViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return forecastViewModel.threeHourForecasts.isEmpty ? Constants.noCells : Constants.numberOfCells
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier,
-            for: indexPath) as? ForecastCell else { return ForecastCell() }
-        let threeHourForecastFormatted = forecastViewModel.getThreeHourForecastFormatted(index: indexPath.row)
-        cell.setupWith(hour: threeHourForecastFormatted.hour,
-                       temperature: threeHourForecastFormatted.temperature,
-                       humidity: threeHourForecastFormatted.humidity,
-                       wind: threeHourForecastFormatted.wind,
-                       skyImage: threeHourForecastFormatted.skyImage)
-
-        return cell
-    }
-
-}
-
 extension ForecastViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -81,14 +70,12 @@ extension ForecastViewController: UICollectionViewDelegateFlowLayout {
 extension ForecastViewController {
 
     private func bindActions() {
-        forecastViewModel.reloadTableSubject
+        forecastViewModel.forecastPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                self?.forecastView.collectionView.reloadData()
-            }
+            .bind(subscriber: forecastView.collectionView.itemsSubscriber(itemsController))
             .store(in: &subscriptions)
 
-        forecastViewModel.showErrorSubject
+        forecastViewModel.showErrorPublisher
             .map { error -> UIAlertController in
                 let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
                 let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
@@ -103,4 +90,3 @@ extension ForecastViewController {
     }
 
 }
-

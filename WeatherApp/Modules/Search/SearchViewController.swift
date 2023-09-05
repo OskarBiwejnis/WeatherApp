@@ -1,5 +1,6 @@
 import Combine
 import CombineCocoa
+import CombineDataSources
 import UIKit
 
 class SearchViewController: UIViewController {
@@ -11,9 +12,14 @@ class SearchViewController: UIViewController {
         case textChanged(text: String)
         case didSelectCity(row: Int)
     }
-    
-    // MARK: - Variables -
 
+    // MARK: - Variables -
+    private let itemsController = TableViewItemsController<[[City]]>(cellFactory: { _, tableView, indexPath, model -> UITableViewCell in
+        guard let cell: SearchCell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier, for: indexPath) as? SearchCell
+        else { return UITableViewCell() }
+        cell.label.text = model.name
+        return cell
+    })
     private var subscriptions: [AnyCancellable] = []
 
     private let searchView = SearchView()
@@ -22,8 +28,6 @@ class SearchViewController: UIViewController {
     // MARK: - Public -
 
     override func loadView() {
-        searchView.tableView.delegate = self
-        searchView.tableView.dataSource = self
         view = searchView
     }
 
@@ -33,30 +37,18 @@ class SearchViewController: UIViewController {
     }
 }
 
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchViewModel.cities.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier) as? SearchCell else { return SearchCell() }
-        cell.label.text = searchViewModel.cities[indexPath.row].name
-
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        searchViewModel.eventsInputSubject.send(.didSelectCity(row: indexPath.row))
-    }
-
-}
-
     // MARK: - Private -
 
 extension SearchViewController {
 
     private func bindActions() {
+
+        searchView.tableView.didSelectRowPublisher
+            .sink { [weak self] indexPath in
+                self?.searchViewModel.eventsInputSubject.send(.didSelectCity(row: indexPath.row))
+            }
+            .store(in: &subscriptions)
+
         searchView.searchTextField.textPublisher
             .sink { [weak self] text in
                 self?.searchViewModel.eventsInputSubject.send(.textChanged(text: text ?? ""))
@@ -70,11 +62,9 @@ extension SearchViewController {
             }
             .store(in: &subscriptions)
 
-        searchViewModel.reloadTablePublisher
+        searchViewModel.foundCitiesPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                self?.searchView.tableView.reloadData()
-            }
+            .bind(subscriber: searchView.tableView.rowsSubscriber(itemsController))
             .store(in: &subscriptions)
 
         searchViewModel.showErrorPublisher

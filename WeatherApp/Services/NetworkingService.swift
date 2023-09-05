@@ -3,7 +3,7 @@ import Foundation
 
 protocol NetworkingServiceType {
     func fetchCities(_ searchText: String) -> AnyPublisher<CitiesData, NetworkingError>
-    func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, NetworkingError>
+    func fetchThreeHourForecast(city: City) -> AnyPublisher<ThreeHourForecastData, NetworkingError>
 }
 
 
@@ -54,7 +54,7 @@ class NetworkingService: NetworkingServiceType {
             .eraseToAnyPublisher()
     }
 
-    func threeHourForecastPublisher(city: City) -> AnyPublisher<ThreeHourForecastData, NetworkingError> {
+    func fetchThreeHourForecast(city: City) -> AnyPublisher<ThreeHourForecastData, NetworkingError> {
         let urlString = Constants.openWeatherUrlBase + String(city.latitude) + Constants.openWeatherUrlLongitudePart + String(city.longitude) + Constants.openWeatherUrlApiKeyPart
         guard let url = URL(string: urlString) else { return Fail<ThreeHourForecastData, NetworkingError>(error: .invalidUrl).eraseToAnyPublisher() }
         let decoder = JSONDecoder()
