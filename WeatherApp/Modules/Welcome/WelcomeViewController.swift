@@ -40,11 +40,7 @@ class WelcomeViewController: UIViewController {
         welcomeViewModel.eventsInputSubject.send(.viewWillAppear)
     }
 
-}
-
     // MARK: - Private -
-
-extension WelcomeViewController {
 
     private func bindActions() {
         welcomeView.tableView.didSelectRowPublisher

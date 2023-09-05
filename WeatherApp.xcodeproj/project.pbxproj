@@ -366,6 +366,7 @@
 				46C758AF2A5D4D52008B52A5 /* Sources */,
 				46C758B02A5D4D52008B52A5 /* Frameworks */,
 				46C758B12A5D4D52008B52A5 /* Resources */,
+				206D3A81A69857ACB1CF8CFC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -494,6 +495,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		206D3A81A69857ACB1CF8CFC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		308559D7C18D745996799639 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -532,7 +550,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n\n\"$PODS_ROOT/Sourcery/bin/sourcery\" --config \"$SRCROOT/sourcery_autoequatable_config.yml\"\n";
+			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n\n\"$PODS_ROOT/Sourcery/bin/sourcery\" --config \"$SRCROOT/sourcery_config.yml\"\n\n";
 		};
 		46C758D82A5FD32A008B52A5 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;

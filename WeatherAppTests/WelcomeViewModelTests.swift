@@ -1,74 +1,31 @@
 import XCTest
+import Combine
+import Quick
+import Nimble
+
 @testable import WeatherApp
 
-final class WelcomeViewModelTests: XCTestCase {
+class WelcomeViewModelSpec: QuickSpec {
 
-    var welcomeViewModel: WelcomeViewModel!
-    var mockWelcomeViewModelDelegate: MockWelcomeViewModelDelegate!
+    override class func spec() {
+        describe("WelcomeViewModel") {
+            describe("proceedButton") {
+                it("opens search screen when tapped") {
+                    var subscriptions: [AnyCancellable] = []
+                    let welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel()
+                    var didReceiveCallToOpenSearchScreen = false
+                    welcomeViewModel.openSearchScreenPublisher
+                        .sink { _ in
+                            didReceiveCallToOpenSearchScreen = true
+                        }
+                        .store(in: &subscriptions)
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        welcomeViewModel = WelcomeViewModel()
-        mockWelcomeViewModelDelegate = MockWelcomeViewModelDelegate()
-        welcomeViewModel.delegate = mockWelcomeViewModelDelegate
-    }
+                    welcomeViewModel.eventsInputSubject.send(.proceedButtonTap)
 
-    override  func tearDown() {
-        welcomeViewModel = nil
-        mockWelcomeViewModelDelegate = nil
-        super.tearDown()
-    }
-
-    func testShouldCallDelegateFunctionWhenProceedButtonTap() throws {
-        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallOpenSearchScreen)
-        welcomeViewModel.proceedButtonTap()
-        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallOpenSearchScreen)
-    }
-
-    func testShouldCallDelegateFunctionWhenViewWillAppear() throws {
-        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallReloadRecentCities)
-        welcomeViewModel.viewWillAppear()
-        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallReloadRecentCities)
-    }
-
-    func testShouldCallDelegateFunctionWhenDidSelectRecentCity() throws {
-        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallOpenCityForecast)
-        welcomeViewModel.didSelectRecentCity(City())
-        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallOpenCityForecast)
-    }
-
-    func testShouldOpenProperCityWhenDidSelectRecentCity() throws {
-        let cityInput = City()
-        XCTAssertNil(mockWelcomeViewModelDelegate.city)
-
-        welcomeViewModel.didSelectRecentCity(cityInput)
-
-        let cityOutput = mockWelcomeViewModelDelegate.city
-        XCTAssertEqual(cityInput, cityOutput)
+                    expect(didReceiveCallToOpenSearchScreen).toEventually(beTrue())
+                }
+            }
+        }
     }
 
 }
-
-class MockWelcomeViewModelDelegate: WelcomeViewModelDelegate {
-
-    var didCallOpenCityForecast = false
-    var didCallOpenSearchScreen = false
-    var didCallReloadRecentCities = false
-    var city: City?
-
-    func openCityForecast(_ city: City) {
-        didCallOpenCityForecast = true
-        self.city = city
-    }
-
-    func openSearchScreen() {
-        didCallOpenSearchScreen = true
-    }
-
-    func reloadRecentCities(_ cities: [City]) {
-        didCallReloadRecentCities = true
-    }
-
-}
-
-
