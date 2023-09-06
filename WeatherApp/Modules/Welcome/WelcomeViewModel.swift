@@ -35,8 +35,6 @@ class WelcomeViewModel: WelcomeViewModelContract {
         .compactMap { [weak self] event in
             if case .viewWillAppear = event {
                 let recentCities = self?.storageService.getRecentCities() ?? []
-                print("Recent", recentCities)
-                print("Ze storaga bezposr", self?.storageService.getRecentCities())
                 self?.recentCities = recentCities
                 return recentCities
             } else { return nil }
