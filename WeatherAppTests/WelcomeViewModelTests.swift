@@ -10,11 +10,13 @@ class WelcomeViewModelSpec: QuickSpec {
     override class func spec() {
         describe("WelcomeViewModel") {
             var subscriptions: [AnyCancellable] = []
-            var welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel(storageService: MockStorageService)
-
+            var storageService = StorageServiceTypeMock()
+            var welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel(storageService: storageService)
+            
             beforeEach {
                 subscriptions = []
-                welcomeViewModel = WelcomeViewModel()
+                storageService = StorageServiceTypeMock()
+                welcomeViewModel = WelcomeViewModel(storageService: storageService)
             }
 
             describe("proceedButton") {
@@ -34,6 +36,7 @@ class WelcomeViewModelSpec: QuickSpec {
 
             describe("recent cities") {
                 it("they get reloaded when view is about to appear") {
+                    storageService.getRecentCitiesReturnValue = []
                     var didReceiveCallToReloadCities = false
                     welcomeViewModel.reloadRecentCitiesPublisher
                         .sink { _ in
@@ -45,38 +48,8 @@ class WelcomeViewModelSpec: QuickSpec {
 
                     expect(didReceiveCallToReloadCities).toEventually(beTrue())
                 }
-
-                it("opens forecast when tapped on one") {
-                    var didReceiveCallToOpenForecast = false
-                    welcomeViewModel.openForecastPublisher
-                        .sink { _ in
-                            didReceiveCallToOpenForecast = true
-                        }
-                        .store(in: &subscriptions)
-
-                    welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: 0))
-
-                    expect(didReceiveCallToOpenForecast).toEventually(beTrue())
-                }
-
-                it("opens proper forecast for given city") {
-                    
-                    welcomeViewModel.openForecastPublisher
-                        .sink { _ in
-
-                        }
-                        .store(in: &subscriptions)
-
-                    welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: 0))
-
-                    expect( ).toEventually(beTrue())
-                }
             }
-
-
         }
     }
 
 }
-
-

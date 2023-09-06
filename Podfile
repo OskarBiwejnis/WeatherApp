@@ -12,6 +12,7 @@ target 'WeatherApp' do
   pod 'CombineExt'
   pod 'Sourcery'
   pod 'CombineDataSources', :git => 'https://github.com/Airnauts/CombineDataSources.git', :commit => 'ac74034'
+
   target 'WeatherAppTests' do
     inherit! :search_paths
     pod 'Quick'
