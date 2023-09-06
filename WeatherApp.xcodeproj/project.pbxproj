@@ -38,7 +38,7 @@
 		46D1FEA82A652B43003A71C4 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEA72A652B43003A71C4 /* SearchCell.swift */; };
 		46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEAA2A655FE1003A71C4 /* City.swift */; };
 		46D1FEB42A659B35003A71C4 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEB32A659B35003A71C4 /* NetworkingError.swift */; };
-		46D902132A976A7500417ABD /* AutoEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D902122A976A7500417ABD /* AutoEquatable.swift */; };
+		46E20A432AA7908D0005251D /* SourceryGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E20A422AA7908D0005251D /* SourceryGenerated.swift */; };
 		46F770CA2A77ABF800C148FE /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770C92A77ABF800C148FE /* Label.swift */; };
 		46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770CF2A77B92F00C148FE /* FontProvider.swift */; };
 		5CB114C0C95858668BA33ABB /* Pods_WeatherApp_WeatherAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0748B236273F74780BE0760B /* Pods_WeatherApp_WeatherAppUITests.framework */; };
@@ -104,7 +104,7 @@
 		46D1FEA72A652B43003A71C4 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		46D1FEAA2A655FE1003A71C4 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		46D1FEB32A659B35003A71C4 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
-		46D902122A976A7500417ABD /* AutoEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEquatable.swift; sourceTree = "<group>"; };
+		46E20A422AA7908D0005251D /* SourceryGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceryGenerated.swift; sourceTree = "<group>"; };
 		46F770C92A77ABF800C148FE /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		46F770CF2A77B92F00C148FE /* FontProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontProvider.swift; sourceTree = "<group>"; };
 		5CE19633D95897EC7905168E /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +151,14 @@
 				4602D1D12A67F0EB001E11F0 /* ForecastCell.swift */,
 			);
 			path = Forecast;
+			sourceTree = "<group>";
+		};
+		461D87E92AA78FC200C8086A /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				46E20A422AA7908D0005251D /* SourceryGenerated.swift */,
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 		464975BF2A66B4F300DC78FB /* Modules */ = {
@@ -257,8 +265,8 @@
 		46C7589F2A5D4D51008B52A5 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				461D87E92AA78FC200C8086A /* Generated */,
 				467A516A2A9C99BC00661714 /* Extensions */,
-				46D902142A976A8000417ABD /* Generated */,
 				464975C42A66B55D00DC78FB /* Supporting Files */,
 				464975BF2A66B4F300DC78FB /* Modules */,
 				464975C32A66B53900DC78FB /* Services */,
@@ -289,14 +297,6 @@
 				46C758C32A5D4D52008B52A5 /* WeatherAppUITestsLaunchTests.swift */,
 			);
 			path = WeatherAppUITests;
-			sourceTree = "<group>";
-		};
-		46D902142A976A8000417ABD /* Generated */ = {
-			isa = PBXGroup;
-			children = (
-				46D902122A976A7500417ABD /* AutoEquatable.swift */,
-			);
-			path = Generated;
 			sourceTree = "<group>";
 		};
 		46F770CD2A77B88300C148FE /* Custom Views */ = {
@@ -550,7 +550,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n\n\"$PODS_ROOT/Sourcery/bin/sourcery\" --config \"$SRCROOT/sourcery_config.yml\"\n\n";
+			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n\nSOURCERY=\"Sourcery-1.3.2\"\n\"$PODS_ROOT/Sourcery/bin/sourcery\" --config \"$SRCROOT/sourcery_config.yml\"\n\n";
 		};
 		46C758D82A5FD32A008B52A5 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -636,6 +636,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				467A516C2A9C99E600661714 /* Publisher+Ext.swift in Sources */,
+				46E20A432AA7908D0005251D /* SourceryGenerated.swift in Sources */,
 				464975BD2A668B2800DC78FB /* SearchViewModel.swift in Sources */,
 				464975C72A66D4CE00DC78FB /* WelcomeViewModel.swift in Sources */,
 				4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */,
@@ -656,7 +657,6 @@
 				4602D1CD2A67F09B001E11F0 /* ForecastView.swift in Sources */,
 				46F770CA2A77ABF800C148FE /* Label.swift in Sources */,
 				46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */,
-				46D902132A976A7500417ABD /* AutoEquatable.swift in Sources */,
 				4602D1CB2A67F05B001E11F0 /* ForecastViewController.swift in Sources */,
 				46C758D52A5E8D32008B52A5 /* WelcomeView.swift in Sources */,
 				4639AB3B2A7A57FC007AA0FA /* RecentCityCell.swift in Sources */,

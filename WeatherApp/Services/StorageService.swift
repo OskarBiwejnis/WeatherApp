@@ -1,6 +1,7 @@
 import Foundation
 import RealmSwift
 
+//sourcery: AutoMockable
 protocol StorageServiceType {
     func getRecentCities() -> [City]
     func addRecentCity(_ city: City)
