@@ -1,0 +1,7 @@
+sources:
+  - ./WeatherApp
+templates:
+  - ./Pods/Sourcery/Templates/AutoEquatable.stencil
+  - ./Pods/Sourcery/Templates/AutoMockable.stencil
+output:
+    ./WeatherApp/Generated/SourceryGenerated.swift
