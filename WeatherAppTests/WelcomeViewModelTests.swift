@@ -9,8 +9,8 @@ import XCTest
 class WelcomeViewModelSpec: QuickSpec {
 
     override class func spec() {
-        var storageServiceMock = StorageServiceTypeMock()
-        var welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel(storageService: storageServiceMock)
+        var storageServiceMock: StorageServiceTypeMock!
+        var welcomeViewModel: WelcomeViewModelContract!
         var openSearchScreenPublisherObserver: PublisherEventsObserver<Void>!
         var reloadTablePublisherObserver: PublisherEventsObserver<[City]>!
         var openForecastPublisherObserver: PublisherEventsObserver<City>!
@@ -52,7 +52,7 @@ class WelcomeViewModelSpec: QuickSpec {
                         expect(reloadTablePublisherObserver.values).toNot(beEmpty())
                     }
                     it("reloads table view with proper cities") {
-                        expect(reloadTablePublisherObserver.values) == [stubCities]
+                        expect(reloadTablePublisherObserver.values).to(equalDiff([stubCities]))
                     }
 
                     context("when view has appeared") {
@@ -66,7 +66,7 @@ class WelcomeViewModelSpec: QuickSpec {
                                 expect(openForecastPublisherObserver.values).toNot(beEmpty())
                             }
                             it("opens proper forecast for that city") {
-                                expect(openForecastPublisherObserver.values) == [differentStubCity]
+                                expect(openForecastPublisherObserver.values).to(equalDiff([differentStubCity]))
                             }
                         }
                     }

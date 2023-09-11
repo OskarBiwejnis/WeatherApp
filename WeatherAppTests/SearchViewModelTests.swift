@@ -10,8 +10,8 @@ class SearchViewModelSpec: QuickSpec {
     
     override class func spec() {
         var testScheduler = DispatchQueue.test
-        var networkingServiceMock = NetworkingServiceTypeMock()
-        var searchViewModel: SearchViewModelContract = SearchViewModel(networkingService: networkingServiceMock, scheduler: testScheduler.eraseToAnyScheduler())
+        var networkingServiceMock: NetworkingServiceTypeMock!
+        var searchViewModel: SearchViewModelContract!
         var foundCitiesPublisherObserver: PublisherEventsObserver<[City]>!
         var showErrorPublisherObserver: PublisherEventsObserver<Error>!
         var openForecastPublisherObserver: PublisherEventsObserver<City>!
@@ -44,7 +44,7 @@ class SearchViewModelSpec: QuickSpec {
                     }
 
                     it("reloads table") {
-                        expect(foundCitiesPublisherObserver.values).to(equal([stubCities]))
+                        expect(foundCitiesPublisherObserver.values).to(equalDiff([stubCities]))
                     }
 
                     context("when table loaded") {
@@ -58,7 +58,7 @@ class SearchViewModelSpec: QuickSpec {
                                 expect(openForecastPublisherObserver.values).toNot(beEmpty())
                             }
                             it("opens proper forecast for given city") {
-                                expect(openForecastPublisherObserver.values).to(equal([differentStubCity]))
+                                expect(openForecastPublisherObserver.values).to(equalDiff([differentStubCity]))
                             }
                         }
                     }
