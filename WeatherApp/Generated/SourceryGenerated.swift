@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.6.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 // swiftlint:disable file_length
@@ -49,79 +49,4 @@ internal func == (lhs: WelcomeViewController.EventInput, rhs: WelcomeViewControl
         return true
     default: return false
     }
-}
-
-// swiftlint:disable line_length
-// swiftlint:disable variable_name
-
-import Foundation
-#if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
-#elseif os(OSX)
-import AppKit
-#endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class StorageServiceTypeMock: StorageServiceType {
-
-
-
-
-    //MARK: - getRecentCities
-
-    var getRecentCitiesCallsCount = 0
-    var getRecentCitiesCalled: Bool {
-        return getRecentCitiesCallsCount > 0
-    }
-    var getRecentCitiesReturnValue: [City]!
-    var getRecentCitiesClosure: (() -> [City])?
-
-    func getRecentCities() -> [City] {
-        getRecentCitiesCallsCount += 1
-        if let getRecentCitiesClosure = getRecentCitiesClosure {
-            return getRecentCitiesClosure()
-        } else {
-            return getRecentCitiesReturnValue
-        }
-    }
-
-    //MARK: - addRecentCity
-
-    var addRecentCityCallsCount = 0
-    var addRecentCityCalled: Bool {
-        return addRecentCityCallsCount > 0
-    }
-    var addRecentCityReceivedCity: City?
-    var addRecentCityReceivedInvocations: [City] = []
-    var addRecentCityClosure: ((City) -> Void)?
-
-    func addRecentCity(_ city: City) {
-        addRecentCityCallsCount += 1
-        addRecentCityReceivedCity = city
-        addRecentCityReceivedInvocations.append(city)
-        addRecentCityClosure?(city)
-    }
-
 }

@@ -41,6 +41,7 @@ excluded:
   - Modules
   - vendor
   - WeatherApp/Services/StorageService.swift
+  - WeatherAppTests/Convenience/Mock.generated.swift
 file_length:
   warning: 500
   error: 700

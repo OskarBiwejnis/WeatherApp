@@ -7,8 +7,7 @@ class SearchViewController: UIViewController {
 
     // MARK: - Constants -
 
-    // sourcery: AutoEquatable
-    enum EventInput {
+    enum EventInput: AutoEquatable {
         case textChanged(text: String)
         case didSelectCity(row: Int)
     }

@@ -57,7 +57,7 @@ class SearchViewModel: SearchViewModelContract {
                 return text == "" ? nil : text
             } else { return nil }
         }
-        .debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
+        //.debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
         .flatMapLatest { [weak self] text in
             self?.networkingService.fetchCities(text).toResult() ?? .emptyOutput
         }

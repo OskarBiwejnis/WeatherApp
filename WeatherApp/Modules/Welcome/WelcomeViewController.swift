@@ -6,8 +6,7 @@ class WelcomeViewController: UIViewController {
 
     // MARK: - Constants -
 
-    //sourcery: AutoEquatable
-    enum EventInput {
+    enum EventInput: AutoEquatable {
         case proceedButtonTap
         case didSelectRecentCity(row: Int)
         case viewWillAppear

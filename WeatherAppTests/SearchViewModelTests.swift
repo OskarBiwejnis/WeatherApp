@@ -1,125 +1,83 @@
-//import XCTest
-//@testable import WeatherApp
-//
-//final class SearchViewModelTests: XCTestCase {
-//
-//    var searchViewModel: SearchViewModel!
-//    var mockSearchViewModelDelegate: MockSearchViewModelDelegate!
-//    var mockNetworkingService: MockNetworkingService!
-//
-//    override func setUpWithError() throws {
-//        mockNetworkingService = MockNetworkingService()
-//        searchViewModel = SearchViewModel(networkingService: mockNetworkingService)
-//        mockSearchViewModelDelegate = MockSearchViewModelDelegate()
-//        searchViewModel.delegate = mockSearchViewModelDelegate
-//    }
-//
-//    override func tearDown() {
-//        searchViewModel = nil
-//        mockSearchViewModelDelegate = nil
-//        super.tearDown()
-//    }
-//
-//    func testShouldCallDelegateFunctionWhenDidSelectSearchCell() throws {
-//        searchViewModel.cities = [City(), City(), City()]
-//        XCTAssertFalse(mockSearchViewModelDelegate.didCallOpenCityForecast)
-//
-//        searchViewModel.didSelectSearchCell(didSelectRowAt: IndexPath(row: 1, section: 0))
-//
-//        XCTAssertTrue(mockSearchViewModelDelegate.didCallOpenCityForecast)
-//    }
-//
-//    func testShouldSelectProperCityWhenDidSelectSearchCell() throws {
-//        var cityZero = City()
-//        cityZero.name = "Zero"
-//        cityZero.latitude = 0.0
-//        var cityOne = City()
-//        cityOne.name = "One"
-//        cityOne.latitude = 1.1
-//        var cityTwo = City()
-//        cityTwo.name = "Two"
-//        cityTwo.latitude = 2.2
-//        searchViewModel.cities = [cityZero, cityOne, cityTwo]
-//        XCTAssertNotEqual(cityZero, cityOne)
-//        XCTAssertNotEqual(cityOne, cityTwo)
-//        XCTAssertNil(mockSearchViewModelDelegate.city)
-//
-//        searchViewModel.didSelectSearchCell(didSelectRowAt: IndexPath(row: 1, section: 0))
-//
-//        XCTAssertEqual(mockSearchViewModelDelegate.city, cityOne)
-//    }
-//
-//    func testShouldCallDelegateFunctionWhenSearchTextDidChange() throws {
-//        XCTAssertFalse(mockSearchViewModelDelegate.didCallReloadTable)
-//        let expectation = self.expectation(description: "Reloading Table")
-//        mockSearchViewModelDelegate.expectationReloadTable = expectation
-//
-//        searchViewModel.searchTextDidChange("War")
-//
-//        waitForExpectations(timeout: 5)
-//        XCTAssertTrue(mockSearchViewModelDelegate.didCallReloadTable)
-//    }
-//
-//
-//
-//    func testShouldShowErrorWhenSearchTextDidChangeWithIncorrectText() throws {
-//        XCTAssertFalse(mockSearchViewModelDelegate.didCallShowError)
-//        let expectation = self.expectation(description: "Show Error")
-//        mockSearchViewModelDelegate.expectationShowError = expectation
-//
-//        searchViewModel.searchTextDidChange(MockNetworkingService.stringThatThrowsError)
-//
-//        waitForExpectations(timeout: 5)
-//        XCTAssertTrue(mockSearchViewModelDelegate.didCallShowError)
-//        XCTAssert(mockSearchViewModelDelegate.error is MockError)
-//    }
-//
-//    class MockSearchViewModelDelegate: SearchViewModelDelegate {
-//
-//        var didCallOpenCityForecast = false
-//        var didCallReloadTable = false
-//        var didCallShowError = false
-//        var city: City?
-//        var expectationReloadTable: XCTestExpectation?
-//        var expectationShowError: XCTestExpectation?
-//        var error: Error?
-//
-//        func openCityForecast(city: City) {
-//            didCallOpenCityForecast = true
-//            self.city = city
-//        }
-//
-//        func reloadTable() {
-//            didCallReloadTable = true
-//            expectationReloadTable?.fulfill()
-//        }
-//
-//        func showError(_ error: Error) {
-//            didCallShowError = true
-//            expectationShowError?.fulfill()
-//            self.error = error
-//        }
-//
-//    }
-//
-//    class MockNetworkingService: NetworkingServiceType {
-//
-//        static let stringThatThrowsError = "ThisStringThrowsError"
-//
-//        func fetchCities(_ searchText: String) async throws -> [City] {
-//            if searchText == Self.stringThatThrowsError { throw MockError() }
-//            return []
-//        }
-//
-//        func fetchThreeHourForecast(city: WeatherApp.City) async throws -> [ThreeHourForecast] {
-//            return []
-//        }
-//
-//    }
-//
-//    class MockError: Error {
-//
-//    }
-//
-//}
-//
+import Combine
+import Difference
+import Nimble
+import Quick
+import SwiftyMocky
+import XCTest
+@testable import WeatherApp
+
+class SearchViewModelSpec: QuickSpec {
+    
+    override class func spec() {
+        var testScheduler = TestScheduler<TimeInterval, Any>(now: TimeInterval())
+        var networkingServiceMock = NetworkingServiceTypeMock()
+        var searchViewModel: SearchViewModelContract = SearchViewModel(networkingService: networkingServiceMock)
+        var foundCitiesPublisherObserver: PublisherEventsObserver<[City]>!
+        var showErrorPublisherObserver: PublisherEventsObserver<Error>!
+        var openForecastPublisherObserver: PublisherEventsObserver<City>!
+        var stubCity: City!
+        var differentStubCity: City!
+        var stubCities: [City]!
+        var stubCitiesData: CitiesData!
+        var fetchCitiesReturnValue: AnyPublisher<CitiesData, NetworkingError>!
+
+        beforeEach {
+            networkingServiceMock = NetworkingServiceTypeMock()
+            searchViewModel = SearchViewModel(networkingService: networkingServiceMock)
+            stubCity = City()
+            differentStubCity = City()
+            stubCity.name = "xyz"
+            differentStubCity.name = "zyx"
+            stubCities = [stubCity, differentStubCity, stubCity]
+            stubCitiesData = CitiesData(data: stubCities)
+            fetchCitiesReturnValue = Just(stubCitiesData).setFailureType(to: NetworkingError.self).eraseToAnyPublisher()
+        }
+        
+        describe("SearchViewModel") {
+            context("sending navigationEvents") {
+                context("when search text entered") {
+                    beforeEach {
+                        Given(networkingServiceMock, .fetchCities("abc", willReturn: fetchCitiesReturnValue))
+                        foundCitiesPublisherObserver = PublisherEventsObserver(searchViewModel.foundCitiesPublisher)
+                        searchViewModel.eventsInputSubject.send(.textChanged(text: "abc"))
+                        //testScheduler.advance()
+                    }
+
+                    it("reloads table") {
+                        expect(foundCitiesPublisherObserver.values).to(equal([stubCities]))
+                    }
+
+                    context("when table loaded") {
+                        context("when city selected") {
+                            beforeEach {
+                                openForecastPublisherObserver = PublisherEventsObserver(searchViewModel.openForecastPublisher)
+                                searchViewModel.eventsInputSubject.send(.didSelectCity(row: 1))
+                            }
+
+                            it("opens forecast") {
+                                expect(openForecastPublisherObserver.values).toNot(beEmpty())
+                            }
+                            it("opens proper forecast for given city") {
+                                expect(openForecastPublisherObserver.values).to(equal([differentStubCity]))
+                            }
+                        }
+                    }
+                }
+
+                context("when error occured") {
+                    beforeEach {
+                        Given(networkingServiceMock, .fetchCities("err",willReturn: Fail(error: NetworkingError.unknownError)
+                            .eraseToAnyPublisher()))
+                        showErrorPublisherObserver = PublisherEventsObserver(searchViewModel.showErrorPublisher)
+                        searchViewModel.eventsInputSubject.send(.textChanged(text: "err"))
+                    }
+
+                    it("shows an error") {
+                        expect(showErrorPublisherObserver.values).toNot(beEmpty())
+                    }
+                }
+            }
+        }
+    }
+    
+}

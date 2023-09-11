@@ -16,11 +16,17 @@
 		4639AB3B2A7A57FC007AA0FA /* RecentCityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4639AB3A2A7A57FC007AA0FA /* RecentCityCell.swift */; };
 		464975BD2A668B2800DC78FB /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464975BC2A668B2800DC78FB /* SearchViewModel.swift */; };
 		464975C72A66D4CE00DC78FB /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */; };
+		4663C9762AA9DF71000019D3 /* PublisherEventsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */; };
 		467A516C2A9C99E600661714 /* Publisher+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516B2A9C99E600661714 /* Publisher+Ext.swift */; };
 		467A516F2A9CA29E00661714 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516E2A9CA29E00661714 /* Result.swift */; };
 		4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35A2A8121A10018C215 /* PersistedCity.swift */; };
 		4688F3602A813E940018C215 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35F2A813E940018C215 /* SearchViewModelTests.swift */; };
 		4688F3622A813EFE0018C215 /* ForecastViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */; };
+		46B498622AAB43F300CF278C /* AutoEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B498612AAB43F300CF278C /* AutoEquatable.swift */; };
+		46B498692AAB791E00CF278C /* TestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B498662AAB790400CF278C /* TestScheduler.swift */; };
+		46B4986B2AAB80B900CF278C /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B4986A2AAB80B900CF278C /* Double+Ext.swift */; };
+		46B498702AAB8B8700CF278C /* AutoMockable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B4986F2AAB8B8700CF278C /* AutoMockable.swift */; };
+		46B498722AAB8C4000CF278C /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B4986C2AAB8B0D00CF278C /* Mock.generated.swift */; };
 		46C758A12A5D4D51008B52A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758A02A5D4D51008B52A5 /* AppDelegate.swift */; };
 		46C758A32A5D4D51008B52A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C758A22A5D4D51008B52A5 /* SceneDelegate.swift */; };
 		46C758AA2A5D4D52008B52A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46C758A92A5D4D52008B52A5 /* Assets.xcassets */; };
@@ -78,11 +84,17 @@
 		4639AB3A2A7A57FC007AA0FA /* RecentCityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentCityCell.swift; sourceTree = "<group>"; };
 		464975BC2A668B2800DC78FB /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
+		4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherEventsObserver.swift; sourceTree = "<group>"; };
 		467A516B2A9C99E600661714 /* Publisher+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Ext.swift"; sourceTree = "<group>"; };
 		467A516E2A9CA29E00661714 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		4688F35A2A8121A10018C215 /* PersistedCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedCity.swift; sourceTree = "<group>"; };
 		4688F35F2A813E940018C215 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
 		4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModelTests.swift; sourceTree = "<group>"; };
+		46B498612AAB43F300CF278C /* AutoEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEquatable.swift; sourceTree = "<group>"; };
+		46B498662AAB790400CF278C /* TestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestScheduler.swift; sourceTree = "<group>"; };
+		46B4986A2AAB80B900CF278C /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
+		46B4986C2AAB8B0D00CF278C /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
+		46B4986F2AAB8B8700CF278C /* AutoMockable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.swift; sourceTree = "<group>"; };
 		46C7589D2A5D4D51008B52A5 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46C758A02A5D4D51008B52A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46C758A22A5D4D51008B52A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -224,6 +236,17 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4663C9742AA9DF2C000019D3 /* Convenience */ = {
+			isa = PBXGroup;
+			children = (
+				46B498662AAB790400CF278C /* TestScheduler.swift */,
+				4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */,
+				46B4986A2AAB80B900CF278C /* Double+Ext.swift */,
+				46B4986C2AAB8B0D00CF278C /* Mock.generated.swift */,
+			);
+			path = Convenience;
+			sourceTree = "<group>";
+		};
 		467A516A2A9C99BC00661714 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +261,15 @@
 				4688F35A2A8121A10018C215 /* PersistedCity.swift */,
 			);
 			path = Persisted;
+			sourceTree = "<group>";
+		};
+		46B498602AAB43D600CF278C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				46B498612AAB43F300CF278C /* AutoEquatable.swift */,
+				46B4986F2AAB8B8700CF278C /* AutoMockable.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		46C758942A5D4D51008B52A5 = {
@@ -265,6 +297,7 @@
 		46C7589F2A5D4D51008B52A5 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				46B498602AAB43D600CF278C /* Helpers */,
 				461D87E92AA78FC200C8086A /* Generated */,
 				467A516A2A9C99BC00661714 /* Extensions */,
 				464975C42A66B55D00DC78FB /* Supporting Files */,
@@ -283,6 +316,7 @@
 		46C758B62A5D4D52008B52A5 /* WeatherAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				4663C9742AA9DF2C000019D3 /* Convenience */,
 				46C758B72A5D4D52008B52A5 /* WelcomeViewModelTests.swift */,
 				4688F35F2A813E940018C215 /* SearchViewModelTests.swift */,
 				4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */,
@@ -338,12 +372,13 @@
 			buildConfigurationList = 46C758C72A5D4D52008B52A5 /* Build configuration list for PBXNativeTarget "WeatherApp" */;
 			buildPhases = (
 				308559D7C18D745996799639 /* [CP] Check Pods Manifest.lock */,
-				46C758D82A5FD32A008B52A5 /* Run Script */,
+				46C758D82A5FD32A008B52A5 /* Rswift */,
 				46C758992A5D4D51008B52A5 /* Sources */,
 				46C7589A2A5D4D51008B52A5 /* Frameworks */,
 				46C7589B2A5D4D51008B52A5 /* Resources */,
 				B8DBC9FC106EAD07A05A752E /* [CP] Embed Pods Frameworks */,
-				46C758D72A5EE372008B52A5 /* ShellScript */,
+				46C758D72A5EE372008B52A5 /* SwiftLint */,
+				4663C97C2AAA2750000019D3 /* Sourcery */,
 			);
 			buildRules = (
 			);
@@ -534,7 +569,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		46C758D72A5EE372008B52A5 /* ShellScript */ = {
+		4663C97C2AAA2750000019D3 /* Sourcery */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -544,15 +579,16 @@
 			);
 			inputPaths = (
 			);
+			name = Sourcery;
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n\nSOURCERY=\"Sourcery-1.3.2\"\n\"$PODS_ROOT/Sourcery/bin/sourcery\" --config \"$SRCROOT/sourcery_config.yml\"\n\n";
+			shellScript = "#\"$PODS_ROOT/Sourcery/bin/sourcery\"# --config \"$SRCROOT/sourcery_config.yml\"\n";
 		};
-		46C758D82A5FD32A008B52A5 /* Run Script */ = {
+		46C758D72A5EE372008B52A5 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -562,7 +598,26 @@
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n\n";
+		};
+		46C758D82A5FD32A008B52A5 /* Rswift */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Rswift;
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -651,6 +706,7 @@
 				46C758ED2A600088008B52A5 /* SearchView.swift in Sources */,
 				4602D1D52A67FFA8001E11F0 /* ThreeHourForecast.swift in Sources */,
 				46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */,
+				46B498702AAB8B8700CF278C /* AutoMockable.swift in Sources */,
 				4602D1CF2A67F0B2001E11F0 /* ForecastViewModel.swift in Sources */,
 				46C758F42A614E55008B52A5 /* NetworkingService.swift in Sources */,
 				46C758D32A5D521D008B52A5 /* WelcomeViewController.swift in Sources */,
@@ -660,6 +716,7 @@
 				4602D1CB2A67F05B001E11F0 /* ForecastViewController.swift in Sources */,
 				46C758D52A5E8D32008B52A5 /* WelcomeView.swift in Sources */,
 				4639AB3B2A7A57FC007AA0FA /* RecentCityCell.swift in Sources */,
+				46B498622AAB43F300CF278C /* AutoEquatable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,8 +725,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4688F3622A813EFE0018C215 /* ForecastViewModelTests.swift in Sources */,
+				46B498722AAB8C4000CF278C /* Mock.generated.swift in Sources */,
+				46B498692AAB791E00CF278C /* TestScheduler.swift in Sources */,
+				46B4986B2AAB80B900CF278C /* Double+Ext.swift in Sources */,
 				4688F3602A813E940018C215 /* SearchViewModelTests.swift in Sources */,
 				46C758B82A5D4D52008B52A5 /* WelcomeViewModelTests.swift in Sources */,
+				4663C9762AA9DF71000019D3 /* PublisherEventsObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
