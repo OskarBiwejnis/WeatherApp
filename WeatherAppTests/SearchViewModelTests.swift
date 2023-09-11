@@ -9,9 +9,9 @@ import XCTest
 class SearchViewModelSpec: QuickSpec {
     
     override class func spec() {
-        var testScheduler = TestScheduler<TimeInterval, Any>(now: TimeInterval())
+        var testScheduler = DispatchQueue.test
         var networkingServiceMock = NetworkingServiceTypeMock()
-        var searchViewModel: SearchViewModelContract = SearchViewModel(networkingService: networkingServiceMock)
+        var searchViewModel: SearchViewModelContract = SearchViewModel(networkingService: networkingServiceMock, scheduler: testScheduler.eraseToAnyScheduler())
         var foundCitiesPublisherObserver: PublisherEventsObserver<[City]>!
         var showErrorPublisherObserver: PublisherEventsObserver<Error>!
         var openForecastPublisherObserver: PublisherEventsObserver<City>!
@@ -23,7 +23,7 @@ class SearchViewModelSpec: QuickSpec {
 
         beforeEach {
             networkingServiceMock = NetworkingServiceTypeMock()
-            searchViewModel = SearchViewModel(networkingService: networkingServiceMock)
+            searchViewModel = SearchViewModel(networkingService: networkingServiceMock, scheduler: testScheduler.eraseToAnyScheduler())
             stubCity = City()
             differentStubCity = City()
             stubCity.name = "xyz"
@@ -40,7 +40,7 @@ class SearchViewModelSpec: QuickSpec {
                         Given(networkingServiceMock, .fetchCities("abc", willReturn: fetchCitiesReturnValue))
                         foundCitiesPublisherObserver = PublisherEventsObserver(searchViewModel.foundCitiesPublisher)
                         searchViewModel.eventsInputSubject.send(.textChanged(text: "abc"))
-                        //testScheduler.advance()
+                        testScheduler.advance(by: 2)
                     }
 
                     it("reloads table") {
@@ -70,6 +70,7 @@ class SearchViewModelSpec: QuickSpec {
                             .eraseToAnyPublisher()))
                         showErrorPublisherObserver = PublisherEventsObserver(searchViewModel.showErrorPublisher)
                         searchViewModel.eventsInputSubject.send(.textChanged(text: "err"))
+                        testScheduler.advance(by: 2)
                     }
 
                     it("shows an error") {

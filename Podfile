@@ -14,11 +14,12 @@ target 'WeatherApp' do
   pod 'Sourcery', '~> 1.6.0'
   pod 'Difference'
   pod 'SwiftyMocky', '~> 4.1.0'
+  pod 'Quick'
+  pod 'Nimble'
 
   target 'WeatherAppTests' do
     inherit! :search_paths
-    pod 'Quick'
-    pod 'Nimble'
+  
 	
   end
 

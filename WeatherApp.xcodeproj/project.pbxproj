@@ -45,6 +45,8 @@
 		46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEAA2A655FE1003A71C4 /* City.swift */; };
 		46D1FEB42A659B35003A71C4 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEB32A659B35003A71C4 /* NetworkingError.swift */; };
 		46E20A432AA7908D0005251D /* SourceryGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E20A422AA7908D0005251D /* SourceryGenerated.swift */; };
+		46E9287B2AAF4AD10022A29C /* EqualDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E9287A2AAF4AD10022A29C /* EqualDiff.swift */; };
+		46E928832AAF4D020022A29C /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = 46E928822AAF4D020022A29C /* CombineSchedulers */; };
 		46F770CA2A77ABF800C148FE /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770C92A77ABF800C148FE /* Label.swift */; };
 		46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770CF2A77B92F00C148FE /* FontProvider.swift */; };
 		5CB114C0C95858668BA33ABB /* Pods_WeatherApp_WeatherAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0748B236273F74780BE0760B /* Pods_WeatherApp_WeatherAppUITests.framework */; };
@@ -117,6 +119,7 @@
 		46D1FEAA2A655FE1003A71C4 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		46D1FEB32A659B35003A71C4 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
 		46E20A422AA7908D0005251D /* SourceryGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceryGenerated.swift; sourceTree = "<group>"; };
+		46E9287A2AAF4AD10022A29C /* EqualDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualDiff.swift; sourceTree = "<group>"; };
 		46F770C92A77ABF800C148FE /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		46F770CF2A77B92F00C148FE /* FontProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontProvider.swift; sourceTree = "<group>"; };
 		5CE19633D95897EC7905168E /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,6 +135,7 @@
 			files = (
 				FDEF09A778EBB45F32A4EDCC /* Pods_WeatherApp.framework in Frameworks */,
 				46C758DB2A5FDC54008B52A5 /* RswiftLibrary in Frameworks */,
+				46E928832AAF4D020022A29C /* CombineSchedulers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +272,7 @@
 			children = (
 				46B498612AAB43F300CF278C /* AutoEquatable.swift */,
 				46B4986F2AAB8B8700CF278C /* AutoMockable.swift */,
+				46E9287A2AAF4AD10022A29C /* EqualDiff.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -388,6 +393,7 @@
 			name = WeatherApp;
 			packageProductDependencies = (
 				46C758DA2A5FDC54008B52A5 /* RswiftLibrary */,
+				46E928822AAF4D020022A29C /* CombineSchedulers */,
 			);
 			productName = WeatherApp;
 			productReference = 46C7589D2A5D4D51008B52A5 /* WeatherApp.app */;
@@ -401,7 +407,6 @@
 				46C758AF2A5D4D52008B52A5 /* Sources */,
 				46C758B02A5D4D52008B52A5 /* Frameworks */,
 				46C758B12A5D4D52008B52A5 /* Resources */,
-				206D3A81A69857ACB1CF8CFC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -468,6 +473,7 @@
 			mainGroup = 46C758942A5D4D51008B52A5;
 			packageReferences = (
 				46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */,
+				46E928812AAF4D020022A29C /* XCRemoteSwiftPackageReference "combine-schedulers" */,
 			);
 			productRefGroup = 46C7589E2A5D4D51008B52A5 /* Products */;
 			projectDirPath = "";
@@ -528,23 +534,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		206D3A81A69857ACB1CF8CFC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		308559D7C18D745996799639 /* [CP] Check Pods Manifest.lock */ = {
@@ -709,6 +698,7 @@
 				46B498702AAB8B8700CF278C /* AutoMockable.swift in Sources */,
 				4602D1CF2A67F0B2001E11F0 /* ForecastViewModel.swift in Sources */,
 				46C758F42A614E55008B52A5 /* NetworkingService.swift in Sources */,
+				46E9287B2AAF4AD10022A29C /* EqualDiff.swift in Sources */,
 				46C758D32A5D521D008B52A5 /* WelcomeViewController.swift in Sources */,
 				4602D1CD2A67F09B001E11F0 /* ForecastView.swift in Sources */,
 				46F770CA2A77ABF800C148FE /* Label.swift in Sources */,
@@ -1079,6 +1069,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		46E928812AAF4D020022A29C /* XCRemoteSwiftPackageReference "combine-schedulers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/combine-schedulers";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1090,6 +1088,11 @@
 		46C758DE2A5FDD07008B52A5 /* RswiftGenerateInternalResources */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:RswiftGenerateInternalResources";
+		};
+		46E928822AAF4D020022A29C /* CombineSchedulers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 46E928812AAF4D020022A29C /* XCRemoteSwiftPackageReference "combine-schedulers" */;
+			productName = CombineSchedulers;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

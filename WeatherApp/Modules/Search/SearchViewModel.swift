@@ -1,6 +1,7 @@
 import Combine
 import CombineExt
 import CombineDataSources
+import CombineSchedulers
 import Foundation
 
 protocol SearchViewModelContract {
@@ -25,6 +26,7 @@ class SearchViewModel: SearchViewModelContract {
     // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
+    private let scheduler: AnySchedulerOf<DispatchQueue>
 
     var cities: [City] = []
 
@@ -34,8 +36,9 @@ class SearchViewModel: SearchViewModelContract {
 
     // MARK: - Initialization -
 
-    init(networkingService: NetworkingServiceType) {
+    init(networkingService: NetworkingServiceType, scheduler: AnySchedulerOf<DispatchQueue>) {
         self.networkingService = networkingService
+        self.scheduler = scheduler
     }
 
     // MARK: - Public -
@@ -57,7 +60,7 @@ class SearchViewModel: SearchViewModelContract {
                 return text == "" ? nil : text
             } else { return nil }
         }
-        //.debounce(for: .seconds(Constants.debounceTime), scheduler: DispatchQueue.global())
+        .debounce(for: .seconds(Constants.debounceTime), scheduler: scheduler)
         .flatMapLatest { [weak self] text in
             self?.networkingService.fetchCities(text).toResult() ?? .emptyOutput
         }
