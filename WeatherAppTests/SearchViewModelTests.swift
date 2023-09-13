@@ -23,7 +23,8 @@ class SearchViewModelSpec: QuickSpec {
 
         beforeEach {
             networkingServiceMock = NetworkingServiceTypeMock()
-            searchViewModel = SearchViewModel(networkingService: networkingServiceMock, scheduler: testScheduler.eraseToAnyScheduler())
+            searchViewModel = SearchViewModel(networkingService: networkingServiceMock,
+                                              scheduler: testScheduler.eraseToAnyScheduler())
             stubCity = City()
             differentStubCity = City()
             stubCity.name = "xyz"
@@ -75,6 +76,11 @@ class SearchViewModelSpec: QuickSpec {
 
                     it("shows an error") {
                         expect(showErrorPublisherObserver.values).toNot(beEmpty())
+                    }
+                    it("shows an error of proper kind") {
+                        guard let networkingError = showErrorPublisherObserver.values.first as? NetworkingError
+                        else { fail(); return }
+                        expect(networkingError).to(equalDiff(NetworkingError.unknownError))
                     }
                 }
             }
