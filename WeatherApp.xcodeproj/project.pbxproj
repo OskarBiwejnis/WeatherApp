@@ -16,6 +16,7 @@
 		4639AB3B2A7A57FC007AA0FA /* RecentCityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4639AB3A2A7A57FC007AA0FA /* RecentCityCell.swift */; };
 		464975BD2A668B2800DC78FB /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464975BC2A668B2800DC78FB /* SearchViewModel.swift */; };
 		464975C72A66D4CE00DC78FB /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */; };
+		465CA6DF2AB1EB8D00495467 /* EqualDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E9287A2AAF4AD10022A29C /* EqualDiff.swift */; };
 		4663C9762AA9DF71000019D3 /* PublisherEventsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */; };
 		467A516C2A9C99E600661714 /* Publisher+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516B2A9C99E600661714 /* Publisher+Ext.swift */; };
 		467A516F2A9CA29E00661714 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516E2A9CA29E00661714 /* Result.swift */; };
@@ -45,7 +46,6 @@
 		46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEAA2A655FE1003A71C4 /* City.swift */; };
 		46D1FEB42A659B35003A71C4 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEB32A659B35003A71C4 /* NetworkingError.swift */; };
 		46E20A432AA7908D0005251D /* SourceryGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E20A422AA7908D0005251D /* SourceryGenerated.swift */; };
-		46E9287B2AAF4AD10022A29C /* EqualDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E9287A2AAF4AD10022A29C /* EqualDiff.swift */; };
 		46E928832AAF4D020022A29C /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = 46E928822AAF4D020022A29C /* CombineSchedulers */; };
 		46F770CA2A77ABF800C148FE /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770C92A77ABF800C148FE /* Label.swift */; };
 		46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770CF2A77B92F00C148FE /* FontProvider.swift */; };
@@ -243,6 +243,7 @@
 		4663C9742AA9DF2C000019D3 /* Convenience */ = {
 			isa = PBXGroup;
 			children = (
+				46E9287A2AAF4AD10022A29C /* EqualDiff.swift */,
 				46B498662AAB790400CF278C /* TestScheduler.swift */,
 				4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */,
 				46B4986A2AAB80B900CF278C /* Double+Ext.swift */,
@@ -272,7 +273,6 @@
 			children = (
 				46B498612AAB43F300CF278C /* AutoEquatable.swift */,
 				46B4986F2AAB8B8700CF278C /* AutoMockable.swift */,
-				46E9287A2AAF4AD10022A29C /* EqualDiff.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -407,6 +407,7 @@
 				46C758AF2A5D4D52008B52A5 /* Sources */,
 				46C758B02A5D4D52008B52A5 /* Frameworks */,
 				46C758B12A5D4D52008B52A5 /* Resources */,
+				20BAF937461011E5E0385774 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -472,7 +473,7 @@
 			);
 			mainGroup = 46C758942A5D4D51008B52A5;
 			packageReferences = (
-				46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */,
+				46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R.swift" */,
 				46E928812AAF4D020022A29C /* XCRemoteSwiftPackageReference "combine-schedulers" */,
 			);
 			productRefGroup = 46C7589E2A5D4D51008B52A5 /* Products */;
@@ -534,6 +535,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		20BAF937461011E5E0385774 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		308559D7C18D745996799639 /* [CP] Check Pods Manifest.lock */ = {
@@ -610,7 +628,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				$SRCROOT/R.generated.swift,
+				"$SRCROOT/R.generated.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -698,7 +716,6 @@
 				46B498702AAB8B8700CF278C /* AutoMockable.swift in Sources */,
 				4602D1CF2A67F0B2001E11F0 /* ForecastViewModel.swift in Sources */,
 				46C758F42A614E55008B52A5 /* NetworkingService.swift in Sources */,
-				46E9287B2AAF4AD10022A29C /* EqualDiff.swift in Sources */,
 				46C758D32A5D521D008B52A5 /* WelcomeViewController.swift in Sources */,
 				4602D1CD2A67F09B001E11F0 /* ForecastView.swift in Sources */,
 				46F770CA2A77ABF800C148FE /* Label.swift in Sources */,
@@ -717,6 +734,7 @@
 				4688F3622A813EFE0018C215 /* ForecastViewModelTests.swift in Sources */,
 				46B498722AAB8C4000CF278C /* Mock.generated.swift in Sources */,
 				46B498692AAB791E00CF278C /* TestScheduler.swift in Sources */,
+				465CA6DF2AB1EB8D00495467 /* EqualDiff.swift in Sources */,
 				46B4986B2AAB80B900CF278C /* Double+Ext.swift in Sources */,
 				4688F3602A813E940018C215 /* SearchViewModelTests.swift in Sources */,
 				46C758B82A5D4D52008B52A5 /* WelcomeViewModelTests.swift in Sources */,
@@ -748,7 +766,7 @@
 		};
 		46C758DF2A5FDD07008B52A5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 46C758DE2A5FDD07008B52A5 /* RswiftGenerateInternalResources */;
+			productRef = 46C758DE2A5FDD07008B52A5 /* plugin:RswiftGenerateInternalResources */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1061,7 +1079,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */ = {
+		46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mac-cain13/R.swift";
 			requirement = {
@@ -1082,10 +1100,10 @@
 /* Begin XCSwiftPackageProductDependency section */
 		46C758DA2A5FDC54008B52A5 /* RswiftLibrary */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R" */;
+			package = 46C758D92A5FDC54008B52A5 /* XCRemoteSwiftPackageReference "R.swift" */;
 			productName = RswiftLibrary;
 		};
-		46C758DE2A5FDD07008B52A5 /* RswiftGenerateInternalResources */ = {
+		46C758DE2A5FDD07008B52A5 /* plugin:RswiftGenerateInternalResources */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:RswiftGenerateInternalResources";
 		};
