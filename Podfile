@@ -10,11 +10,17 @@ target 'WeatherApp' do
   pod 'RealmSwift', '~>10'
   pod 'CombineCocoa'
   pod 'CombineExt'
-  pod 'Sourcery'
   pod 'CombineDataSources', :git => 'https://github.com/Airnauts/CombineDataSources.git', :commit => 'ac74034'
+  pod 'Sourcery', '~> 1.6.0'
+  pod 'Difference'
+  pod 'SwiftyMocky', '~> 4.1.0'
+  pod 'Quick'
+  pod 'Nimble'
+
   target 'WeatherAppTests' do
     inherit! :search_paths
-    # Pods for testing
+  
+	
   end
 
   target 'WeatherAppUITests' do

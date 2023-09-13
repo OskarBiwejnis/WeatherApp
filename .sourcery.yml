@@ -1,0 +1,6 @@
+sources:
+  - ./WeatherApp
+templates:
+  - ./SourceryTemplates
+output:
+    ./WeatherApp/Generated/SourceryGenerated.swift

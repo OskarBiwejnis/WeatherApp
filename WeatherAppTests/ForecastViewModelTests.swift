@@ -1,102 +1,73 @@
+import Combine
+import Difference
+import Nimble
+import Quick
+import SwiftyMocky
 import XCTest
 @testable import WeatherApp
 
-final class ForecastViewModelTests: XCTestCase {
+class ForecastViewModelSpec: QuickSpec {
 
-    var forecastViewModel: ForecastViewModel!
-    var mockForecastViewModelDelegate: MockForecastViewModelDelegate!
-    var mockNetworkingService: MockNetworkingService!
-    var mockCity: City!
+    override class func spec() {
+        var networkingServiceMock: NetworkingServiceTypeMock!
+        var stubCity: City!
+        var forecastViewModel: ForecastViewModelContract!
+        var showErrorPublisherObserver: PublisherEventsObserver<Error>!
+        var forecastPublisherObserver: PublisherEventsObserver<[ThreeHourForecastFormatted]>!
+        var stubThreeHourForecast: ThreeHourForecast!
+        var stubThreeHourForecastData: ThreeHourForecastData!
+        var fetchForecastReturnValue: AnyPublisher<ThreeHourForecastData, NetworkingError>!
 
-    override func setUpWithError() throws {
-        mockNetworkingService = MockNetworkingService()
-        mockCity = City()
-        mockCity.name = "Miasto"
-        mockCity.country = "PL"
-        mockCity.latitude = 123.123
-        mockCity.longitude = 321.321
-        mockForecastViewModelDelegate = MockForecastViewModelDelegate()
-    }
-
-    override func tearDown() {
-        forecastViewModel = nil
-        mockForecastViewModelDelegate = nil
-        mockNetworkingService = nil
-        mockCity = nil
-        super.tearDown()
-    }
-
-    func testShouldCallDelegateFunctionWhenInitializing() throws {
-        XCTAssertFalse(mockForecastViewModelDelegate.didCallReloadTable)
-        let expectation = self.expectation(description: "Reloading Table")
-        mockForecastViewModelDelegate.expectationReloadTable = expectation
-
-        forecastViewModel = ForecastViewModel(city: mockCity, networkingService: mockNetworkingService)
-        forecastViewModel.delegate = mockForecastViewModelDelegate
-
-        waitForExpectations(timeout: 5)
-        XCTAssertTrue(mockForecastViewModelDelegate.didCallReloadTable)
-    }
-
-
-
-    func testShouldShowErrorWhenInitializingWentWrong() throws {
-        XCTAssertFalse(mockForecastViewModelDelegate.didCallShowError)
-        let expectation = self.expectation(description: "Show Error")
-        mockForecastViewModelDelegate.expectationShowError = expectation
-        var cityThatThrowsError = City()
-        cityThatThrowsError.name = MockNetworkingService.nameThatThrowsError
-
-        forecastViewModel = ForecastViewModel(city: cityThatThrowsError, networkingService: mockNetworkingService)
-        forecastViewModel.delegate = mockForecastViewModelDelegate
-
-        waitForExpectations(timeout: 5)
-        XCTAssertTrue(mockForecastViewModelDelegate.didCallShowError)
-    }
-
-
-    class MockForecastViewModelDelegate: ForecastViewModelDelegate {
-
-        var didCallReloadTable = false
-        var didCallShowError = false
-        var expectationReloadTable: XCTestExpectation?
-        var expectationShowError: XCTestExpectation?
-        var error: Error?
-
-        func reloadTable() {
-            didCallReloadTable = true
-            expectationReloadTable?.fulfill()
+        beforeEach {
+            networkingServiceMock = NetworkingServiceTypeMock()
+            stubCity = City()
+            stubCity.name = "stub"
+            forecastViewModel = ForecastViewModel(city: stubCity, networkingService: networkingServiceMock)
+            stubThreeHourForecast = ThreeHourForecast(main: ThreeHourForecastMain(temp: 1.23, humidity: 123),
+                                                      weather: [ThreeHourForecastWeather(id: 123, weatherType: .clear)],
+                                                      wind: ThreeHourForecastWind(speed: 1.23),
+                                                      date: "112233 112233")
+            stubThreeHourForecastData = ThreeHourForecastData(list: [stubThreeHourForecast])
+            fetchForecastReturnValue = Just(stubThreeHourForecastData).setFailureType(to: NetworkingError.self).eraseToAnyPublisher()
         }
 
-        func showError(_ error: Error) {
-            didCallShowError = true
-            expectationShowError?.fulfill()
-            self.error = error
+        describe("ForecastViewModel") {
+            context("when intialized correctly") {
+                beforeEach {
+                    Given(networkingServiceMock, .fetchThreeHourForecast(city: .value(stubCity), willReturn: fetchForecastReturnValue))
+                    forecastPublisherObserver = PublisherEventsObserver(forecastViewModel.forecastPublisher)
+                    forecastViewModel = ForecastViewModel(city: stubCity, networkingService: networkingServiceMock)
+                }
+
+
+                it("sends formatted forecast") {
+                    expect(forecastPublisherObserver.values).toNot(beEmpty())
+                }
+
+                it("sends formatted forecast with proper weather") {
+                    expect(forecastPublisherObserver.values)
+                        .to(equalDiff([[ThreeHourForecastFormatted(from: stubThreeHourForecast)]]))
+                }
+            }
+
+            context("when initialized wrong") {
+                beforeEach {
+                    Given(networkingServiceMock, .fetchThreeHourForecast(city: .value(stubCity), willReturn: Fail(error: NetworkingError.unknownError)
+                        .eraseToAnyPublisher()))
+                    showErrorPublisherObserver = PublisherEventsObserver(forecastViewModel.showErrorPublisher)
+                    forecastViewModel = ForecastViewModel(city: stubCity, networkingService: networkingServiceMock)
+
+                }
+
+                it("shows an error") {
+                    expect(showErrorPublisherObserver.values).toNot(beEmpty())
+                }
+                it("shows an error of proper kind") {
+                    guard let networkingError = showErrorPublisherObserver.values.first as? NetworkingError
+                    else { fail(); return }
+                    expect(networkingError).to(equalDiff(NetworkingError.unknownError))
+                }
+            }
         }
-
     }
-
-    class MockNetworkingService: NetworkingServiceType {
-
-        static let nameThatThrowsError = "IWillThrowError"
-
-        func fetchCities(_ searchText: String) async throws -> [City] {
-            return []
-        }
-
-        func fetchThreeHourForecast(city: WeatherApp.City) async throws -> [ThreeHourForecast] {
-            var cityThatThrowsError = City()
-            cityThatThrowsError.name = Self.nameThatThrowsError
-            if city == cityThatThrowsError { throw MockError() }
-            return []
-        }
-
-    }
-
-    class MockError: Error {
-
-    }
-
 }
-
-

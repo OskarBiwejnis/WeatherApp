@@ -6,8 +6,7 @@ class WelcomeViewController: UIViewController {
 
     // MARK: - Constants -
 
-    //sourcery: AutoEquatable
-    enum EventInput {
+    enum EventInput: AutoEquatable {
         case proceedButtonTap
         case didSelectRecentCity(row: Int)
         case viewWillAppear
@@ -23,7 +22,7 @@ class WelcomeViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
-    private let welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel()
+    private let welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel(storageService: StorageService())
 
     // MARK: - Public -
 
@@ -40,11 +39,7 @@ class WelcomeViewController: UIViewController {
         welcomeViewModel.eventsInputSubject.send(.viewWillAppear)
     }
 
-}
-
     // MARK: - Private -
-
-extension WelcomeViewController {
 
     private func bindActions() {
         welcomeView.tableView.didSelectRowPublisher

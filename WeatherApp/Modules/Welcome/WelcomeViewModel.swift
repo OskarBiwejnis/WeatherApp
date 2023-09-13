@@ -21,8 +21,14 @@ class WelcomeViewModel: WelcomeViewModelContract {
     var recentCities: [City] = []
     let eventsInputSubject = PassthroughSubject<WelcomeViewController.EventInput, Never>()
 
-    private let storageService: StorageServiceType = StorageService()
+    private let storageService: StorageServiceType
 
+    // MARK: - Initialization -
+
+    init(storageService: StorageServiceType) {
+        self.storageService = storageService
+    }
+    
     // MARK: - Public -
 
     lazy var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> = eventsInputSubject

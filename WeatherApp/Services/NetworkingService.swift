@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-protocol NetworkingServiceType {
+protocol NetworkingServiceType: AutoMockable {
     func fetchCities(_ searchText: String) -> AnyPublisher<CitiesData, NetworkingError>
     func fetchThreeHourForecast(city: City) -> AnyPublisher<ThreeHourForecastData, NetworkingError>
 }

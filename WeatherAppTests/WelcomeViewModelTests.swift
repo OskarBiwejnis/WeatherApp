@@ -1,74 +1,78 @@
+import Combine
+import Difference
+import Nimble
+import Quick
+import SwiftyMocky
 import XCTest
 @testable import WeatherApp
 
-final class WelcomeViewModelTests: XCTestCase {
+class WelcomeViewModelSpec: QuickSpec {
 
-    var welcomeViewModel: WelcomeViewModel!
-    var mockWelcomeViewModelDelegate: MockWelcomeViewModelDelegate!
+    override class func spec() {
+        var storageServiceMock: StorageServiceTypeMock!
+        var welcomeViewModel: WelcomeViewModelContract!
+        var openSearchScreenPublisherObserver: PublisherEventsObserver<Void>!
+        var reloadTablePublisherObserver: PublisherEventsObserver<[City]>!
+        var openForecastPublisherObserver: PublisherEventsObserver<City>!
+        var stubCity: City!
+        var differentStubCity: City!
+        var stubCities: [City]!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        welcomeViewModel = WelcomeViewModel()
-        mockWelcomeViewModelDelegate = MockWelcomeViewModelDelegate()
-        welcomeViewModel.delegate = mockWelcomeViewModelDelegate
-    }
+        beforeEach {
+            storageServiceMock = StorageServiceTypeMock()
+            welcomeViewModel = WelcomeViewModel(storageService: storageServiceMock)
+            stubCity = City()
+            differentStubCity = City()
+            stubCity.name = "xyz"
+            differentStubCity.name = "zyx"
+            stubCities = [stubCity, differentStubCity, stubCity]
+        }
 
-    override  func tearDown() {
-        welcomeViewModel = nil
-        mockWelcomeViewModelDelegate = nil
-        super.tearDown()
-    }
+        describe("WelcomeViewModel") {
+            context("sending navigationEvents") {
+                context("when proceedButton tapped") {
+                    beforeEach {
+                        openSearchScreenPublisherObserver = PublisherEventsObserver(welcomeViewModel.openSearchScreenPublisher)
+                        welcomeViewModel.eventsInputSubject.send(.proceedButtonTap)
+                    }
 
-    func testShouldCallDelegateFunctionWhenProceedButtonTap() throws {
-        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallOpenSearchScreen)
-        welcomeViewModel.proceedButtonTap()
-        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallOpenSearchScreen)
-    }
+                    it("opens search screen") {
+                        expect(openSearchScreenPublisherObserver.values).toNot(beEmpty())
+                    }
+                }
 
-    func testShouldCallDelegateFunctionWhenViewWillAppear() throws {
-        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallReloadRecentCities)
-        welcomeViewModel.viewWillAppear()
-        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallReloadRecentCities)
-    }
+                context("when view is about to appear") {
+                    beforeEach {
+                        Given(storageServiceMock, .getRecentCities(willReturn: stubCities))
+                        reloadTablePublisherObserver = PublisherEventsObserver(welcomeViewModel.reloadRecentCitiesPublisher)
+                        welcomeViewModel.eventsInputSubject.send(.viewWillAppear)
+                    }
 
-    func testShouldCallDelegateFunctionWhenDidSelectRecentCity() throws {
-        XCTAssertFalse(mockWelcomeViewModelDelegate.didCallOpenCityForecast)
-        welcomeViewModel.didSelectRecentCity(City())
-        XCTAssertTrue(mockWelcomeViewModelDelegate.didCallOpenCityForecast)
-    }
+                    it("reloads table view") {
+                        expect(reloadTablePublisherObserver.values).toNot(beEmpty())
+                    }
+                    it("reloads table view with proper cities") {
+                        expect(reloadTablePublisherObserver.values).to(equalDiff([stubCities]))
+                    }
 
-    func testShouldOpenProperCityWhenDidSelectRecentCity() throws {
-        let cityInput = City()
-        XCTAssertNil(mockWelcomeViewModelDelegate.city)
+                    context("when view has appeared") {
+                        context("when recent city selected") {
+                            beforeEach {
+                                openForecastPublisherObserver = PublisherEventsObserver(welcomeViewModel.openForecastPublisher)
+                                welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: 1))
+                            }
 
-        welcomeViewModel.didSelectRecentCity(cityInput)
-
-        let cityOutput = mockWelcomeViewModelDelegate.city
-        XCTAssertEqual(cityInput, cityOutput)
+                            it("opens forecast screen") {
+                                expect(openForecastPublisherObserver.values).toNot(beEmpty())
+                            }
+                            it("opens proper forecast for that city") {
+                                expect(openForecastPublisherObserver.values).to(equalDiff([differentStubCity]))
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
-
-class MockWelcomeViewModelDelegate: WelcomeViewModelDelegate {
-
-    var didCallOpenCityForecast = false
-    var didCallOpenSearchScreen = false
-    var didCallReloadRecentCities = false
-    var city: City?
-
-    func openCityForecast(_ city: City) {
-        didCallOpenCityForecast = true
-        self.city = city
-    }
-
-    func openSearchScreen() {
-        didCallOpenSearchScreen = true
-    }
-
-    func reloadRecentCities(_ cities: [City]) {
-        didCallReloadRecentCities = true
-    }
-
-}
-
-

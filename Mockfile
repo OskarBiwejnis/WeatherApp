@@ -1,0 +1,15 @@
+sourceryCommand: null
+sourceryTemplate: null
+WeatherAppTests:
+  sources:
+    include:
+    - ./WeatherApp
+  output: ./WeatherAppTests/Convenience/Mock.generated.swift
+  targets:
+  - WeatherAppTests
+  testable:
+  - WeatherApp
+  import:
+  - Combine
+  - Foundation
+  - RealmSwift

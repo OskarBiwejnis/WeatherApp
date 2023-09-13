@@ -2,6 +2,9 @@ PODS:
   - CombineCocoa (0.4.1)
   - CombineDataSources (0.2.5)
   - CombineExt (1.8.0)
+  - Difference (1.0.2)
+  - Nimble (12.2.0)
+  - Quick (7.2.0)
   - R.swift (7.3.2)
   - Realm (10.42.1):
     - Realm/Headers (= 10.42.1)
@@ -9,31 +12,39 @@ PODS:
   - RealmSwift (10.42.1):
     - Realm (= 10.42.1)
   - SnapKit (5.6.0)
-  - Sourcery (2.0.2):
-    - Sourcery/CLI-Only (= 2.0.2)
-  - Sourcery/CLI-Only (2.0.2)
+  - Sourcery (1.6.0)
   - SwiftLint (0.52.4)
+  - SwiftyMocky (4.1.0):
+    - Sourcery (= 1.6.0)
 
 DEPENDENCIES:
   - CombineCocoa
   - CombineDataSources (from `https://github.com/Airnauts/CombineDataSources.git`, commit `ac74034`)
   - CombineExt
+  - Difference
+  - Nimble
+  - Quick
   - R.swift
   - RealmSwift (~> 10)
   - SnapKit (~> 5.6.0)
-  - Sourcery
+  - Sourcery (~> 1.6.0)
   - SwiftLint
+  - SwiftyMocky (~> 4.1.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - CombineCocoa
     - CombineExt
+    - Difference
+    - Nimble
+    - Quick
     - R.swift
     - Realm
     - RealmSwift
     - SnapKit
     - Sourcery
     - SwiftLint
+    - SwiftyMocky
 
 EXTERNAL SOURCES:
   CombineDataSources:
@@ -49,13 +60,17 @@ SPEC CHECKSUMS:
   CombineCocoa: e5210dbfb480ff251078929459ac17e750e7af1d
   CombineDataSources: dcbc3b06a038ffdf620b3b4533d3ecaf76ca6a2e
   CombineExt: c4daa97ef75754d8ef319bd79edeef82652f3eea
+  Difference: e8a6b57f75f697aacfe2f2b482819bf144f095de
+  Nimble: d67da24eb9da4227b2dbbf4eb49cc29073c9066b
+  Quick: 73ac215f23a6a0eaa59f4ee142802b3f4dba86bb
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
   Realm: f433b80a05f68575e88364d6fcc6234965ccc5af
   RealmSwift: 757e1416e2314f7e1543abdb2aa65b311d7b6545
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
-  Sourcery: 9ae7eb711f830e8c3c02b98dc28fbd7e32e9d971
+  Sourcery: 744f43178637c79bf23127dfe34e2103b3f28499
   SwiftLint: 1cc5cd61ba9bacb2194e340aeb47a2a37fda00b3
+  SwiftyMocky: 014739247afadb65efb5bb92ede32c22b9365762
 
-PODFILE CHECKSUM: c1dddd753413661f5c7c8706a896a7358b351589
+PODFILE CHECKSUM: 5bd68a9a5f85f4a4c81e1fe505c07d4adcaca820
 
 COCOAPODS: 1.12.1

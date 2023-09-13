@@ -7,8 +7,7 @@ class SearchViewController: UIViewController {
 
     // MARK: - Constants -
 
-    // sourcery: AutoEquatable
-    enum EventInput {
+    enum EventInput: AutoEquatable {
         case textChanged(text: String)
         case didSelectCity(row: Int)
     }
@@ -23,7 +22,7 @@ class SearchViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let searchView = SearchView()
-    private let searchViewModel: SearchViewModelContract = SearchViewModel(networkingService: NetworkingService())
+    private let searchViewModel: SearchViewModelContract = SearchViewModel(networkingService: NetworkingService(), scheduler: DispatchQueue.main.eraseToAnyScheduler())
 
     // MARK: - Public -
 
