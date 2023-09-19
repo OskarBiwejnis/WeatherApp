@@ -4,7 +4,8 @@ import UIKit
 protocol WelcomeViewModelContract {
 
     var recentCities: [City] { get }
-    
+
+    var appCoordinator: Coordinator? { get }
     var eventsInputSubject: PassthroughSubject<WelcomeViewController.EventInput, Never> { get }
     var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> { get }
     var openSearchScreenPublisher: AnyPublisher<Void, Never> { get }
@@ -21,12 +22,14 @@ class WelcomeViewModel: WelcomeViewModelContract {
     var recentCities: [City] = []
     let eventsInputSubject = PassthroughSubject<WelcomeViewController.EventInput, Never>()
 
+    weak var appCoordinator: Coordinator?
     private let storageService: StorageServiceType
 
     // MARK: - Initialization -
 
-    init(storageService: StorageServiceType) {
+    init(storageService: StorageServiceType, appCoordinator: AppCoordinator) {
         self.storageService = storageService
+        self.appCoordinator = appCoordinator
     }
     
     // MARK: - Public -

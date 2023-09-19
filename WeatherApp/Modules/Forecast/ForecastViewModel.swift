@@ -4,6 +4,9 @@ import UIKit
 
 protocol ForecastViewModelContract {
 
+    var city: City { get }
+
+    var appCoordinator: Coordinator? { get }
     var forecastPublisher: AnyPublisher<[ThreeHourForecastFormatted], Never> { get }
     var showErrorPublisher: AnyPublisher<Error, Never> { get }
 
@@ -19,16 +22,25 @@ class ForecastViewModel: ForecastViewModelContract {
 
     // MARK: - Variables -
 
-    private let city: City
     private var subscriptions: [AnyCancellable] = []
 
+    let city: City
+    weak var appCoordinator: Coordinator?
+
     private let networkingService: NetworkingServiceType
+    private let storageService: StorageServiceType
 
     // MARK: - Initialization -
 
-    init(city: City, networkingService: NetworkingServiceType) {
-        self.networkingService = networkingService
+    init(city: City,
+         networkingService: NetworkingServiceType,
+         storageService: StorageService,
+         appCoordinator: AppCoordinator) {
         self.city = city
+        self.networkingService = networkingService
+        self.storageService = storageService
+        self.appCoordinator = appCoordinator
+        storageService.addRecentCity(city)
     }
 
     // MARK: - Public -

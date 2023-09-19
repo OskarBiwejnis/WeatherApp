@@ -22,7 +22,7 @@ class WelcomeViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
-    private let welcomeViewModel: WelcomeViewModelContract = WelcomeViewModel(storageService: StorageService())
+    private let welcomeViewModel: WelcomeViewModelContract
 
     // MARK: - Public -
 
@@ -37,6 +37,17 @@ class WelcomeViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         welcomeViewModel.eventsInputSubject.send(.viewWillAppear)
+    }
+
+    // MARK: - Initialization -
+
+    init(welcomeViewModel: WelcomeViewModel) {
+        self.welcomeViewModel = welcomeViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Private -
@@ -57,13 +68,13 @@ class WelcomeViewController: UIViewController {
 
         welcomeViewModel.openSearchScreenPublisher
             .sink { [weak self] in
-                self?.navigationController?.pushViewController(SearchViewController(), animated: true)
+                self?.welcomeViewModel.appCoordinator?.goToSearchScreen()
             }
             .store(in: &subscriptions)
 
         welcomeViewModel.openForecastPublisher
             .sink { [weak self] city in
-                self?.navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
+                self?.welcomeViewModel.appCoordinator?.goToForecastScreen(city: city)
             }
             .store(in: &subscriptions)
 

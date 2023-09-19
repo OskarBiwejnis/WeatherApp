@@ -8,6 +8,7 @@ protocol SearchViewModelContract {
 
     var cities: [City] { get }
 
+    var appCoordinator: Coordinator? { get }
     var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
     var foundCitiesPublisher: AnyPublisher<[City], Never> { get }
     var showErrorPublisher: AnyPublisher<Error, Never> { get }
@@ -32,13 +33,15 @@ class SearchViewModel: SearchViewModelContract {
 
     let eventsInputSubject = PassthroughSubject<SearchViewController.EventInput, Never>()
 
+    weak var appCoordinator: Coordinator?
     private var networkingService: NetworkingServiceType
 
     // MARK: - Initialization -
 
-    init(networkingService: NetworkingServiceType, scheduler: AnySchedulerOf<DispatchQueue>) {
+    init(networkingService: NetworkingServiceType, scheduler: AnySchedulerOf<DispatchQueue>, appCoordinator: AppCoordinator) {
         self.networkingService = networkingService
         self.scheduler = scheduler
+        self.appCoordinator = appCoordinator
     }
 
     // MARK: - Public -
