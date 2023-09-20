@@ -175,6 +175,7 @@
 		4602D1C92A67F01C001E11F0 /* Forecast */ = {
 			isa = PBXGroup;
 			children = (
+				46B5CBA22ABB18030068E3A3 /* Coordinator */,
 				4602D1CA2A67F05B001E11F0 /* ForecastViewController.swift */,
 				4602D1CE2A67F0B2001E11F0 /* ForecastViewModel.swift */,
 				4602D1CC2A67F09B001E11F0 /* ForecastView.swift */,
@@ -204,6 +205,7 @@
 		464975C02A66B50900DC78FB /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
+				46B5CBA02ABB17F40068E3A3 /* Coordinator */,
 				46C758D22A5D521D008B52A5 /* WelcomeViewController.swift */,
 				464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */,
 				46C758D42A5E8D32008B52A5 /* WelcomeView.swift */,
@@ -215,6 +217,7 @@
 		464975C12A66B51200DC78FB /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				46B5CBA12ABB17FD0068E3A3 /* Coordinator */,
 				46C758E92A600065008B52A5 /* SearchViewController.swift */,
 				464975BC2A668B2800DC78FB /* SearchViewModel.swift */,
 				46C758EC2A600088008B52A5 /* SearchView.swift */,
@@ -251,9 +254,6 @@
 				46C758A02A5D4D51008B52A5 /* AppDelegate.swift */,
 				46C758A22A5D4D51008B52A5 /* SceneDelegate.swift */,
 				46A382702AB2F3D70003E46D /* AppCoordinator.swift */,
-				464499462AB992E400CB3A3A /* WelcomeCoordinator.swift */,
-				464499482AB992EE00CB3A3A /* SearchCoordinator.swift */,
-				4644994A2AB992FB00CB3A3A /* ForecastCoordinator.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -296,6 +296,30 @@
 				464499442AB992D900CB3A3A /* BaseCoordinator.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		46B5CBA02ABB17F40068E3A3 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				464499462AB992E400CB3A3A /* WelcomeCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		46B5CBA12ABB17FD0068E3A3 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				464499482AB992EE00CB3A3A /* SearchCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		46B5CBA22ABB18030068E3A3 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				4644994A2AB992FB00CB3A3A /* ForecastCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		46C758942A5D4D51008B52A5 = {

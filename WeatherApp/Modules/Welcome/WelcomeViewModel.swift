@@ -10,7 +10,18 @@ protocol WelcomeViewModelContract {
 
 }
 
-class WelcomeViewModel: WelcomeViewModelContract, Navigable {
+protocol WelcomeViewModelCoordinatorContract {
+
+    var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> { get }
+
+}
+
+enum WelcomeNavigationEvent {
+    case didSelectRecentCity(city: City)
+    case proceedButtonTap
+}
+
+class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorContract {
     
     // MARK: - Variables -
 
@@ -39,12 +50,12 @@ class WelcomeViewModel: WelcomeViewModelContract, Navigable {
         }
         .eraseToAnyPublisher()
 
-    lazy var navigationEventsPublisher: AnyPublisher<NavigationEvent, Never> = eventsInputSubject
+    lazy var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> = eventsInputSubject
         .compactMap { [weak self] event in
             if case .didSelectRecentCity(let row) = event, let city = self?.recentCities[row] {
-                return NavigationEvent.didSelectCity(city: city)
+                return WelcomeNavigationEvent.didSelectRecentCity(city: city)
             } else if case .proceedButtonTap = event {
-                return NavigationEvent.proceedButtonTap
+                return WelcomeNavigationEvent.proceedButtonTap
             } else { return nil }
         }
         .eraseToAnyPublisher()

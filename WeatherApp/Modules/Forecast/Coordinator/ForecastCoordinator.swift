@@ -3,13 +3,18 @@ import UIKit
 
 class ForecastCoordinator: BaseCoordinator {
 
-    init(navigationController: UINavigationController, parentCoordinator: BaseCoordinator?, city: City) {
+    private let city: City
+
+    init(navigationController: UINavigationController, city: City) {
+        self.city = city
+        super.init(navigationController: navigationController)
+    }
+
+    override func start() {
         let forecastViewModel = ForecastViewModel(city: city,
                                                   networkingService: NetworkingService(),
                                                   storageService: StorageService())
         let forecastViewController = ForecastViewController(forecastViewModel: forecastViewModel)
-        super.init(navigationController: navigationController, parentCoordinator: parentCoordinator)
         navigationController.pushViewController(forecastViewController, animated: true)
     }
-
 }

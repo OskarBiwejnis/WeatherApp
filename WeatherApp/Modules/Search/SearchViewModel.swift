@@ -14,7 +14,17 @@ protocol SearchViewModelContract {
 
 }
 
-class SearchViewModel: SearchViewModelContract, Navigable {
+protocol SearchViewModelCoordinatorContract {
+
+    var navigationEventsPublisher: AnyPublisher<SearchNavigationEvent, Never> { get }
+
+}
+
+enum SearchNavigationEvent {
+    case didSelectCity(city: City)
+}
+
+class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContract {
 
     // MARK: - Constants -
 
@@ -42,11 +52,11 @@ class SearchViewModel: SearchViewModelContract, Navigable {
 
     // MARK: - Public -
 
-    lazy var navigationEventsPublisher: AnyPublisher<NavigationEvent, Never> = eventsInputSubject
+    lazy var navigationEventsPublisher: AnyPublisher<SearchNavigationEvent, Never> = eventsInputSubject
         .compactMap { [weak self] event in
             if case .didSelectCity(let row) = event, let city = self?.cities[row] {
 
-                return NavigationEvent.didSelectCity(city: city)
+                return SearchNavigationEvent.didSelectCity(city: city)
             } else { return nil }
         }
         .eraseToAnyPublisher()

@@ -4,14 +4,13 @@ import UIKit
 
 class AppCoordinator: BaseCoordinator {
 
-    func start() {
+    override func start() {
         goToWelcomeScreen()
     }
 
     private func goToWelcomeScreen() {
-        let welcomeCoordinator = WelcomeCoordinator(navigationController: navigationController, parentCoordinator: self)
-
-        children.append(welcomeCoordinator)
+        let welcomeCoordinator = WelcomeCoordinator(navigationController: navigationController)
+        coordinate(to: welcomeCoordinator)
     }
     
 }

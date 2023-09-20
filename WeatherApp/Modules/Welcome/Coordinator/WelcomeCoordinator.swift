@@ -3,38 +3,39 @@ import UIKit
 
 class WelcomeCoordinator: BaseCoordinator {
 
-    private let welcomeNavigable: Navigable
+    private var welcomeViewModel: WelcomeViewModelCoordinatorContract?
     private var subscriptions: [AnyCancellable] = []
 
-    override init(navigationController: UINavigationController, parentCoordinator: BaseCoordinator?)  {
+    override init(navigationController: UINavigationController)  {
+        super.init(navigationController: navigationController)
+    }
+
+    override func start() {
         let welcomeViewModel = WelcomeViewModel(storageService: StorageService())
         let welcomeViewController = WelcomeViewController(welcomeViewModel: welcomeViewModel)
-        welcomeNavigable = welcomeViewModel as Navigable
-        super.init(navigationController: navigationController, parentCoordinator: parentCoordinator)
+        self.welcomeViewModel = welcomeViewModel as WelcomeViewModelCoordinatorContract
         bindActions()
         navigationController.pushViewController(welcomeViewController, animated: true)
     }
 
     private func goToSearchScreen() {
-        let searchCoordinator = SearchCoordinator(navigationController: navigationController,
-                                                  parentCoordinator: self)
-        children.append(searchCoordinator)
+        let searchCoordinator = SearchCoordinator(navigationController: navigationController)
+        coordinate(to: searchCoordinator)
     }
 
     private func goToForecastScreen(city: City) {
         let forecastCoordinator = ForecastCoordinator(navigationController: navigationController,
-                                                      parentCoordinator: self,
                                                       city: city)
-        children.append(forecastCoordinator)
+        coordinate(to: forecastCoordinator)
     }
 
     private func bindActions() {
-        welcomeNavigable.navigationEventsPublisher
+        welcomeViewModel?.navigationEventsPublisher
             .sink { [weak self] navigationEvent in
                 switch navigationEvent {
                 case .proceedButtonTap:
                     self?.goToSearchScreen()
-                case .didSelectCity(let city):
+                case .didSelectRecentCity(let city):
                     self?.goToForecastScreen(city: city)
                 }
             }

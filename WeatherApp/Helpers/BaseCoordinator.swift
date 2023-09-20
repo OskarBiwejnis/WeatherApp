@@ -2,13 +2,20 @@ import UIKit
 
 class BaseCoordinator {
 
-    weak var parentCoordinator: BaseCoordinator?
-    var children: [BaseCoordinator] = []
     var navigationController: UINavigationController
+    var children: [BaseCoordinator] = []
 
-    init(navigationController: UINavigationController, parentCoordinator: BaseCoordinator?) {
+    init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.parentCoordinator = parentCoordinator
+    }
+
+    func start() {
+
+    }
+
+    func coordinate(to coordinator: BaseCoordinator) {
+        children.append(coordinator)
+        coordinator.start()
     }
 
 }
