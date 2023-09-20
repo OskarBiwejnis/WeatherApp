@@ -66,18 +66,6 @@ class WelcomeViewController: UIViewController {
             }
             .store(in: &subscriptions)
 
-        welcomeViewModel.openSearchScreenPublisher
-            .sink { [weak self] in
-                self?.welcomeViewModel.appCoordinator?.goToSearchScreen()
-            }
-            .store(in: &subscriptions)
-
-        welcomeViewModel.openForecastPublisher
-            .sink { [weak self] city in
-                self?.welcomeViewModel.appCoordinator?.goToForecastScreen(city: city)
-            }
-            .store(in: &subscriptions)
-
         welcomeViewModel.reloadRecentCitiesPublisher
             .receive(on: DispatchQueue.main)
             .bind(subscriber: welcomeView.tableView.rowsSubscriber(itemsController))

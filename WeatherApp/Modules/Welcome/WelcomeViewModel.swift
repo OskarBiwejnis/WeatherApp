@@ -5,15 +5,12 @@ protocol WelcomeViewModelContract {
 
     var recentCities: [City] { get }
 
-    var appCoordinator: Coordinator? { get }
     var eventsInputSubject: PassthroughSubject<WelcomeViewController.EventInput, Never> { get }
     var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> { get }
-    var openSearchScreenPublisher: AnyPublisher<Void, Never> { get }
-    var openForecastPublisher: AnyPublisher<City, Never> { get }
 
 }
 
-class WelcomeViewModel: WelcomeViewModelContract {
+class WelcomeViewModel: WelcomeViewModelContract, Navigable {
     
     // MARK: - Variables -
 
@@ -22,14 +19,12 @@ class WelcomeViewModel: WelcomeViewModelContract {
     var recentCities: [City] = []
     let eventsInputSubject = PassthroughSubject<WelcomeViewController.EventInput, Never>()
 
-    weak var appCoordinator: Coordinator?
     private let storageService: StorageServiceType
 
     // MARK: - Initialization -
 
-    init(storageService: StorageServiceType, appCoordinator: AppCoordinator) {
+    init(storageService: StorageServiceType) {
         self.storageService = storageService
-        self.appCoordinator = appCoordinator
     }
     
     // MARK: - Public -
@@ -43,14 +38,15 @@ class WelcomeViewModel: WelcomeViewModelContract {
             } else { return nil }
         }
         .eraseToAnyPublisher()
-    lazy var openSearchScreenPublisher: AnyPublisher<Void, Never> = eventsInputSubject
-        .filter { $0 == .proceedButtonTap }
-        .map { _ in return () }
+
+    lazy var navigationEventsPublisher: AnyPublisher<NavigationEvent, Never> = eventsInputSubject
+        .compactMap { [weak self] event in
+            if case .didSelectRecentCity(let row) = event, let city = self?.recentCities[row] {
+                return NavigationEvent.didSelectCity(city: city)
+            } else if case .proceedButtonTap = event {
+                return NavigationEvent.proceedButtonTap
+            } else { return nil }
+        }
         .eraseToAnyPublisher()
-    lazy var openForecastPublisher: AnyPublisher<City, Never> = eventsInputSubject
-            .compactMap { [weak self] event in
-                if case let .didSelectRecentCity(row) = event { return self?.recentCities[row] } else { return nil }
-            }
-            .eraseToAnyPublisher()
 
 }

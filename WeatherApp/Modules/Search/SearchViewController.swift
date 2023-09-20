@@ -65,13 +65,6 @@ extension SearchViewController {
             }
             .store(in: &subscriptions)
 
-        searchViewModel.openForecastPublisher
-            .receive(on: DispatchQueue.main)
-            .sink {  [weak self] city in
-                self?.searchViewModel.appCoordinator?.goToForecastScreen(city: city)
-            }
-            .store(in: &subscriptions)
-
         searchViewModel.foundCitiesPublisher
             .receive(on: DispatchQueue.main)
             .bind(subscriber: searchView.tableView.rowsSubscriber(itemsController))

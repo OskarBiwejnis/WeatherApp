@@ -8,15 +8,13 @@ protocol SearchViewModelContract {
 
     var cities: [City] { get }
 
-    var appCoordinator: Coordinator? { get }
     var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
     var foundCitiesPublisher: AnyPublisher<[City], Never> { get }
     var showErrorPublisher: AnyPublisher<Error, Never> { get }
-    var openForecastPublisher: AnyPublisher<City, Never> { get }
 
 }
 
-class SearchViewModel: SearchViewModelContract {
+class SearchViewModel: SearchViewModelContract, Navigable {
 
     // MARK: - Constants -
 
@@ -33,23 +31,22 @@ class SearchViewModel: SearchViewModelContract {
 
     let eventsInputSubject = PassthroughSubject<SearchViewController.EventInput, Never>()
 
-    weak var appCoordinator: Coordinator?
     private var networkingService: NetworkingServiceType
 
     // MARK: - Initialization -
 
-    init(networkingService: NetworkingServiceType, scheduler: AnySchedulerOf<DispatchQueue>, appCoordinator: AppCoordinator) {
+    init(networkingService: NetworkingServiceType, scheduler: AnySchedulerOf<DispatchQueue>) {
         self.networkingService = networkingService
         self.scheduler = scheduler
-        self.appCoordinator = appCoordinator
     }
 
     // MARK: - Public -
 
-    lazy var openForecastPublisher: AnyPublisher<City, Never> = eventsInputSubject
+    lazy var navigationEventsPublisher: AnyPublisher<NavigationEvent, Never> = eventsInputSubject
         .compactMap { [weak self] event in
-            if case .didSelectCity(let row) = event {
-                return self?.cities[row]
+            if case .didSelectCity(let row) = event, let city = self?.cities[row] {
+
+                return NavigationEvent.didSelectCity(city: city)
             } else { return nil }
         }
         .eraseToAnyPublisher()

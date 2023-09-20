@@ -6,10 +6,8 @@ protocol ForecastViewModelContract {
 
     var city: City { get }
 
-    var appCoordinator: Coordinator? { get }
     var forecastPublisher: AnyPublisher<[ThreeHourForecastFormatted], Never> { get }
     var showErrorPublisher: AnyPublisher<Error, Never> { get }
-
 }
 
 class ForecastViewModel: ForecastViewModelContract {
@@ -25,7 +23,6 @@ class ForecastViewModel: ForecastViewModelContract {
     private var subscriptions: [AnyCancellable] = []
 
     let city: City
-    weak var appCoordinator: Coordinator?
 
     private let networkingService: NetworkingServiceType
     private let storageService: StorageServiceType
@@ -34,12 +31,10 @@ class ForecastViewModel: ForecastViewModelContract {
 
     init(city: City,
          networkingService: NetworkingServiceType,
-         storageService: StorageService,
-         appCoordinator: AppCoordinator) {
+         storageService: StorageService) {
         self.city = city
         self.networkingService = networkingService
         self.storageService = storageService
-        self.appCoordinator = appCoordinator
         storageService.addRecentCity(city)
     }
 
