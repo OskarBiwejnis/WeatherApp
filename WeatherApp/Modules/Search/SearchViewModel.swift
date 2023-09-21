@@ -21,7 +21,7 @@ protocol SearchViewModelCoordinatorContract {
 }
 
 enum SearchNavigationEvent {
-    case didSelectCity(city: City)
+    case openForecastScreen(city: City)
 }
 
 class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContract {
@@ -56,7 +56,7 @@ class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContra
         .compactMap { [weak self] event in
             if case .didSelectCity(let row) = event, let city = self?.cities[row] {
 
-                return SearchNavigationEvent.didSelectCity(city: city)
+                return SearchNavigationEvent.openForecastScreen(city: city)
             } else { return nil }
         }
         .eraseToAnyPublisher()

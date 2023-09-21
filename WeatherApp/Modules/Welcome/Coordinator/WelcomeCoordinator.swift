@@ -33,9 +33,9 @@ class WelcomeCoordinator: BaseCoordinator {
         welcomeViewModel?.navigationEventsPublisher
             .sink { [weak self] navigationEvent in
                 switch navigationEvent {
-                case .proceedButtonTap:
+                case .openSearchScreen:
                     self?.goToSearchScreen()
-                case .didSelectRecentCity(let city):
+                case .openForecastScreen(let city):
                     self?.goToForecastScreen(city: city)
                 }
             }

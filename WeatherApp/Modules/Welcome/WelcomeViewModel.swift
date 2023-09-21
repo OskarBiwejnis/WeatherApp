@@ -17,8 +17,8 @@ protocol WelcomeViewModelCoordinatorContract {
 }
 
 enum WelcomeNavigationEvent {
-    case didSelectRecentCity(city: City)
-    case proceedButtonTap
+    case openForecastScreen(city: City)
+    case openSearchScreen
 }
 
 class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorContract {
@@ -53,9 +53,9 @@ class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorCon
     lazy var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> = eventsInputSubject
         .compactMap { [weak self] event in
             if case .didSelectRecentCity(let row) = event, let city = self?.recentCities[row] {
-                return WelcomeNavigationEvent.didSelectRecentCity(city: city)
+                return WelcomeNavigationEvent.openForecastScreen(city: city)
             } else if case .proceedButtonTap = event {
-                return WelcomeNavigationEvent.proceedButtonTap
+                return WelcomeNavigationEvent.openSearchScreen
             } else { return nil }
         }
         .eraseToAnyPublisher()

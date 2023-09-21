@@ -29,10 +29,11 @@ class SearchCoordinator: BaseCoordinator {
     private func bindActions() {
         searchViewModel?.navigationEventsPublisher
             .sink{ [weak self] navigationEvent in
-                if case .didSelectCity(let city) = navigationEvent {
+                if case .openForecastScreen(let city) = navigationEvent {
                     self?.goToForecastScreen(city: city)
                 }
             }
             .store(in: &subscriptions)
     }
+
 }
