@@ -14,14 +14,20 @@
 		4602D1D52A67FFA8001E11F0 /* ThreeHourForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4602D1D42A67FFA8001E11F0 /* ThreeHourForecast.swift */; };
 		4639AB382A7A4739007AA0FA /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4639AB372A7A4739007AA0FA /* StorageService.swift */; };
 		4639AB3B2A7A57FC007AA0FA /* RecentCityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4639AB3A2A7A57FC007AA0FA /* RecentCityCell.swift */; };
+		464499452AB992D900CB3A3A /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464499442AB992D900CB3A3A /* BaseCoordinator.swift */; };
+		464499472AB992E400CB3A3A /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464499462AB992E400CB3A3A /* WelcomeCoordinator.swift */; };
+		464499492AB992EE00CB3A3A /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464499482AB992EE00CB3A3A /* SearchCoordinator.swift */; };
+		4644994B2AB992FB00CB3A3A /* ForecastCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4644994A2AB992FB00CB3A3A /* ForecastCoordinator.swift */; };
 		464975BD2A668B2800DC78FB /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464975BC2A668B2800DC78FB /* SearchViewModel.swift */; };
 		464975C72A66D4CE00DC78FB /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */; };
+		465CA6DF2AB1EB8D00495467 /* EqualDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E9287A2AAF4AD10022A29C /* EqualDiff.swift */; };
 		4663C9762AA9DF71000019D3 /* PublisherEventsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */; };
 		467A516C2A9C99E600661714 /* Publisher+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516B2A9C99E600661714 /* Publisher+Ext.swift */; };
 		467A516F2A9CA29E00661714 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516E2A9CA29E00661714 /* Result.swift */; };
 		4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35A2A8121A10018C215 /* PersistedCity.swift */; };
 		4688F3602A813E940018C215 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35F2A813E940018C215 /* SearchViewModelTests.swift */; };
 		4688F3622A813EFE0018C215 /* ForecastViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */; };
+		46A382712AB2F3D70003E46D /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A382702AB2F3D70003E46D /* AppCoordinator.swift */; };
 		46B498622AAB43F300CF278C /* AutoEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B498612AAB43F300CF278C /* AutoEquatable.swift */; };
 		46B498692AAB791E00CF278C /* TestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B498662AAB790400CF278C /* TestScheduler.swift */; };
 		46B4986B2AAB80B900CF278C /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B4986A2AAB80B900CF278C /* Double+Ext.swift */; };
@@ -45,7 +51,6 @@
 		46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEAA2A655FE1003A71C4 /* City.swift */; };
 		46D1FEB42A659B35003A71C4 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1FEB32A659B35003A71C4 /* NetworkingError.swift */; };
 		46E20A432AA7908D0005251D /* SourceryGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E20A422AA7908D0005251D /* SourceryGenerated.swift */; };
-		46E9287B2AAF4AD10022A29C /* EqualDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E9287A2AAF4AD10022A29C /* EqualDiff.swift */; };
 		46E928832AAF4D020022A29C /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = 46E928822AAF4D020022A29C /* CombineSchedulers */; };
 		46F770CA2A77ABF800C148FE /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770C92A77ABF800C148FE /* Label.swift */; };
 		46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F770CF2A77B92F00C148FE /* FontProvider.swift */; };
@@ -84,6 +89,10 @@
 		4602D1D42A67FFA8001E11F0 /* ThreeHourForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeHourForecast.swift; sourceTree = "<group>"; };
 		4639AB372A7A4739007AA0FA /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		4639AB3A2A7A57FC007AA0FA /* RecentCityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentCityCell.swift; sourceTree = "<group>"; };
+		464499442AB992D900CB3A3A /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
+		464499462AB992E400CB3A3A /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
+		464499482AB992EE00CB3A3A /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
+		4644994A2AB992FB00CB3A3A /* ForecastCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCoordinator.swift; sourceTree = "<group>"; };
 		464975BC2A668B2800DC78FB /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherEventsObserver.swift; sourceTree = "<group>"; };
@@ -92,6 +101,7 @@
 		4688F35A2A8121A10018C215 /* PersistedCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedCity.swift; sourceTree = "<group>"; };
 		4688F35F2A813E940018C215 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
 		4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModelTests.swift; sourceTree = "<group>"; };
+		46A382702AB2F3D70003E46D /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		46B498612AAB43F300CF278C /* AutoEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEquatable.swift; sourceTree = "<group>"; };
 		46B498662AAB790400CF278C /* TestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestScheduler.swift; sourceTree = "<group>"; };
 		46B4986A2AAB80B900CF278C /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
@@ -161,6 +171,7 @@
 		4602D1C92A67F01C001E11F0 /* Forecast */ = {
 			isa = PBXGroup;
 			children = (
+				46B5CBA22ABB18030068E3A3 /* Coordinator */,
 				4602D1CA2A67F05B001E11F0 /* ForecastViewController.swift */,
 				4602D1CE2A67F0B2001E11F0 /* ForecastViewModel.swift */,
 				4602D1CC2A67F09B001E11F0 /* ForecastView.swift */,
@@ -190,6 +201,7 @@
 		464975C02A66B50900DC78FB /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
+				46B5CBA02ABB17F40068E3A3 /* Coordinator */,
 				46C758D22A5D521D008B52A5 /* WelcomeViewController.swift */,
 				464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */,
 				46C758D42A5E8D32008B52A5 /* WelcomeView.swift */,
@@ -201,6 +213,7 @@
 		464975C12A66B51200DC78FB /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				46B5CBA12ABB17FD0068E3A3 /* Coordinator */,
 				46C758E92A600065008B52A5 /* SearchViewController.swift */,
 				464975BC2A668B2800DC78FB /* SearchViewModel.swift */,
 				46C758EC2A600088008B52A5 /* SearchView.swift */,
@@ -236,6 +249,7 @@
 			children = (
 				46C758A02A5D4D51008B52A5 /* AppDelegate.swift */,
 				46C758A22A5D4D51008B52A5 /* SceneDelegate.swift */,
+				46A382702AB2F3D70003E46D /* AppCoordinator.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -243,6 +257,7 @@
 		4663C9742AA9DF2C000019D3 /* Convenience */ = {
 			isa = PBXGroup;
 			children = (
+				46E9287A2AAF4AD10022A29C /* EqualDiff.swift */,
 				46B498662AAB790400CF278C /* TestScheduler.swift */,
 				4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */,
 				46B4986A2AAB80B900CF278C /* Double+Ext.swift */,
@@ -272,9 +287,33 @@
 			children = (
 				46B498612AAB43F300CF278C /* AutoEquatable.swift */,
 				46B4986F2AAB8B8700CF278C /* AutoMockable.swift */,
-				46E9287A2AAF4AD10022A29C /* EqualDiff.swift */,
+				464499442AB992D900CB3A3A /* BaseCoordinator.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		46B5CBA02ABB17F40068E3A3 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				464499462AB992E400CB3A3A /* WelcomeCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		46B5CBA12ABB17FD0068E3A3 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				464499482AB992EE00CB3A3A /* SearchCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		46B5CBA22ABB18030068E3A3 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				4644994A2AB992FB00CB3A3A /* ForecastCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		46C758942A5D4D51008B52A5 = {
@@ -407,6 +446,7 @@
 				46C758AF2A5D4D52008B52A5 /* Sources */,
 				46C758B02A5D4D52008B52A5 /* Frameworks */,
 				46C758B12A5D4D52008B52A5 /* Resources */,
+				20BAF937461011E5E0385774 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -534,6 +574,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		20BAF937461011E5E0385774 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		308559D7C18D745996799639 /* [CP] Check Pods Manifest.lock */ = {
@@ -684,6 +741,7 @@
 				464975BD2A668B2800DC78FB /* SearchViewModel.swift in Sources */,
 				464975C72A66D4CE00DC78FB /* WelcomeViewModel.swift in Sources */,
 				4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */,
+				464499472AB992E400CB3A3A /* WelcomeCoordinator.swift in Sources */,
 				46C758A12A5D4D51008B52A5 /* AppDelegate.swift in Sources */,
 				46C758EA2A600065008B52A5 /* SearchViewController.swift in Sources */,
 				467A516F2A9CA29E00661714 /* Result.swift in Sources */,
@@ -693,19 +751,22 @@
 				46D1FEA82A652B43003A71C4 /* SearchCell.swift in Sources */,
 				46D1FEB42A659B35003A71C4 /* NetworkingError.swift in Sources */,
 				46C758ED2A600088008B52A5 /* SearchView.swift in Sources */,
+				464499452AB992D900CB3A3A /* BaseCoordinator.swift in Sources */,
 				4602D1D52A67FFA8001E11F0 /* ThreeHourForecast.swift in Sources */,
 				46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */,
 				46B498702AAB8B8700CF278C /* AutoMockable.swift in Sources */,
 				4602D1CF2A67F0B2001E11F0 /* ForecastViewModel.swift in Sources */,
 				46C758F42A614E55008B52A5 /* NetworkingService.swift in Sources */,
-				46E9287B2AAF4AD10022A29C /* EqualDiff.swift in Sources */,
 				46C758D32A5D521D008B52A5 /* WelcomeViewController.swift in Sources */,
+				46A382712AB2F3D70003E46D /* AppCoordinator.swift in Sources */,
 				4602D1CD2A67F09B001E11F0 /* ForecastView.swift in Sources */,
+				4644994B2AB992FB00CB3A3A /* ForecastCoordinator.swift in Sources */,
 				46F770CA2A77ABF800C148FE /* Label.swift in Sources */,
 				46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */,
 				4602D1CB2A67F05B001E11F0 /* ForecastViewController.swift in Sources */,
 				46C758D52A5E8D32008B52A5 /* WelcomeView.swift in Sources */,
 				4639AB3B2A7A57FC007AA0FA /* RecentCityCell.swift in Sources */,
+				464499492AB992EE00CB3A3A /* SearchCoordinator.swift in Sources */,
 				46B498622AAB43F300CF278C /* AutoEquatable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -717,6 +778,7 @@
 				4688F3622A813EFE0018C215 /* ForecastViewModelTests.swift in Sources */,
 				46B498722AAB8C4000CF278C /* Mock.generated.swift in Sources */,
 				46B498692AAB791E00CF278C /* TestScheduler.swift in Sources */,
+				465CA6DF2AB1EB8D00495467 /* EqualDiff.swift in Sources */,
 				46B4986B2AAB80B900CF278C /* Double+Ext.swift in Sources */,
 				4688F3602A813E940018C215 /* SearchViewModelTests.swift in Sources */,
 				46C758B82A5D4D52008B52A5 /* WelcomeViewModelTests.swift in Sources */,

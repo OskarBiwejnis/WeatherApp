@@ -22,7 +22,18 @@ class SearchViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let searchView = SearchView()
-    private let searchViewModel: SearchViewModelContract = SearchViewModel(networkingService: NetworkingService(), scheduler: DispatchQueue.main.eraseToAnyScheduler())
+    private let searchViewModel: SearchViewModelContract
+
+    // MARK: - Initialization -
+
+    init(searchViewModel: SearchViewModelContract) {
+        self.searchViewModel = searchViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Public -
 
@@ -54,13 +65,6 @@ extension SearchViewController {
             }
             .store(in: &subscriptions)
 
-        searchViewModel.openForecastPublisher
-            .receive(on: DispatchQueue.main)
-            .sink {  [weak self] city in
-                self?.navigationController?.pushViewController(ForecastViewController(city: city), animated: true)
-            }
-            .store(in: &subscriptions)
-
         searchViewModel.foundCitiesPublisher
             .receive(on: DispatchQueue.main)
             .bind(subscriber: searchView.tableView.rowsSubscriber(itemsController))
@@ -81,4 +85,3 @@ extension SearchViewController {
     }
 
 }
-

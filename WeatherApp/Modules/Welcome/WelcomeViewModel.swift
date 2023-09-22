@@ -4,15 +4,24 @@ import UIKit
 protocol WelcomeViewModelContract {
 
     var recentCities: [City] { get }
-    
+
     var eventsInputSubject: PassthroughSubject<WelcomeViewController.EventInput, Never> { get }
     var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> { get }
-    var openSearchScreenPublisher: AnyPublisher<Void, Never> { get }
-    var openForecastPublisher: AnyPublisher<City, Never> { get }
 
 }
 
-class WelcomeViewModel: WelcomeViewModelContract {
+protocol WelcomeViewModelCoordinatorContract {
+
+    var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> { get }
+
+}
+
+enum WelcomeNavigationEvent {
+    case openForecastScreen(city: City)
+    case openSearchScreen
+}
+
+class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorContract {
     
     // MARK: - Variables -
 
@@ -40,14 +49,15 @@ class WelcomeViewModel: WelcomeViewModelContract {
             } else { return nil }
         }
         .eraseToAnyPublisher()
-    lazy var openSearchScreenPublisher: AnyPublisher<Void, Never> = eventsInputSubject
-        .filter { $0 == .proceedButtonTap }
-        .map { _ in return () }
+
+    lazy var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> = eventsInputSubject
+        .compactMap { [weak self] event in
+            if case .didSelectRecentCity(let row) = event, let city = self?.recentCities[row] {
+                return WelcomeNavigationEvent.openForecastScreen(city: city)
+            } else if case .proceedButtonTap = event {
+                return WelcomeNavigationEvent.openSearchScreen
+            } else { return nil }
+        }
         .eraseToAnyPublisher()
-    lazy var openForecastPublisher: AnyPublisher<City, Never> = eventsInputSubject
-            .compactMap { [weak self] event in
-                if case let .didSelectRecentCity(row) = event { return self?.recentCities[row] } else { return nil }
-            }
-            .eraseToAnyPublisher()
 
 }

@@ -28,16 +28,15 @@ class ForecastViewController: UIViewController {
 
     private let forecastView = ForecastView()
     private let forecastViewModel: ForecastViewModelContract
-    private let storageService: StorageServiceType = StorageService()
+    
 
     // MARK: - Initialization -
 
-    init(city: City) {
-        storageService.addRecentCity(city)
-        forecastViewModel = ForecastViewModel(city: city, networkingService: NetworkingService())
+    init(forecastViewModel: ForecastViewModelContract) {
+        self.forecastViewModel = forecastViewModel
         super.init(nibName: nil, bundle: nil)
+        self.title = forecastViewModel.city.name
         forecastView.collectionView.delegate = self
-        self.title = city.name
     }
 
     required init?(coder: NSCoder) {

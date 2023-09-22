@@ -11,11 +11,20 @@ protocol SearchViewModelContract {
     var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
     var foundCitiesPublisher: AnyPublisher<[City], Never> { get }
     var showErrorPublisher: AnyPublisher<Error, Never> { get }
-    var openForecastPublisher: AnyPublisher<City, Never> { get }
 
 }
 
-class SearchViewModel: SearchViewModelContract {
+protocol SearchViewModelCoordinatorContract {
+
+    var navigationEventsPublisher: AnyPublisher<SearchNavigationEvent, Never> { get }
+
+}
+
+enum SearchNavigationEvent {
+    case openForecastScreen(city: City)
+}
+
+class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContract {
 
     // MARK: - Constants -
 
@@ -43,10 +52,11 @@ class SearchViewModel: SearchViewModelContract {
 
     // MARK: - Public -
 
-    lazy var openForecastPublisher: AnyPublisher<City, Never> = eventsInputSubject
+    lazy var navigationEventsPublisher: AnyPublisher<SearchNavigationEvent, Never> = eventsInputSubject
         .compactMap { [weak self] event in
-            if case .didSelectCity(let row) = event {
-                return self?.cities[row]
+            if case .didSelectCity(let row) = event, let city = self?.cities[row] {
+
+                return SearchNavigationEvent.openForecastScreen(city: city)
             } else { return nil }
         }
         .eraseToAnyPublisher()
