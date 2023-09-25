@@ -1,4 +1,5 @@
 import Combine
+import Swinject
 import UIKit
 
 class WelcomeCoordinator: BaseCoordinator {
@@ -11,9 +12,10 @@ class WelcomeCoordinator: BaseCoordinator {
     }
 
     override func start() {
-        let welcomeViewModel = WelcomeViewModel(storageService: StorageService())
-        let welcomeViewController = WelcomeViewController(welcomeViewModel: welcomeViewModel)
-        self.welcomeViewModel = welcomeViewModel as WelcomeViewModelCoordinatorContract
+
+        let welcomeViewController = Assembler.shared.resolver.resolve(WelcomeViewController.self)!
+        let welcomeViewModel = Assembler.shared.resolver.resolve(WelcomeViewModelCoordinatorContract.self)
+        self.welcomeViewModel = welcomeViewModel 
         bindActions()
         navigationController.pushViewController(welcomeViewController, animated: true)
     }

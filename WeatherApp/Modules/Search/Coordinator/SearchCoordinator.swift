@@ -1,4 +1,5 @@
 import Combine
+import Swinject
 import UIKit
 
 class SearchCoordinator: BaseCoordinator {
@@ -11,10 +12,9 @@ class SearchCoordinator: BaseCoordinator {
     }
 
     override func start() {
-        let searchViewModel = SearchViewModel(networkingService: NetworkingService(),
-                                              scheduler: DispatchQueue.main.eraseToAnyScheduler())
-        let searchViewController = SearchViewController(searchViewModel: searchViewModel)
-        self.searchViewModel = searchViewModel as SearchViewModelCoordinatorContract
+        let searchViewController = Assembler.shared.resolver.resolve(SearchViewController.self)!
+        let searchViewModel = Assembler.shared.resolver.resolve(SearchViewModelCoordinatorContract.self)
+        self.searchViewModel = searchViewModel
         bindActions()
         navigationController.pushViewController(searchViewController, animated: true)
     }

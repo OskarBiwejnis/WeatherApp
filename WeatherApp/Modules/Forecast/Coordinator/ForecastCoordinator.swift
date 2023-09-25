@@ -1,4 +1,5 @@
 import Combine
+import Swinject
 import UIKit
 
 class ForecastCoordinator: BaseCoordinator {
@@ -11,10 +12,8 @@ class ForecastCoordinator: BaseCoordinator {
     }
 
     override func start() {
-        let forecastViewModel = ForecastViewModel(city: city,
-                                                  networkingService: NetworkingService(),
-                                                  storageService: StorageService())
-        let forecastViewController = ForecastViewController(forecastViewModel: forecastViewModel)
+        let forecastViewController = Assembler.shared.resolver.resolve(ForecastViewController.self, argument: city)!
         navigationController.pushViewController(forecastViewController, animated: true)
     }
+
 }

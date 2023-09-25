@@ -41,7 +41,7 @@ class WelcomeViewController: UIViewController {
 
     // MARK: - Initialization -
 
-    init(welcomeViewModel: WelcomeViewModel) {
+    init(welcomeViewModel: WelcomeViewModelContract) {
         self.welcomeViewModel = welcomeViewModel
         super.init(nibName: nil, bundle: nil)
     }

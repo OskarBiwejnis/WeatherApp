@@ -14,6 +14,7 @@ target 'WeatherApp' do
   pod 'Sourcery', '~> 1.6.0'
   pod 'Difference'
   pod 'SwiftyMocky', '~> 4.1.0'
+  pod 'Swinject'
 
   target 'WeatherAppTests' do
     inherit! :search_paths

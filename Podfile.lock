@@ -16,6 +16,7 @@ PODS:
   - SwiftLint (0.52.4)
   - SwiftyMocky (4.1.0):
     - Sourcery (= 1.6.0)
+  - Swinject (2.8.3)
 
 DEPENDENCIES:
   - CombineCocoa
@@ -30,6 +31,7 @@ DEPENDENCIES:
   - Sourcery (~> 1.6.0)
   - SwiftLint
   - SwiftyMocky (~> 4.1.0)
+  - Swinject
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -45,6 +47,7 @@ SPEC REPOS:
     - Sourcery
     - SwiftLint
     - SwiftyMocky
+    - Swinject
 
 EXTERNAL SOURCES:
   CombineDataSources:
@@ -70,7 +73,8 @@ SPEC CHECKSUMS:
   Sourcery: 744f43178637c79bf23127dfe34e2103b3f28499
   SwiftLint: 1cc5cd61ba9bacb2194e340aeb47a2a37fda00b3
   SwiftyMocky: 014739247afadb65efb5bb92ede32c22b9365762
+  Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
 
-PODFILE CHECKSUM: 2cc119097696d9f61538f191c0042c81d4b63c4a
+PODFILE CHECKSUM: 217bd99a54913daab891b4d497d9398111baef2f
 
 COCOAPODS: 1.12.1

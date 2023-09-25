@@ -31,7 +31,7 @@ class ForecastViewModel: ForecastViewModelContract {
 
     init(city: City,
          networkingService: NetworkingServiceType,
-         storageService: StorageService) {
+         storageService: StorageServiceType) {
         self.city = city
         self.networkingService = networkingService
         self.storageService = storageService
