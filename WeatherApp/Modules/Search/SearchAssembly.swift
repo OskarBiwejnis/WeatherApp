@@ -1,22 +1,15 @@
 import Foundation
 import Swinject
-
-// swiftlint: disable all
+import SwinjectAutoregistration
 
 class SearchAssembly: Assembly {
 
     func assemble(container: Container) {
-        container.register(SearchViewModelContract.self) { resolver in
-            let networkingService = resolver.resolve(NetworkingServiceType.self)!
-            let scheduler = DispatchQueue.main.eraseToAnyScheduler()
-            return SearchViewModel(networkingService: networkingService, scheduler: scheduler)
-        }.inObjectScope(.weak)
-        container.register(SearchViewController.self) { resolver in
-            let searchViewModel = resolver.resolve(SearchViewModelContract.self)!
-            return SearchViewController(searchViewModel: searchViewModel)
-        }
+        container.autoregister(SearchViewModelContract.self, initializer: SearchViewModel.init)
+            .inObjectScope(.weak)
+        container.autoregister(SearchViewController.self, initializer: SearchViewController.init)
         container.register(SearchViewModelCoordinatorContract.self) { resolver in
-            return resolver.resolve(SearchViewModelContract.self)! as! SearchViewModelCoordinatorContract
+            return resolver.resolve(SearchViewModelContract.self).forceResolve() as SearchViewModelCoordinatorContract
         }
     }
 

@@ -12,7 +12,7 @@ class SearchCoordinator: BaseCoordinator {
     }
 
     override func start() {
-        let searchViewController = Assembler.shared.resolver.resolve(SearchViewController.self)!
+        let searchViewController = Assembler.shared.resolver.resolve(SearchViewController.self).forceResolve()
         let searchViewModel = Assembler.shared.resolver.resolve(SearchViewModelCoordinatorContract.self)
         self.searchViewModel = searchViewModel
         bindActions()
@@ -22,7 +22,7 @@ class SearchCoordinator: BaseCoordinator {
 
     private func goToForecastScreen(city: City) {
         let forecastCoordinator = ForecastCoordinator(navigationController: navigationController,
-                                                      city: city)
+                                                      moduleInput: ForecastViewModel.ModuleInput(city: city))
         coordinate(to: forecastCoordinator)
     }
 

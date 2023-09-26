@@ -13,9 +13,9 @@ class WelcomeCoordinator: BaseCoordinator {
 
     override func start() {
 
-        let welcomeViewController = Assembler.shared.resolver.resolve(WelcomeViewController.self)!
+        let welcomeViewController = Assembler.shared.resolver.resolve(WelcomeViewController.self).forceResolve()
         let welcomeViewModel = Assembler.shared.resolver.resolve(WelcomeViewModelCoordinatorContract.self)
-        self.welcomeViewModel = welcomeViewModel 
+        self.welcomeViewModel = welcomeViewModel
         bindActions()
         navigationController.pushViewController(welcomeViewController, animated: true)
     }
@@ -27,7 +27,7 @@ class WelcomeCoordinator: BaseCoordinator {
 
     private func goToForecastScreen(city: City) {
         let forecastCoordinator = ForecastCoordinator(navigationController: navigationController,
-                                                      city: city)
+                                                      moduleInput: ForecastViewModel.ModuleInput(city: city))
         coordinate(to: forecastCoordinator)
     }
 

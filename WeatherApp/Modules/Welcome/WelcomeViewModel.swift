@@ -1,7 +1,7 @@
 import Combine
 import UIKit
 
-protocol WelcomeViewModelContract {
+protocol WelcomeViewModelContract: WelcomeViewModelCoordinatorContract {
 
     var recentCities: [City] { get }
 
@@ -21,7 +21,7 @@ enum WelcomeNavigationEvent {
     case openSearchScreen
 }
 
-class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorContract {
+class WelcomeViewModel: WelcomeViewModelContract {
     
     // MARK: - Variables -
 
