@@ -4,7 +4,7 @@ import CombineDataSources
 import CombineSchedulers
 import Foundation
 
-protocol SearchViewModelContract: SearchViewModelCoordinatorContract {
+protocol SearchViewModelContract {
 
     var cities: [City] { get }
 
@@ -24,7 +24,7 @@ enum SearchNavigationEvent {
     case openForecastScreen(city: City)
 }
 
-class SearchViewModel: SearchViewModelContract {
+class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContract {
 
     // MARK: - Constants -
 

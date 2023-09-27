@@ -13,7 +13,9 @@ class SearchCoordinator: BaseCoordinator {
 
     override func start() {
         let searchViewController = Assembler.shared.resolver.resolve(SearchViewController.self).forceResolve()
-        bindActions(searchViewModel: searchViewController.searchViewModel)
+        guard let searchViewModel = searchViewController.searchViewModel as? SearchViewModelCoordinatorContract
+        else { return }
+        bindActions(searchViewModel: searchViewModel)
         navigationController.pushViewController(searchViewController, animated: true)
     }
 

@@ -13,7 +13,9 @@ class WelcomeCoordinator: BaseCoordinator {
 
     override func start() {
         let welcomeViewController = Assembler.shared.resolver.resolve(WelcomeViewController.self).forceResolve()
-        bindActions(welcomeViewModel: welcomeViewController.welcomeViewModel)
+        guard let welcomeViewModel = welcomeViewController.welcomeViewModel as? WelcomeViewModelCoordinatorContract
+        else { return }
+        bindActions(welcomeViewModel: welcomeViewModel)
         navigationController.pushViewController(welcomeViewController, animated: true)
     }
 
