@@ -22,7 +22,7 @@ class SearchViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let searchView = SearchView()
-    private let searchViewModel: SearchViewModelContract
+    let searchViewModel: SearchViewModelContract
 
     // MARK: - Initialization -
 

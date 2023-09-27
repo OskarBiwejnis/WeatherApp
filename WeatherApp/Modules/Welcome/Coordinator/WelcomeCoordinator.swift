@@ -12,27 +12,26 @@ class WelcomeCoordinator: BaseCoordinator {
     }
 
     override func start() {
-
         let welcomeViewController = Assembler.shared.resolver.resolve(WelcomeViewController.self).forceResolve()
-        let welcomeViewModel = Assembler.shared.resolver.resolve(WelcomeViewModelCoordinatorContract.self)
-        self.welcomeViewModel = welcomeViewModel
-        bindActions()
+        bindActions(welcomeViewModel: welcomeViewController.welcomeViewModel)
         navigationController.pushViewController(welcomeViewController, animated: true)
     }
 
     private func goToSearchScreen() {
-        let searchCoordinator = SearchCoordinator(navigationController: navigationController)
+        let searchCoordinator = Assembler.shared.resolver
+            .resolve(SearchCoordinator.self, argument: navigationController).forceResolve()
         coordinate(to: searchCoordinator)
     }
 
     private func goToForecastScreen(city: City) {
-        let forecastCoordinator = ForecastCoordinator(navigationController: navigationController,
-                                                      moduleInput: ForecastViewModel.ModuleInput(city: city))
+        let forecastCoordinator = Assembler.shared.resolver
+            .resolve(ForecastCoordinator.self,
+                     arguments: navigationController, ForecastViewModel.ModuleInput(city: city)).forceResolve()
         coordinate(to: forecastCoordinator)
     }
 
-    private func bindActions() {
-        welcomeViewModel?.navigationEventsPublisher
+    private func bindActions(welcomeViewModel: WelcomeViewModelCoordinatorContract) {
+        welcomeViewModel.navigationEventsPublisher
             .sink { [weak self] navigationEvent in
                 switch navigationEvent {
                 case .openSearchScreen:

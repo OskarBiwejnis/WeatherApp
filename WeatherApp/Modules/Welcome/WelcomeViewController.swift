@@ -22,7 +22,7 @@ class WelcomeViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
-    private let welcomeViewModel: WelcomeViewModelContract
+    let welcomeViewModel: WelcomeViewModelContract
 
     // MARK: - Public -
 

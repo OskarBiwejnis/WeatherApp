@@ -11,6 +11,9 @@ class ForecastAssembly: Assembly {
             let forecastViewModel = resolver.resolve(ForecastViewModelContract.self, argument: moduleInput).forceResolve()
             return ForecastViewController(forecastViewModel: forecastViewModel)
         }
+        container.autoregister(ForecastCoordinator.self,
+                               arguments: UINavigationController.self, ForecastViewModel.ModuleInput.self,
+                               initializer: ForecastCoordinator.init)
     }
 
 }

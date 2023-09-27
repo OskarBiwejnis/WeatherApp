@@ -8,9 +8,7 @@ class WelcomeAssembly: Assembly {
         container.autoregister(WelcomeViewModelContract.self, initializer: WelcomeViewModel.init)
             .inObjectScope(.weak)
         container.autoregister(WelcomeViewController.self, initializer: WelcomeViewController.init)
-        container.register(WelcomeViewModelCoordinatorContract.self) { resolver in
-            return resolver.resolve(WelcomeViewModelContract.self).forceResolve() as WelcomeViewModelCoordinatorContract
-        }
+        container.autoregister(WelcomeCoordinator.self, argument: UINavigationController.self, initializer: WelcomeCoordinator.init)
     }
 
 }

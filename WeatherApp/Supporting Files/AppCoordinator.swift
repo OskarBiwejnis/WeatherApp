@@ -1,5 +1,6 @@
 import Combine
 import CombineSchedulers
+import Swinject
 import UIKit
 
 class AppCoordinator: BaseCoordinator {
@@ -9,7 +10,8 @@ class AppCoordinator: BaseCoordinator {
     }
 
     private func goToWelcomeScreen() {
-        let welcomeCoordinator = WelcomeCoordinator(navigationController: navigationController)
+        let welcomeCoordinator = Assembler.shared.resolver
+            .resolve(WelcomeCoordinator.self, argument: navigationController).forceResolve()
         coordinate(to: welcomeCoordinator)
     }
     
