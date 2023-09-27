@@ -1,4 +1,5 @@
 import Combine
+import Swinject
 import UIKit
 
 class WelcomeCoordinator: BaseCoordinator {
@@ -11,26 +12,28 @@ class WelcomeCoordinator: BaseCoordinator {
     }
 
     override func start() {
-        let welcomeViewModel = WelcomeViewModel(storageService: StorageService())
-        let welcomeViewController = WelcomeViewController(welcomeViewModel: welcomeViewModel)
-        self.welcomeViewModel = welcomeViewModel as WelcomeViewModelCoordinatorContract
-        bindActions()
+        let welcomeViewController = Assembler.shared.resolver.resolve(WelcomeViewController.self).forceResolve()
+        guard let welcomeViewModel = welcomeViewController.welcomeViewModel as? WelcomeViewModelCoordinatorContract
+        else { return }
+        bindActions(welcomeViewModel: welcomeViewModel)
         navigationController.pushViewController(welcomeViewController, animated: true)
     }
 
     private func goToSearchScreen() {
-        let searchCoordinator = SearchCoordinator(navigationController: navigationController)
+        let searchCoordinator = Assembler.shared.resolver
+            .resolve(SearchCoordinator.self, argument: navigationController).forceResolve()
         coordinate(to: searchCoordinator)
     }
 
     private func goToForecastScreen(city: City) {
-        let forecastCoordinator = ForecastCoordinator(navigationController: navigationController,
-                                                      city: city)
+        let forecastCoordinator = Assembler.shared.resolver
+            .resolve(ForecastCoordinator.self,
+                     arguments: navigationController, ForecastViewModel.ModuleInput(city: city)).forceResolve()
         coordinate(to: forecastCoordinator)
     }
 
-    private func bindActions() {
-        welcomeViewModel?.navigationEventsPublisher
+    private func bindActions(welcomeViewModel: WelcomeViewModelCoordinatorContract) {
+        welcomeViewModel.navigationEventsPublisher
             .sink { [weak self] navigationEvent in
                 switch navigationEvent {
                 case .openSearchScreen:

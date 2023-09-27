@@ -1,20 +1,19 @@
 import Combine
+import Swinject
 import UIKit
 
 class ForecastCoordinator: BaseCoordinator {
 
-    private let city: City
+    private let moduleInput: ForecastViewModel.ModuleInput
 
-    init(navigationController: UINavigationController, city: City) {
-        self.city = city
+    init(navigationController: UINavigationController, moduleInput: ForecastViewModel.ModuleInput) {
+        self.moduleInput = moduleInput
         super.init(navigationController: navigationController)
     }
 
     override func start() {
-        let forecastViewModel = ForecastViewModel(city: city,
-                                                  networkingService: NetworkingService(),
-                                                  storageService: StorageService())
-        let forecastViewController = ForecastViewController(forecastViewModel: forecastViewModel)
+        let forecastViewController = Assembler.shared.resolver.resolve(ForecastViewController.self, argument: moduleInput).forceResolve()
         navigationController.pushViewController(forecastViewController, animated: true)
     }
+
 }

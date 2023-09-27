@@ -22,7 +22,7 @@ class WelcomeViewController: UIViewController {
     private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
-    private let welcomeViewModel: WelcomeViewModelContract
+    let welcomeViewModel: WelcomeViewModelContract
 
     // MARK: - Public -
 
@@ -41,7 +41,7 @@ class WelcomeViewController: UIViewController {
 
     // MARK: - Initialization -
 
-    init(welcomeViewModel: WelcomeViewModel) {
+    init(welcomeViewModel: WelcomeViewModelContract) {
         self.welcomeViewModel = welcomeViewModel
         super.init(nibName: nil, bundle: nil)
     }

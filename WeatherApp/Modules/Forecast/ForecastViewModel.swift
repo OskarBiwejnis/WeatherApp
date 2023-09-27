@@ -18,6 +18,10 @@ class ForecastViewModel: ForecastViewModelContract {
         static let numberOfDisplayedForecasts = 15
     }
 
+    struct ModuleInput {
+        let city: City
+    }
+
     // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
@@ -29,10 +33,10 @@ class ForecastViewModel: ForecastViewModelContract {
 
     // MARK: - Initialization -
 
-    init(city: City,
+    init(moduleInput: ModuleInput,
          networkingService: NetworkingServiceType,
-         storageService: StorageService) {
-        self.city = city
+         storageService: StorageServiceType) {
+        self.city = moduleInput.city
         self.networkingService = networkingService
         self.storageService = storageService
         storageService.addRecentCity(city)

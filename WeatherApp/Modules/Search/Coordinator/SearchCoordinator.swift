@@ -1,4 +1,5 @@
 import Combine
+import Swinject
 import UIKit
 
 class SearchCoordinator: BaseCoordinator {
@@ -11,23 +12,23 @@ class SearchCoordinator: BaseCoordinator {
     }
 
     override func start() {
-        let searchViewModel = SearchViewModel(networkingService: NetworkingService(),
-                                              scheduler: DispatchQueue.main.eraseToAnyScheduler())
-        let searchViewController = SearchViewController(searchViewModel: searchViewModel)
-        self.searchViewModel = searchViewModel as SearchViewModelCoordinatorContract
-        bindActions()
+        let searchViewController = Assembler.shared.resolver.resolve(SearchViewController.self).forceResolve()
+        guard let searchViewModel = searchViewController.searchViewModel as? SearchViewModelCoordinatorContract
+        else { return }
+        bindActions(searchViewModel: searchViewModel)
         navigationController.pushViewController(searchViewController, animated: true)
     }
 
 
     private func goToForecastScreen(city: City) {
-        let forecastCoordinator = ForecastCoordinator(navigationController: navigationController,
-                                                      city: city)
+        let forecastCoordinator = Assembler.shared.resolver
+            .resolve(ForecastCoordinator.self,
+                     arguments: navigationController, ForecastViewModel.ModuleInput(city: city)).forceResolve()
         coordinate(to: forecastCoordinator)
     }
 
-    private func bindActions() {
-        searchViewModel?.navigationEventsPublisher
+    private func bindActions(searchViewModel: SearchViewModelCoordinatorContract) {
+        searchViewModel.navigationEventsPublisher
             .sink{ [weak self] navigationEvent in
                 if case .openForecastScreen(let city) = navigationEvent {
                     self?.goToForecastScreen(city: city)
