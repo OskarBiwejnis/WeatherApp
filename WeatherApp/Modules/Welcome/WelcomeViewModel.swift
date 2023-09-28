@@ -6,14 +6,17 @@ protocol WelcomeViewModelContract {
     var recentCities: [City] { get }
 
     var eventsInputSubject: PassthroughSubject<WelcomeViewController.EventInput, Never> { get }
-    var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> { get }
-
+    var viewStatePublisher: AnyPublisher<WelcomeViewState, Never> { get }
 }
 
 protocol WelcomeViewModelCoordinatorContract {
 
     var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> { get }
 
+}
+
+enum WelcomeViewState {
+    case recentCitiesGetReloaded(cities: [City])
 }
 
 enum WelcomeNavigationEvent {
@@ -40,12 +43,12 @@ class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorCon
     
     // MARK: - Public -
 
-    lazy var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> = eventsInputSubject
+    lazy var viewStatePublisher: AnyPublisher<WelcomeViewState, Never> = eventsInputSubject
         .compactMap { [weak self] event in
             if case .viewWillAppear = event {
                 let recentCities = self?.storageService.getRecentCities() ?? []
                 self?.recentCities = recentCities
-                return recentCities
+                return WelcomeViewState.recentCitiesGetReloaded(cities: recentCities)
             } else { return nil }
         }
         .eraseToAnyPublisher()
