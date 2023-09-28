@@ -103,7 +103,7 @@ class WelcomeView: UIView {
 
     func changeState(_ viewState: WelcomeViewState) {
         switch viewState {
-        case .recentCitiesGetReloaded(let cities):
+        case .cities(let cities):
             tableViewDataSubject.send(cities)
         }
     }

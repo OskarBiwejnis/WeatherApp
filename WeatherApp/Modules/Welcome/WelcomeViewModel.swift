@@ -3,10 +3,9 @@ import UIKit
 
 protocol WelcomeViewModelContract {
 
-    var recentCities: [City] { get }
-
     var eventsInputSubject: PassthroughSubject<WelcomeViewController.EventInput, Never> { get }
     var viewStatePublisher: AnyPublisher<WelcomeViewState, Never> { get }
+
 }
 
 protocol WelcomeViewModelCoordinatorContract {
@@ -16,7 +15,7 @@ protocol WelcomeViewModelCoordinatorContract {
 }
 
 enum WelcomeViewState {
-    case recentCitiesGetReloaded(cities: [City])
+    case cities([City])
 }
 
 enum WelcomeNavigationEvent {
@@ -29,8 +28,8 @@ class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorCon
     // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
+    private var recentCities: [City] = []
 
-    var recentCities: [City] = []
     let eventsInputSubject = PassthroughSubject<WelcomeViewController.EventInput, Never>()
 
     private let storageService: StorageServiceType
@@ -43,14 +42,8 @@ class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorCon
     
     // MARK: - Public -
 
-    lazy var viewStatePublisher: AnyPublisher<WelcomeViewState, Never> = eventsInputSubject
-        .compactMap { [weak self] event in
-            if case .viewWillAppear = event {
-                let recentCities = self?.storageService.getRecentCities() ?? []
-                self?.recentCities = recentCities
-                return WelcomeViewState.recentCitiesGetReloaded(cities: recentCities)
-            } else { return nil }
-        }
+    lazy var viewStatePublisher: AnyPublisher<WelcomeViewState, Never> = reloadRecentCitiesPublisher
+        .map { .cities($0) }
         .eraseToAnyPublisher()
 
     lazy var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> = eventsInputSubject
@@ -59,6 +52,18 @@ class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorCon
                 return WelcomeNavigationEvent.openForecastScreen(city: city)
             } else if case .proceedButtonTap = event {
                 return WelcomeNavigationEvent.openSearchScreen
+            } else { return nil }
+        }
+        .eraseToAnyPublisher()
+
+    // MARK: - Private -
+
+    private lazy var reloadRecentCitiesPublisher: AnyPublisher<[City], Never> = eventsInputSubject
+        .compactMap { [weak self] event in
+            if case .viewWillAppear = event {
+                let recentCities = self?.storageService.getRecentCities() ?? []
+                self?.recentCities = recentCities
+                return recentCities
             } else { return nil }
         }
         .eraseToAnyPublisher()
