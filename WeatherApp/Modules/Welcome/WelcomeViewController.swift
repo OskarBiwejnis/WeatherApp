@@ -13,12 +13,7 @@ class WelcomeViewController: UIViewController {
     }
 
     // MARK: - Variables -
-    private let itemsController = TableViewItemsController<[[City]]>(cellFactory: { _, tableView, indexPath, model -> UITableViewCell in
-        guard let cell: RecentCityCell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier, for: indexPath) as? RecentCityCell
-        else { return UITableViewCell() }
-        cell.label.text = model.name
-        return cell
-    })
+
     private var subscriptions: [AnyCancellable] = []
 
     private let welcomeView = WelcomeView()
@@ -53,22 +48,22 @@ class WelcomeViewController: UIViewController {
     // MARK: - Private -
 
     private func bindActions() {
-        welcomeView.tableView.didSelectRowPublisher
-            .sink { [weak self] indexPath in
-                self?.welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: indexPath.row))
-                self?.welcomeView.tableView.deselectRow(at: indexPath, animated: false)
-            }
-            .store(in: &subscriptions)
-
         welcomeView.proceedButton.tapPublisher
             .sink { [weak self] in
                 self?.welcomeViewModel.eventsInputSubject.send(.proceedButtonTap)
             }
             .store(in: &subscriptions)
 
-        welcomeViewModel.reloadRecentCitiesPublisher
-            .receive(on: DispatchQueue.main)
-            .bind(subscriber: welcomeView.tableView.rowsSubscriber(itemsController))
+        welcomeView.didSelectRowPublisher
+            .sink { [weak self] row in
+                self?.welcomeViewModel.eventsInputSubject.send(.didSelectRecentCity(row: row))
+            }
+            .store(in: &subscriptions)
+
+        welcomeViewModel.viewStatePublisher
+            .sink { [weak self] viewState in
+                self?.welcomeView.changeState(viewState)
+            }
             .store(in: &subscriptions)
     }
 

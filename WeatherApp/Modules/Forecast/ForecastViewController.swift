@@ -14,16 +14,6 @@ class ForecastViewController: UIViewController {
 
     // MARK: - Variables -
 
-    private let itemsController = CollectionViewItemsController<[[ThreeHourForecastFormatted]]>(cellFactory: { _, collectionView, indexPath, threeHourForecastFormatted -> UICollectionViewCell in
-        guard let cell: ForecastCell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier, for: indexPath) as? ForecastCell
-        else { return UICollectionViewCell() }
-        cell.setupWith(hour: threeHourForecastFormatted.hour,
-                       temperature: threeHourForecastFormatted.temperature,
-                       humidity: threeHourForecastFormatted.humidity,
-                       wind: threeHourForecastFormatted.wind,
-                       skyImage: threeHourForecastFormatted.skyImage)
-        return cell
-    })
     private var subscriptions: [AnyCancellable] = []
 
     private let forecastView = ForecastView()
@@ -69,23 +59,26 @@ extension ForecastViewController: UICollectionViewDelegateFlowLayout {
 extension ForecastViewController {
 
     private func bindActions() {
-        forecastViewModel.forecastPublisher
-            .receive(on: DispatchQueue.main)
-            .bind(subscriber: forecastView.collectionView.itemsSubscriber(itemsController))
-            .store(in: &subscriptions)
+        forecastViewModel.viewStatePublisher
+            .sink { [weak self] viewState in
+                switch viewState {
+                case .forecast(let _):
+                    self?.forecastView.changeState(viewState)
+                case .error(let error):
+                    self?.handleErrorState(error)
 
-        forecastViewModel.showErrorPublisher
-            .map { error -> UIAlertController in
-                let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
-                let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
-                errorAlert.addAction(okButton)
-                return errorAlert
-            }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] errorAlert in
-                self?.present(errorAlert, animated: true, completion: nil)
+                }
             }
             .store(in: &subscriptions)
+    }
+
+    private func handleErrorState(_ error: Error) {
+        let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
+        errorAlert.addAction(okButton)
+        DispatchQueue.main.async {
+            self.present(errorAlert, animated: true, completion: nil)
+        }
     }
 
 }

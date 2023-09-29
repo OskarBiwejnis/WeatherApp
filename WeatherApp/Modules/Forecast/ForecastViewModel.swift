@@ -3,12 +3,15 @@ import Foundation
 import UIKit
 
 protocol ForecastViewModelContract {
-
     var city: City { get }
-
-    var forecastPublisher: AnyPublisher<[ThreeHourForecastFormatted], Never> { get }
-    var showErrorPublisher: AnyPublisher<Error, Never> { get }
+    var viewStatePublisher: AnyPublisher<ForecastViewState, Never> { get }
 }
+
+enum ForecastViewState {
+    case forecast([ThreeHourForecastFormatted])
+    case error(Error)
+}
+
 
 class ForecastViewModel: ForecastViewModelContract {
 
@@ -44,7 +47,17 @@ class ForecastViewModel: ForecastViewModelContract {
 
     // MARK: - Public -
 
-    lazy var forecastPublisher: AnyPublisher<[ThreeHourForecastFormatted], Never> = fetchResultPublisher
+    lazy var viewStatePublisher: AnyPublisher<ForecastViewState, Never> = forecastPublisher
+        .map { .forecast($0) }
+        .merge(with: showErrorPublisher.map { .error($0) })
+        .eraseToAnyPublisher()
+
+
+    // MARK: - Private -
+
+    private lazy var fetchResultPublisher = networkingService.fetchThreeHourForecast(city: city).toResult()
+
+    private lazy var forecastPublisher: AnyPublisher<[ThreeHourForecastFormatted], Never> = fetchResultPublisher
         .extractResult()
         .map { forecastData in
             let forecasts = forecastData.list
@@ -57,13 +70,8 @@ class ForecastViewModel: ForecastViewModelContract {
         }
         .eraseToAnyPublisher()
 
-    lazy var showErrorPublisher: AnyPublisher<Error, Never> = fetchResultPublisher
+    private lazy var showErrorPublisher: AnyPublisher<Error, Never> = fetchResultPublisher
         .extractFailure()
         .eraseToAnyPublisher()
-
-
-    // MARK: - Private -
-
-    private lazy var fetchResultPublisher = networkingService.fetchThreeHourForecast(city: city).toResult()
 
 }

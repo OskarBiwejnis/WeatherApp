@@ -1,4 +1,5 @@
 import Combine
+import CombineDataSources
 import CombineCocoa
 import SnapKit
 import UIKit
@@ -31,6 +32,18 @@ class WelcomeView: UIView {
     }
 
     // MARK: - Variables -
+
+    @Published private var cities: [City] = []
+    private var subscriptions: [AnyCancellable] = []
+
+    private let tableViewDidSelectRowSubject = PassthroughSubject<Int, Never>()
+
+    private let itemsController = TableViewItemsController<[[City]]>(cellFactory: { _, tableView, indexPath, model -> UITableViewCell in
+        guard let cell: RecentCityCell = tableView.dequeueReusableCell(withIdentifier: RecentCityCell.reuseIdentifier, for: indexPath) as? RecentCityCell
+        else { return UITableViewCell() }
+        cell.label.text = model.name
+        return cell
+    })
 
     private let iconImageView: UIImageView = {
         let iconImageView = UIImageView(image: R.image.logo())
@@ -78,11 +91,23 @@ class WelcomeView: UIView {
         super.init(frame: .zero)
         setupView()
         setupConstraints()
+        setupTableView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: NSCoder())
     }
+
+    // MARK: - Public -
+
+    func changeState(_ viewState: WelcomeViewState) {
+        switch viewState {
+        case .cities(let cities):
+            self.cities = cities
+        }
+    }
+
+    lazy var didSelectRowPublisher: AnyPublisher<Int, Never> = tableViewDidSelectRowSubject.eraseToAnyPublisher()
 
     // MARK: - Private -
     
@@ -125,6 +150,20 @@ class WelcomeView: UIView {
             make.centerX.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(Constants.recentLabelOffset)
         }
+    }
+
+    private func setupTableView() {
+        tableView.didSelectRowPublisher
+            .sink { [weak self] indexPath in
+                self?.tableViewDidSelectRowSubject.send(indexPath.row)
+                self?.tableView.deselectRow(at: indexPath, animated: false)
+            }
+            .store(in: &subscriptions)
+
+        $cities
+            .receive(on: DispatchQueue.main)
+            .bind(subscriber: tableView.rowsSubscriber(itemsController))
+            .store(in: &subscriptions)
     }
 
 }
