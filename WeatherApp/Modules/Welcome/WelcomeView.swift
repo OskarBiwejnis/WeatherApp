@@ -33,9 +33,8 @@ class WelcomeView: UIView {
 
     // MARK: - Variables -
 
+    @Published private var cities: [City] = []
     private var subscriptions: [AnyCancellable] = []
-
-    private let tableViewDataSubject = PassthroughSubject<[City], Never>()
 
     private let tableViewDidSelectRowSubject = PassthroughSubject<Int, Never>()
 
@@ -92,7 +91,7 @@ class WelcomeView: UIView {
         super.init(frame: .zero)
         setupView()
         setupConstraints()
-        bindActions()
+        setupTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -104,7 +103,7 @@ class WelcomeView: UIView {
     func changeState(_ viewState: WelcomeViewState) {
         switch viewState {
         case .cities(let cities):
-            tableViewDataSubject.send(cities)
+            self.cities = cities
         }
     }
 
@@ -153,7 +152,7 @@ class WelcomeView: UIView {
         }
     }
 
-    private func bindActions() {
+    private func setupTableView() {
         tableView.didSelectRowPublisher
             .sink { [weak self] indexPath in
                 self?.tableViewDidSelectRowSubject.send(indexPath.row)
@@ -161,7 +160,7 @@ class WelcomeView: UIView {
             }
             .store(in: &subscriptions)
 
-        tableViewDataSubject
+        $cities
             .receive(on: DispatchQueue.main)
             .bind(subscriber: tableView.rowsSubscriber(itemsController))
             .store(in: &subscriptions)

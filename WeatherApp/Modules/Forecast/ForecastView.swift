@@ -23,10 +23,8 @@ class ForecastView: UIView {
 
     // MARK: - Variables -
 
+    @Published private var forecast: [ThreeHourForecastFormatted] = []
     private var subscriptions: [AnyCancellable] = []
-
-    private let collectionViewDataSubject = PassthroughSubject<[ThreeHourForecastFormatted], Never>()
-    private let errorSubject = PassthroughSubject<Error, Never>()
 
     private let itemsController = CollectionViewItemsController<[[ThreeHourForecastFormatted]]>(cellFactory: { _, collectionView, indexPath, threeHourForecastFormatted -> UICollectionViewCell in
         guard let cell: ForecastCell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier, for: indexPath) as? ForecastCell
@@ -57,7 +55,7 @@ class ForecastView: UIView {
         super.init(frame: .zero)
         setupView()
         setupConstraints()
-        bindActions()
+        setupCollectionView()
     }
 
     required init?(coder: NSCoder) {
@@ -67,22 +65,10 @@ class ForecastView: UIView {
     // MARK: - Public -
 
     func changeState(_ viewState: ForecastViewState) {
-        switch viewState {
-        case .forecast(let forecastFormatted):
-            collectionViewDataSubject.send(forecastFormatted)
-        case .error(let error):
-            errorSubject.send(error)
+        if case .forecast(let forecastFormatted) = viewState {
+            self.forecast = forecastFormatted
         }
     }
-
-    lazy var errorOccuredPublisher: AnyPublisher<UIAlertController, Never> = errorSubject
-        .map { error -> UIAlertController in
-            let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
-            let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
-            errorAlert.addAction(okButton)
-            return errorAlert
-        }
-        .eraseToAnyPublisher()
 
     // MARK: - Private -
     
@@ -126,8 +112,8 @@ class ForecastView: UIView {
         }
     }
 
-    private func bindActions() {
-        collectionViewDataSubject
+    private func setupCollectionView() {
+        $forecast
             .receive(on: DispatchQueue.main)
             .bind(subscriber: collectionView.itemsSubscriber(itemsController))
             .store(in: &subscriptions)

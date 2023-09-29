@@ -17,11 +17,11 @@ class SearchView: UIView {
 
     // MARK: - Variables -
 
+    @Published private var cities: [City] = []
+
     private var subscriptions: [AnyCancellable] = []
 
     private let tableViewDidSelectRowSubject = PassthroughSubject<Int, Never>()
-    private let tableViewDataSubject = PassthroughSubject<[City], Never>()
-    private let errorSubject = PassthroughSubject<Error, Never>()
 
     private let itemsController = TableViewItemsController<[[City]]>(cellFactory: { _, tableView, indexPath, model -> UITableViewCell in
         guard let cell: SearchCell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier, for: indexPath) as? SearchCell
@@ -55,7 +55,7 @@ class SearchView: UIView {
         super.init(frame: .zero)
         setupView()
         setupConstraints()
-        bindActions()
+        setupTableView()
     }
 
     required init?(coder: NSCoder) {
@@ -65,22 +65,10 @@ class SearchView: UIView {
     // MARK: - Public -
 
     func changeState(_ viewState: SearchViewState) {
-        switch viewState {
-        case .cities(let cities):
-            tableViewDataSubject.send(cities)
-        case .error(let error):
-            errorSubject.send(error)
+        if case .cities(let cities) = viewState {
+            self.cities = cities
         }
     }
-
-    lazy var errorOccuredPublisher: AnyPublisher<UIAlertController, Never> = errorSubject
-            .map { error -> UIAlertController in
-                let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
-                let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
-                errorAlert.addAction(okButton)
-                return errorAlert
-            }
-            .eraseToAnyPublisher()
 
     lazy var didSelectRowPublisher: AnyPublisher<Int, Never> = tableViewDidSelectRowSubject.eraseToAnyPublisher()
 
@@ -104,8 +92,8 @@ class SearchView: UIView {
         }
     }
 
-    private func bindActions() {
-        tableViewDataSubject
+    private func setupTableView() {
+        $cities
             .receive(on: DispatchQueue.main)
             .bind(subscriber: tableView.rowsSubscriber(itemsController))
             .store(in: &subscriptions)
