@@ -5,19 +5,19 @@ import CombineSchedulers
 import Foundation
 
 protocol SearchViewModelContract {
-
-    var cities: [City] { get }
-
     var eventsInputSubject: PassthroughSubject<SearchViewController.EventInput, Never> { get }
-    var foundCitiesPublisher: AnyPublisher<[City], Never> { get }
-    var showErrorPublisher: AnyPublisher<Error, Never> { get }
-
+    var viewStatePublisher: AnyPublisher<SearchViewState, Never> { get }
 }
 
 protocol SearchViewModelCoordinatorContract {
 
     var navigationEventsPublisher: AnyPublisher<SearchNavigationEvent, Never> { get }
 
+}
+
+enum SearchViewState {
+    case cities([City])
+    case error(Error)
 }
 
 enum SearchNavigationEvent {
@@ -37,7 +37,7 @@ class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContra
     private var subscriptions: [AnyCancellable] = []
     private let scheduler: AnySchedulerOf<DispatchQueue>
 
-    var cities: [City] = []
+    private var cities: [City] = []
 
     let eventsInputSubject = PassthroughSubject<SearchViewController.EventInput, Never>()
 
@@ -51,6 +51,11 @@ class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContra
     }
 
     // MARK: - Public -
+
+    lazy var viewStatePublisher: AnyPublisher<SearchViewState, Never> = foundCitiesPublisher
+        .map { .cities($0) }
+        .merge(with: showErrorPublisher.map { .error($0) })
+        .eraseToAnyPublisher()
 
     lazy var navigationEventsPublisher: AnyPublisher<SearchNavigationEvent, Never> = eventsInputSubject
         .compactMap { [weak self] event in
@@ -78,7 +83,7 @@ class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContra
         .eraseToAnyPublisher()
 
 
-    lazy var foundCitiesPublisher: AnyPublisher<[City], Never> = searchResultPublisher
+    private lazy var foundCitiesPublisher: AnyPublisher<[City], Never> = searchResultPublisher
         .extractResult()
         .map { citiesData in
             return citiesData.data
@@ -88,7 +93,7 @@ class SearchViewModel: SearchViewModelContract, SearchViewModelCoordinatorContra
         }
         .eraseToAnyPublisher()
 
-    lazy var showErrorPublisher: AnyPublisher<Error, Never> = searchResultPublisher
+    private lazy var showErrorPublisher: AnyPublisher<Error, Never> = searchResultPublisher
         .extractFailure()
         .eraseToAnyPublisher()
 

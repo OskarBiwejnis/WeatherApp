@@ -1,4 +1,5 @@
 import Combine
+import CombineDataSources
 import CombineCocoa
 import SnapKit
 import UIKit
@@ -15,6 +16,19 @@ class SearchView: UIView {
     }
 
     // MARK: - Variables -
+
+    private var subscriptions: [AnyCancellable] = []
+
+    private let tableViewDidSelectRowSubject = PassthroughSubject<Int, Never>()
+    private let tableViewDataSubject = PassthroughSubject<[City], Never>()
+    private let errorSubject = PassthroughSubject<Error, Never>()
+
+    private let itemsController = TableViewItemsController<[[City]]>(cellFactory: { _, tableView, indexPath, model -> UITableViewCell in
+        guard let cell: SearchCell = tableView.dequeueReusableCell(withIdentifier: SearchCell.reuseIdentifier, for: indexPath) as? SearchCell
+        else { return UITableViewCell() }
+        cell.label.text = model.name
+        return cell
+    })
 
     let searchTextField = {
         let searchTextField = UITextField()
@@ -41,11 +55,34 @@ class SearchView: UIView {
         super.init(frame: .zero)
         setupView()
         setupConstraints()
+        bindActions()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+
+    // MARK: - Public -
+
+    func changeState(_ viewState: SearchViewState) {
+        switch viewState {
+        case .cities(let cities):
+            tableViewDataSubject.send(cities)
+        case .error(let error):
+            errorSubject.send(error)
+        }
+    }
+
+    lazy var errorOccuredPublisher: AnyPublisher<UIAlertController, Never> = errorSubject
+            .map { error -> UIAlertController in
+                let errorAlert = UIAlertController(title: R.string.localizable.error_alert_title(), message: error.localizedDescription, preferredStyle: .alert)
+                let okButton = UIAlertAction(title: R.string.localizable.ok_button_text(), style: .default)
+                errorAlert.addAction(okButton)
+                return errorAlert
+            }
+            .eraseToAnyPublisher()
+
+    lazy var didSelectRowPublisher: AnyPublisher<Int, Never> = tableViewDidSelectRowSubject.eraseToAnyPublisher()
 
     // MARK: - Private -
 
@@ -66,5 +103,19 @@ class SearchView: UIView {
             make.bottom.left.right.equalToSuperview()
         }
     }
-    
+
+    private func bindActions() {
+        tableViewDataSubject
+            .receive(on: DispatchQueue.main)
+            .bind(subscriber: tableView.rowsSubscriber(itemsController))
+            .store(in: &subscriptions)
+
+        tableView.didSelectRowPublisher
+            .sink { [weak self] indexPath in
+                self?.tableViewDidSelectRowSubject.send(indexPath.row)
+                self?.tableView.deselectRow(at: indexPath, animated: true)
+            }
+            .store(in: &subscriptions)
+    }
+
 }
