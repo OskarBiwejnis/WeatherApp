@@ -19,6 +19,10 @@ class WelcomeCoordinator: BaseCoordinator {
         navigationController.pushViewController(welcomeViewController, animated: true)
     }
 
+    private func goToLoginScreen() {
+        
+    }
+
     private func goToSearchScreen() {
         let searchCoordinator = Assembler.shared.resolver
             .resolve(SearchCoordinator.self, argument: navigationController).forceResolve()
@@ -36,6 +40,8 @@ class WelcomeCoordinator: BaseCoordinator {
         welcomeViewModel.navigationEventsPublisher
             .sink { [weak self] navigationEvent in
                 switch navigationEvent {
+                case .openLoginScreen:
+                    self?.goToLoginScreen()
                 case .openSearchScreen:
                     self?.goToSearchScreen()
                 case .openForecastScreen(let city):

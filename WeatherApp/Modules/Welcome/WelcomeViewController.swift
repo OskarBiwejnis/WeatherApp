@@ -7,6 +7,7 @@ class WelcomeViewController: UIViewController {
     // MARK: - Constants -
 
     enum EventInput: AutoEquatable {
+        case loginButtonTap
         case proceedButtonTap
         case didSelectRecentCity(row: Int)
         case viewWillAppear
@@ -48,6 +49,12 @@ class WelcomeViewController: UIViewController {
     // MARK: - Private -
 
     private func bindActions() {
+        welcomeView.loginButton.tapPublisher
+            .sink { [weak self] in
+                self?.welcomeViewModel.eventsInputSubject.send(.loginButtonTap)
+            }
+            .store(in: &subscriptions)
+
         welcomeView.proceedButton.tapPublisher
             .sink { [weak self] in
                 self?.welcomeViewModel.eventsInputSubject.send(.proceedButtonTap)
