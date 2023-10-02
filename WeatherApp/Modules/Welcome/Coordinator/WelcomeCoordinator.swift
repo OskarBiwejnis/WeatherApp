@@ -20,7 +20,8 @@ class WelcomeCoordinator: BaseCoordinator {
     }
 
     private func goToLoginScreen() {
-        
+        let loginCoordinator = Assembler.shared.resolver.resolve(LoginCoordinator.self, argument: navigationController).forceResolve()
+        coordinate(to: loginCoordinator)
     }
 
     private func goToSearchScreen() {
