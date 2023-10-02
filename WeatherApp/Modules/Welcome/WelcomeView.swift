@@ -85,6 +85,17 @@ class WelcomeView: UIView {
         return proceedButton
     }()
 
+    let loginButton: UIButton = {
+        let loginButton = UIButton(type: .system)
+        loginButton.backgroundColor = .systemGray5
+        loginButton.setTitle("Login", for: .normal)
+        loginButton.layer.cornerRadius = 10
+
+        return loginButton
+    }()
+
+    private let centerBetweenIconAndRightBorder = UIView()
+
     // MARK: - Initialization -
 
     init() {
@@ -118,6 +129,8 @@ class WelcomeView: UIView {
         addSubview(iconImageView)
         addSubview(tableView)
         addSubview(recentLabel)
+        addSubview(loginButton)
+        addSubview(centerBetweenIconAndRightBorder)
     }
 
     private func setupConstraints() {
@@ -149,6 +162,18 @@ class WelcomeView: UIView {
         recentLabel.snp.makeConstraints { make -> Void in
             make.centerX.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(Constants.recentLabelOffset)
+        }
+
+        centerBetweenIconAndRightBorder.snp.makeConstraints { make -> Void in
+            make.right.equalToSuperview()
+            make.left.equalTo(iconImageView.snp.right)
+        }
+
+        loginButton.snp.makeConstraints { make -> Void in
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.centerX.equalTo(centerBetweenIconAndRightBorder)
+            make.width.equalTo(80)
+            make.height.equalTo(40)
         }
     }
 
