@@ -30,9 +30,8 @@
 		464BFF862AC707F20060A5D6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF852AC707F20060A5D6 /* LoginViewController.swift */; };
 		464BFF882AC708210060A5D6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF872AC708210060A5D6 /* LoginView.swift */; };
 		464BFF8A2AC708A90060A5D6 /* LoginAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF892AC708A90060A5D6 /* LoginAssembly.swift */; };
-		464BFF8C2AC70E5D0060A5D6 /* UserDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF8B2AC70E5D0060A5D6 /* UserDatabaseService.swift */; };
+		464BFF8C2AC70E5D0060A5D6 /* UsersDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF8B2AC70E5D0060A5D6 /* UsersDatabaseService.swift */; };
 		464BFF8F2AC70F5B0060A5D6 /* DatabaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF8E2AC70F5B0060A5D6 /* DatabaseError.swift */; };
-		464BFF912AC70FF30060A5D6 /* UsefulUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF902AC70FF30060A5D6 /* UsefulUserData.swift */; };
 		465CA6DF2AB1EB8D00495467 /* EqualDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E9287A2AAF4AD10022A29C /* EqualDiff.swift */; };
 		4663C9762AA9DF71000019D3 /* PublisherEventsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */; };
 		466811232AC3082A004F6DF1 /* Optional+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466811222AC3082A004F6DF1 /* Optional+Ext.swift */; };
@@ -119,9 +118,8 @@
 		464BFF852AC707F20060A5D6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		464BFF872AC708210060A5D6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		464BFF892AC708A90060A5D6 /* LoginAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAssembly.swift; sourceTree = "<group>"; };
-		464BFF8B2AC70E5D0060A5D6 /* UserDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDatabaseService.swift; sourceTree = "<group>"; };
+		464BFF8B2AC70E5D0060A5D6 /* UsersDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersDatabaseService.swift; sourceTree = "<group>"; };
 		464BFF8E2AC70F5B0060A5D6 /* DatabaseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseError.swift; sourceTree = "<group>"; };
-		464BFF902AC70FF30060A5D6 /* UsefulUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulUserData.swift; sourceTree = "<group>"; };
 		4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherEventsObserver.swift; sourceTree = "<group>"; };
 		466811222AC3082A004F6DF1 /* Optional+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Ext.swift"; sourceTree = "<group>"; };
 		467A516B2A9C99E600661714 /* Publisher+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Ext.swift"; sourceTree = "<group>"; };
@@ -263,7 +261,6 @@
 				4602D1D42A67FFA8001E11F0 /* ThreeHourForecast.swift */,
 				467A516E2A9CA29E00661714 /* Result.swift */,
 				464BFF8E2AC70F5B0060A5D6 /* DatabaseError.swift */,
-				464BFF902AC70FF30060A5D6 /* UsefulUserData.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -275,7 +272,7 @@
 				46C758F32A614E55008B52A5 /* NetworkingService.swift */,
 				4639AB372A7A4739007AA0FA /* StorageService.swift */,
 				46F770CF2A77B92F00C148FE /* FontProvider.swift */,
-				464BFF8B2AC70E5D0060A5D6 /* UserDatabaseService.swift */,
+				464BFF8B2AC70E5D0060A5D6 /* UsersDatabaseService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -807,7 +804,7 @@
 				46C758A12A5D4D51008B52A5 /* AppDelegate.swift in Sources */,
 				46C758EA2A600065008B52A5 /* SearchViewController.swift in Sources */,
 				467A516F2A9CA29E00661714 /* Result.swift in Sources */,
-				464BFF8C2AC70E5D0060A5D6 /* UserDatabaseService.swift in Sources */,
+				464BFF8C2AC70E5D0060A5D6 /* UsersDatabaseService.swift in Sources */,
 				464BFF8F2AC70F5B0060A5D6 /* DatabaseError.swift in Sources */,
 				4602D1D22A67F0EB001E11F0 /* ForecastCell.swift in Sources */,
 				46170B212AC195690032E9F7 /* Assembler+Ext.swift in Sources */,
@@ -832,7 +829,6 @@
 				464BFF7E2AC7079E0060A5D6 /* LoginCoordinator.swift in Sources */,
 				46170B1F2AC04EA30032E9F7 /* ServicesAssembly.swift in Sources */,
 				46F770CA2A77ABF800C148FE /* Label.swift in Sources */,
-				464BFF912AC70FF30060A5D6 /* UsefulUserData.swift in Sources */,
 				46F770D02A77B92F00C148FE /* FontProvider.swift in Sources */,
 				464BFF882AC708210060A5D6 /* LoginView.swift in Sources */,
 				4602D1CB2A67F05B001E11F0 /* ForecastViewController.swift in Sources */,

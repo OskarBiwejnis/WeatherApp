@@ -14,6 +14,7 @@ class ServicesAssembly: Assembly {
         container.register(AnySchedulerOf<DispatchQueue>.self) { _ in
             return DispatchQueue.main.eraseToAnyScheduler()
         }
+        container.autoregister(UsersDatabaseServiceType.self, initializer: UsersDatabaseService.init)
     }
 
 }

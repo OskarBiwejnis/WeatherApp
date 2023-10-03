@@ -24,8 +24,12 @@ class LoginView: UIView {
     }()
 
     let loginButton = {
-        let button = UIButton()
-        return button
+        let loginButton = UIButton(type: .system)
+        loginButton.backgroundColor = .systemGray5
+        loginButton.setTitle("Login", for: .normal)
+        loginButton.layer.cornerRadius = 10
+
+        return loginButton
     }()
 
 
@@ -40,6 +44,7 @@ class LoginView: UIView {
     }
 
     private func setupView() {
+        backgroundColor = .white
         addSubview(usernameTextField)
         addSubview(passwordTextField)
         addSubview(loginButton)
@@ -47,8 +52,21 @@ class LoginView: UIView {
     }
 
     private func setupConstraints() {
+        usernameTextField.snp.makeConstraints { make -> Void in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+
+        passwordTextField.snp.makeConstraints { make -> Void in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(60)
+        }
+
         loginButton.snp.makeConstraints { make -> Void in
-            make.bottom.equalToSuperview().offset(Constants.buttonBottomOffset)
+            make.bottom.equalToSuperview().offset(-200)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(80)
+            make.height.equalTo(40)
         }
     }
 

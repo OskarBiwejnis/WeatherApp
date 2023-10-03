@@ -14,17 +14,22 @@ class LoginCoordinator: BaseCoordinator {
     override func start() {
         let loginViewController = Assembler.shared.resolver.resolve(LoginViewController.self).forceResolve()
         navigationController.pushViewController(loginViewController, animated: false)
-
-
-
-   
-//        guard let welcomeViewModel = welcomeViewController.welcomeViewModel as? WelcomeViewModelCoordinatorContract
-//        else { return }
-//        bindActions(welcomeViewModel: welcomeViewModel)
-
+        guard let loginViewModel = loginViewController.loginViewModel as? LoginViewModelCoordinatorContract
+        else { return }
+        bindActions(loginViewModel: loginViewModel)
     }
 
-    private func bindActions(  ) {
+    private func dismissItself() {
+        navigationController.popViewController(animated: false)
+    }
 
+    private func bindActions(loginViewModel: LoginViewModelCoordinatorContract) {
+        loginViewModel.navigationEventsPublisher
+            .sink { [weak self] navigationEvent in
+                if case .dismiss = navigationEvent {
+                    self?.dismissItself()
+                }
+            }
+            .store(in: &subscriptions)
     }
 }

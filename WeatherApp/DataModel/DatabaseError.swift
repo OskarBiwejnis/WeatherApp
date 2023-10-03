@@ -1,5 +1,6 @@
 import Foundation
 
 enum DatabaseError: Error {
-    case loginNotSuccessful
+    case passwordIncorrect
+    case usernameRestricted
 }
