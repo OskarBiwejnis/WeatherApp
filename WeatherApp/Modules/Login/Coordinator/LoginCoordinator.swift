@@ -7,7 +7,7 @@ class LoginCoordinator: BaseCoordinator {
 
     private var subscriptions: [AnyCancellable] = []
 
-    override init(navigationController: UINavigationController)  {
+    override init(navigationController: UINavigationController) {
         super.init(navigationController: navigationController)
     }
 

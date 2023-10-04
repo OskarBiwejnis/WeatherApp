@@ -5,33 +5,45 @@ class LoginView: UIView {
 
     private enum Constants {
         static let buttonBottomOffset = 50
+        static let usernamePlaceholder = "Username"
+        static let passwordPlaceholder = "Password"
+        static let loginButtonTitle = "Login"
+        static let loginButtonCornerRadius: CGFloat = 10
+        static let passwordCenterYOffset = 60
+        static let loginButtonBottomOffset = 200
+        static let loginButtonWidth = 80
+        static let loginButtonHeight = 40
+        static let deadline: DispatchTime = .now() + 2
     }
 
     let usernameTextField = {
         let textField = UITextField()
-        textField.placeholder = "Username"
+        textField.placeholder = Constants.usernamePlaceholder
         textField.font = FontProvider.bigBoldFont
-        textField.textColor = .cyan
+        textField.textColor = .black
+        textField.autocapitalizationType = .none
+        textField.textAlignment = .center
         return textField
     }()
 
     let passwordTextField = {
         let textField = UITextField()
-        textField.placeholder = "Password"
+        textField.placeholder = Constants.passwordPlaceholder
         textField.font = FontProvider.defaultFont
-        textField.textColor = .cyan
+        textField.textColor = .black
+        textField.autocapitalizationType = .none
+        textField.textAlignment = .center
         return textField
     }()
 
     let loginButton = {
         let loginButton = UIButton(type: .system)
         loginButton.backgroundColor = .systemGray5
-        loginButton.setTitle("Login", for: .normal)
-        loginButton.layer.cornerRadius = 10
+        loginButton.setTitle(Constants.loginButtonTitle, for: .normal)
+        loginButton.layer.cornerRadius = Constants.loginButtonCornerRadius
 
         return loginButton
     }()
-
 
     init() {
         super.init(frame: .zero)
@@ -41,6 +53,12 @@ class LoginView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func changeState(_ viewState: LoginViewState) {
+        if case .invalidCredentials = viewState {
+            showThatCredentialsAreInvalid()
+        }
     }
 
     private func setupView() {
@@ -59,14 +77,24 @@ class LoginView: UIView {
 
         passwordTextField.snp.makeConstraints { make -> Void in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(60)
+            make.centerY.equalToSuperview().offset(Constants.passwordCenterYOffset)
         }
 
         loginButton.snp.makeConstraints { make -> Void in
-            make.bottom.equalToSuperview().offset(-200)
+            make.bottom.equalToSuperview().offset(-Constants.loginButtonBottomOffset)
             make.centerX.equalToSuperview()
-            make.width.equalTo(80)
-            make.height.equalTo(40)
+            make.width.equalTo(Constants.loginButtonWidth)
+            make.height.equalTo(Constants.loginButtonHeight)
+        }
+    }
+
+    private func showThatCredentialsAreInvalid() {
+        usernameTextField.textColor = .red
+        passwordTextField.textColor = .red
+
+        DispatchQueue.main.asyncAfter(deadline: Constants.deadline) { [weak self] in
+            self?.usernameTextField.textColor = .black
+            self?.passwordTextField.textColor = .black
         }
     }
 

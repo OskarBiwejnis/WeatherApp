@@ -3,13 +3,11 @@ import Foundation
 
 protocol LoginViewModelContract {
     var eventsInputSubject: PassthroughSubject<LoginViewController.EventInput, Never> { get }
-    //var viewStatePublisher: AnyPublisher<LoginViewState, Never> { get }
+    var viewStatePublisher: AnyPublisher<LoginViewState, Never> { get }
 }
 
 protocol LoginViewModelCoordinatorContract {
-
     var navigationEventsPublisher: AnyPublisher<LoginNavigationEvent, Never> { get }
-
 }
 
 enum LoginNavigationEvent {
@@ -17,19 +15,26 @@ enum LoginNavigationEvent {
 }
 
 enum LoginViewState {
-    case success(isPremiumUser: Bool)
+    case success
     case error(Error)
+    case invalidCredentials
 }
 
 class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract {
-    
-    let eventsInputSubject = PassthroughSubject<LoginViewController.EventInput, Never>()
 
-    lazy var viewStatePublisher: AnyPublisher<LoginViewState, Never> = loginFailurePublisher
+    private enum Constants {
+        static let usernamePattern = "[a-zA-Z0-9]{3,20}"
+    }
+
+    let eventsInputSubject = PassthroughSubject<LoginViewController.EventInput, Never>()
+    private let invalidCredentialsSubject = PassthroughSubject<Void, Never>()
+
+    lazy var viewStatePublisher: AnyPublisher<LoginViewState, Never> = loginErrorPublisher
         .map { .error($0) }
+        .merge(with: invalidCredentialsSubject.map { .invalidCredentials })
         .eraseToAnyPublisher()
 
-    lazy var navigationEventsPublisher: AnyPublisher<LoginNavigationEvent, Never> = loginSuccessfulPublisher
+    lazy var navigationEventsPublisher: AnyPublisher<LoginNavigationEvent, Never> = loginResultPublisher
         .map { .dismiss }
         .eraseToAnyPublisher()
 
@@ -40,23 +45,34 @@ class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract 
     }
 
     private lazy var loginOutcomePublisher: AnyPublisher<Result<Void>, Never> = eventsInputSubject
-        .compactMap { event -> (String, String)? in
+        .compactMap { [weak self] event -> (String, String)? in
             if case let .loginButtonTap(username, password) = event {
+                guard let areCredentialsValid = self?.validateCredentials(username: username, password: password), areCredentialsValid == true
+                else {
+                    self?.invalidCredentialsSubject.send()
+                    return nil }
                 return (username, password)
             } else { return nil }
         }
         .flatMap { [weak self] username, password in
-            return self?.usersDatabaseService.verifyCredentials(username: username, password: password)
+            return self?.usersDatabaseService.login(username: username, password: password)
                 .toResult() ?? .emptyOutput
         }
         .share()
         .eraseToAnyPublisher()
 
-    private lazy var loginSuccessfulPublisher: AnyPublisher<Void, Never> = loginOutcomePublisher
+    private lazy var loginResultPublisher: AnyPublisher<Void, Never> = loginOutcomePublisher
         .extractResult()
         .eraseToAnyPublisher()
 
-    private lazy var loginFailurePublisher: AnyPublisher<Error, Never> = loginOutcomePublisher
+    private lazy var loginErrorPublisher: AnyPublisher<Error, Never> = loginOutcomePublisher
         .extractFailure()
         .eraseToAnyPublisher()
+
+    private func validateCredentials(username: String, password: String) -> Bool {
+        let result = username.range(of: Constants.usernamePattern, options: .regularExpression)
+        let isUsernameValid = (result != nil)
+        return isUsernameValid
+    }
+
 }
