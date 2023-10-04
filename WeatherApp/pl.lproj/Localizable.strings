@@ -8,3 +8,4 @@
 "unknown_error_message" = "Wystąpił nieoczekiwany błąd";
 "ok_button_text" = "Okej";
 "recent_label_text" = "ostatnie wyszukiwania";
+"username_restricted_message" = "Ta nazwa użytkownika jest zastrzeżona dla administratorów";

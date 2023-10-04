@@ -35,7 +35,10 @@ class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract 
         .eraseToAnyPublisher()
 
     lazy var navigationEventsPublisher: AnyPublisher<LoginNavigationEvent, Never> = loginResultPublisher
-        .map { .dismiss }
+        .compactMap { loginResult in
+            if loginResult { return .dismiss }
+            else { return nil }
+        }
         .eraseToAnyPublisher()
 
     private let usersDatabaseService: UsersDatabaseServiceType
@@ -44,7 +47,7 @@ class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract 
         self.usersDatabaseService = usersDatabaseService
     }
 
-    private lazy var loginOutcomePublisher: AnyPublisher<Result<Void>, Never> = eventsInputSubject
+    private lazy var loginOutcomePublisher: AnyPublisher<Result<Bool>, Never> = eventsInputSubject
         .compactMap { [weak self] event -> (String, String)? in
             if case let .loginButtonTap(username, password) = event {
                 guard let areCredentialsValid = self?.validateCredentials(username: username, password: password), areCredentialsValid == true
@@ -61,7 +64,7 @@ class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract 
         .share()
         .eraseToAnyPublisher()
 
-    private lazy var loginResultPublisher: AnyPublisher<Void, Never> = loginOutcomePublisher
+    private lazy var loginResultPublisher: AnyPublisher<Bool, Never> = loginOutcomePublisher
         .extractResult()
         .eraseToAnyPublisher()
 

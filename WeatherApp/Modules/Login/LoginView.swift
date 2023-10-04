@@ -9,11 +9,10 @@ class LoginView: UIView {
         static let passwordPlaceholder = "Password"
         static let loginButtonTitle = "Login"
         static let loginButtonCornerRadius: CGFloat = 10
-        static let passwordCenterYOffset = 60
+        static let usernameBottomOffset = 40
         static let loginButtonBottomOffset = 200
         static let loginButtonWidth = 80
         static let loginButtonHeight = 40
-        static let deadline: DispatchTime = .now() + 2
     }
 
     let usernameTextField = {
@@ -22,6 +21,7 @@ class LoginView: UIView {
         textField.font = FontProvider.bigBoldFont
         textField.textColor = .black
         textField.autocapitalizationType = .none
+        textField.borderStyle = .roundedRect
         textField.textAlignment = .center
         return textField
     }()
@@ -29,9 +29,10 @@ class LoginView: UIView {
     let passwordTextField = {
         let textField = UITextField()
         textField.placeholder = Constants.passwordPlaceholder
-        textField.font = FontProvider.defaultFont
+        textField.font = FontProvider.bigBoldFont
         textField.textColor = .black
         textField.autocapitalizationType = .none
+        textField.borderStyle = .roundedRect
         textField.textAlignment = .center
         return textField
     }()
@@ -66,18 +67,17 @@ class LoginView: UIView {
         addSubview(usernameTextField)
         addSubview(passwordTextField)
         addSubview(loginButton)
-
     }
 
     private func setupConstraints() {
         usernameTextField.snp.makeConstraints { make -> Void in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.bottom.equalTo(passwordTextField.snp.top).offset(-Constants.usernameBottomOffset)
         }
 
         passwordTextField.snp.makeConstraints { make -> Void in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(Constants.passwordCenterYOffset)
+            make.centerY.equalToSuperview()
         }
 
         loginButton.snp.makeConstraints { make -> Void in
@@ -89,10 +89,12 @@ class LoginView: UIView {
     }
 
     private func showThatCredentialsAreInvalid() {
-        usernameTextField.textColor = .red
-        passwordTextField.textColor = .red
-
-        DispatchQueue.main.asyncAfter(deadline: Constants.deadline) { [weak self] in
+        DispatchQueue.main.async { [weak self] in
+            self?.usernameTextField.textColor = .red
+            self?.passwordTextField.textColor = .red
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
             self?.usernameTextField.textColor = .black
             self?.passwordTextField.textColor = .black
         }

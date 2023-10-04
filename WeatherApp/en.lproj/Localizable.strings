@@ -8,3 +8,4 @@
 "unknown_error_message" = "Unknown error occured";
 "ok_button_text" = "OK";
 "recent_label_text" = "recent searches";
+"username_restricted_message" = "This username is restricted for administrators";
