@@ -3,6 +3,7 @@ PODS:
   - CombineDataSources (0.2.5)
   - CombineExt (1.8.0)
   - Difference (1.0.2)
+  - InjectHotReload (1.2.2)
   - Nimble (12.2.0)
   - Quick (7.2.0)
   - R.swift (7.3.2)
@@ -25,6 +26,7 @@ DEPENDENCIES:
   - CombineDataSources (from `https://github.com/Airnauts/CombineDataSources.git`, commit `ac74034`)
   - CombineExt
   - Difference
+  - InjectHotReload
   - Nimble
   - Quick
   - R.swift
@@ -41,6 +43,7 @@ SPEC REPOS:
     - CombineCocoa
     - CombineExt
     - Difference
+    - InjectHotReload
     - Nimble
     - Quick
     - R.swift
@@ -68,6 +71,7 @@ SPEC CHECKSUMS:
   CombineDataSources: dcbc3b06a038ffdf620b3b4533d3ecaf76ca6a2e
   CombineExt: c4daa97ef75754d8ef319bd79edeef82652f3eea
   Difference: e8a6b57f75f697aacfe2f2b482819bf144f095de
+  InjectHotReload: e524b7c46ec063d84e407e65df5fe251cde19b32
   Nimble: d67da24eb9da4227b2dbbf4eb49cc29073c9066b
   Quick: 73ac215f23a6a0eaa59f4ee142802b3f4dba86bb
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
@@ -80,6 +84,6 @@ SPEC CHECKSUMS:
   Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
   SwinjectAutoregistration: e3ee378dc458acf78d176fc7fec3902603452667
 
-PODFILE CHECKSUM: e8bad477004d949fb1ff2ff8cd791a7f71d1aa1e
+PODFILE CHECKSUM: 446f3c1e540fd48679f72e06e08525984f4f9028
 
 COCOAPODS: 1.12.1

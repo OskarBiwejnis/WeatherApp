@@ -1,3 +1,4 @@
+import Combine
 import SnapKit
 import UIKit
 
@@ -13,7 +14,10 @@ class LoginView: UIView {
         static let loginButtonBottomOffset = 200
         static let loginButtonWidth = 80
         static let loginButtonHeight = 40
+        static let loadingText = "Loading..."
     }
+
+    private var subscriptions: [AnyCancellable] = []
 
     let usernameTextField = {
         let textField = UITextField()
@@ -26,6 +30,12 @@ class LoginView: UIView {
         return textField
     }()
 
+    private let usernameCautionLabel: UILabel = {
+        let label = Label(text: "", textColor: .red, font: FontProvider.smallFont)
+        label.isHidden = true
+        return label
+    }()
+
     let passwordTextField = {
         let textField = UITextField()
         textField.placeholder = Constants.passwordPlaceholder
@@ -34,7 +44,14 @@ class LoginView: UIView {
         textField.autocapitalizationType = .none
         textField.borderStyle = .roundedRect
         textField.textAlignment = .center
+        textField.isSecureTextEntry = true
         return textField
+    }()
+
+    private let passwordCautionLabel: UILabel = {
+        let label = Label(text: "", textColor: .red, font: FontProvider.smallFont)
+        label.isHidden = true
+        return label
     }()
 
     let loginButton = {
@@ -42,14 +59,20 @@ class LoginView: UIView {
         loginButton.backgroundColor = .systemGray5
         loginButton.setTitle(Constants.loginButtonTitle, for: .normal)
         loginButton.layer.cornerRadius = Constants.loginButtonCornerRadius
-
         return loginButton
+    }()
+
+    private let stateLabel: UILabel = {
+        let label = Label(text: Constants.loadingText, textColor: .cyan, font: FontProvider.defaultBoldFont)
+        label.isHidden = true
+        return label
     }()
 
     init() {
         super.init(frame: .zero)
         setupView()
         setupConstraints()
+        bindActions()
     }
 
     required init?(coder: NSCoder) {
@@ -57,16 +80,30 @@ class LoginView: UIView {
     }
 
     func changeState(_ viewState: LoginViewState) {
-        if case .invalidCredentials = viewState {
-            showThatCredentialsAreInvalid()
+        DispatchQueue.main.async { [weak self] in
+            switch viewState {
+            case .normal, .error:
+                self?.stateLabel.isHidden = true
+            case .loading:
+                self?.stateLabel.textColor = .cyan
+                self?.stateLabel.text = "Loading..."
+                self?.stateLabel.isHidden = false
+            case let .issue(message):
+                self?.stateLabel.textColor = .red
+                self?.stateLabel.text = message
+                self?.stateLabel.isHidden = false
+            }
         }
     }
 
     private func setupView() {
         backgroundColor = .white
         addSubview(usernameTextField)
+        addSubview(usernameCautionLabel)
         addSubview(passwordTextField)
+        addSubview(passwordCautionLabel)
         addSubview(loginButton)
+        addSubview(stateLabel)
     }
 
     private func setupConstraints() {
@@ -74,30 +111,68 @@ class LoginView: UIView {
             make.centerX.equalToSuperview()
             make.bottom.equalTo(passwordTextField.snp.top).offset(-Constants.usernameBottomOffset)
         }
-
+        usernameCautionLabel.snp.makeConstraints { make -> Void in
+            make.top.equalTo(usernameTextField.snp.bottom)
+            make.left.equalTo(usernameTextField)
+        }
         passwordTextField.snp.makeConstraints { make -> Void in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
         }
-
+        passwordCautionLabel.snp.makeConstraints { make -> Void in
+            make.top.equalTo(passwordTextField.snp.bottom)
+            make.left.equalTo(passwordTextField)
+        }
         loginButton.snp.makeConstraints { make -> Void in
             make.bottom.equalToSuperview().offset(-Constants.loginButtonBottomOffset)
             make.centerX.equalToSuperview()
             make.width.equalTo(Constants.loginButtonWidth)
             make.height.equalTo(Constants.loginButtonHeight)
         }
+        stateLabel.snp.makeConstraints { make -> Void in
+            make.top.equalTo(loginButton.snp.bottom)
+            make.left.equalTo(loginButton)
+        }
     }
 
-    private func showThatCredentialsAreInvalid() {
-        DispatchQueue.main.async { [weak self] in
-            self?.usernameTextField.textColor = .red
-            self?.passwordTextField.textColor = .red
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            self?.usernameTextField.textColor = .black
-            self?.passwordTextField.textColor = .black
-        }
+    private func bindActions() {
+        usernameTextField.textPublisher
+            .sink { [weak self] username in
+                if let username {
+                    if username != "", let errorMessage = ValidationService.validateUsername(username) {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.usernameTextField.backgroundColor = .red
+                            self?.usernameCautionLabel.text = errorMessage
+                            self?.usernameCautionLabel.isHidden = false
+                        }
+                    } else {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.usernameTextField.backgroundColor = .white
+                            self?.usernameCautionLabel.isHidden = true
+                        }
+                    }
+                }
+            }
+            .store(in: &subscriptions)
+
+        passwordTextField.textPublisher
+            .sink { password in
+                if let password {
+                    if password != "", let errorMessage = ValidationService.validatePassword(password) {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.passwordTextField.backgroundColor = .red
+                            self?.passwordCautionLabel.text = errorMessage
+                            self?.passwordCautionLabel.isHidden = false
+                        }
+                    } else {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.passwordTextField.backgroundColor = .white
+                            self?.passwordCautionLabel.isHidden = true
+                        }
+                    }
+                }
+            }
+            .store(in: &subscriptions)
     }
 
 }

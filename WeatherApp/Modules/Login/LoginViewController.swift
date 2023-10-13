@@ -44,9 +44,8 @@ class LoginViewController: UIViewController {
             .sink { [weak self] viewState in
                 if case let .error(error) = viewState {
                     self?.handleErrorState(error)
-                } else {
-                    self?.loginView.changeState(viewState)
                 }
+                self?.loginView.changeState(viewState)
             }
             .store(in: &subscriptions)
     }

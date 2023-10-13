@@ -30,11 +30,13 @@
 		464BFF862AC707F20060A5D6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF852AC707F20060A5D6 /* LoginViewController.swift */; };
 		464BFF882AC708210060A5D6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF872AC708210060A5D6 /* LoginView.swift */; };
 		464BFF8A2AC708A90060A5D6 /* LoginAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF892AC708A90060A5D6 /* LoginAssembly.swift */; };
-		464BFF8C2AC70E5D0060A5D6 /* UsersDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF8B2AC70E5D0060A5D6 /* UsersDatabaseService.swift */; };
+		464BFF8C2AC70E5D0060A5D6 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF8B2AC70E5D0060A5D6 /* LoginService.swift */; };
 		464BFF8F2AC70F5B0060A5D6 /* DatabaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464BFF8E2AC70F5B0060A5D6 /* DatabaseError.swift */; };
+		465B27D82AD66037001E59D3 /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465B27D72AD66037001E59D3 /* ValidationService.swift */; };
 		465CA6DF2AB1EB8D00495467 /* EqualDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E9287A2AAF4AD10022A29C /* EqualDiff.swift */; };
 		4663C9762AA9DF71000019D3 /* PublisherEventsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */; };
 		466811232AC3082A004F6DF1 /* Optional+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466811222AC3082A004F6DF1 /* Optional+Ext.swift */; };
+		4677B0E62ACEF3470065F8C5 /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4677B0E52ACEF3470065F8C5 /* LoginTextField.swift */; };
 		467A516C2A9C99E600661714 /* Publisher+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516B2A9C99E600661714 /* Publisher+Ext.swift */; };
 		467A516F2A9CA29E00661714 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516E2A9CA29E00661714 /* Result.swift */; };
 		4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35A2A8121A10018C215 /* PersistedCity.swift */; };
@@ -118,10 +120,12 @@
 		464BFF852AC707F20060A5D6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		464BFF872AC708210060A5D6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		464BFF892AC708A90060A5D6 /* LoginAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAssembly.swift; sourceTree = "<group>"; };
-		464BFF8B2AC70E5D0060A5D6 /* UsersDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersDatabaseService.swift; sourceTree = "<group>"; };
+		464BFF8B2AC70E5D0060A5D6 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		464BFF8E2AC70F5B0060A5D6 /* DatabaseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseError.swift; sourceTree = "<group>"; };
+		465B27D72AD66037001E59D3 /* ValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
 		4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherEventsObserver.swift; sourceTree = "<group>"; };
 		466811222AC3082A004F6DF1 /* Optional+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Ext.swift"; sourceTree = "<group>"; };
+		4677B0E52ACEF3470065F8C5 /* LoginTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
 		467A516B2A9C99E600661714 /* Publisher+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Ext.swift"; sourceTree = "<group>"; };
 		467A516E2A9CA29E00661714 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		4688F35A2A8121A10018C215 /* PersistedCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedCity.swift; sourceTree = "<group>"; };
@@ -272,7 +276,8 @@
 				46C758F32A614E55008B52A5 /* NetworkingService.swift */,
 				4639AB372A7A4739007AA0FA /* StorageService.swift */,
 				46F770CF2A77B92F00C148FE /* FontProvider.swift */,
-				464BFF8B2AC70E5D0060A5D6 /* UsersDatabaseService.swift */,
+				464BFF8B2AC70E5D0060A5D6 /* LoginService.swift */,
+				465B27D72AD66037001E59D3 /* ValidationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -436,6 +441,7 @@
 			isa = PBXGroup;
 			children = (
 				46F770C92A77ABF800C148FE /* Label.swift */,
+				4677B0E52ACEF3470065F8C5 /* LoginTextField.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -804,7 +810,8 @@
 				46C758A12A5D4D51008B52A5 /* AppDelegate.swift in Sources */,
 				46C758EA2A600065008B52A5 /* SearchViewController.swift in Sources */,
 				467A516F2A9CA29E00661714 /* Result.swift in Sources */,
-				464BFF8C2AC70E5D0060A5D6 /* UsersDatabaseService.swift in Sources */,
+				464BFF8C2AC70E5D0060A5D6 /* LoginService.swift in Sources */,
+				465B27D82AD66037001E59D3 /* ValidationService.swift in Sources */,
 				464BFF8F2AC70F5B0060A5D6 /* DatabaseError.swift in Sources */,
 				4602D1D22A67F0EB001E11F0 /* ForecastCell.swift in Sources */,
 				46170B212AC195690032E9F7 /* Assembler+Ext.swift in Sources */,
@@ -818,6 +825,7 @@
 				464499452AB992D900CB3A3A /* BaseCoordinator.swift in Sources */,
 				4602D1D52A67FFA8001E11F0 /* ThreeHourForecast.swift in Sources */,
 				46D1FEAB2A655FE1003A71C4 /* City.swift in Sources */,
+				4677B0E62ACEF3470065F8C5 /* LoginTextField.swift in Sources */,
 				46B498702AAB8B8700CF278C /* AutoMockable.swift in Sources */,
 				4602D1CF2A67F0B2001E11F0 /* ForecastViewModel.swift in Sources */,
 				46C758F42A614E55008B52A5 /* NetworkingService.swift in Sources */,

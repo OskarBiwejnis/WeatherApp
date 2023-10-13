@@ -15,56 +15,59 @@ enum LoginNavigationEvent {
 }
 
 enum LoginViewState {
-    case success
-    case error(Error)
-    case invalidCredentials
+    case normal
+    case loading
+    case issue(_ message: String)
+    case error(_ error: Error)
 }
 
 class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract {
 
-    private enum Constants {
-        static let usernamePattern = "[a-zA-Z0-9]{3,20}"
-    }
-
     let eventsInputSubject = PassthroughSubject<LoginViewController.EventInput, Never>()
-    private let invalidCredentialsSubject = PassthroughSubject<Void, Never>()
 
-    lazy var viewStatePublisher: AnyPublisher<LoginViewState, Never> = loginErrorPublisher
-        .map { .error($0) }
-        .merge(with: invalidCredentialsSubject.map { .invalidCredentials })
+    lazy var viewStatePublisher: AnyPublisher<LoginViewState, Never> = loginResultPublisher
+        .compactMap { loginResult in
+            switch loginResult {
+            case .invalidPassword:
+                return .issue(LoginResult.invalidPassword.rawValue)
+            case .usernameDoesntExist:
+                return .issue(LoginResult.usernameDoesntExist.rawValue)
+            default:
+                return nil
+            }
+        }
+        .merge(with: loadingPublisher.map { .loading })
+        .merge(with: loginErrorPublisher.map { .error($0) })
         .eraseToAnyPublisher()
 
     lazy var navigationEventsPublisher: AnyPublisher<LoginNavigationEvent, Never> = loginResultPublisher
         .compactMap { loginResult in
-            if loginResult { return .dismiss }
-            else { return nil }
+            if case .success = loginResult {
+                return .dismiss
+            } else { return nil }
         }
         .eraseToAnyPublisher()
 
-    private let usersDatabaseService: UsersDatabaseServiceType
+    private let loginService: LoginServiceType
 
-    init(usersDatabaseService: UsersDatabaseServiceType) {
-        self.usersDatabaseService = usersDatabaseService
+    init(usersDatabaseService: LoginServiceType) {
+        self.loginService = usersDatabaseService
     }
 
-    private lazy var loginOutcomePublisher: AnyPublisher<Result<Bool>, Never> = eventsInputSubject
+    private lazy var loginOutcomePublisher: AnyPublisher<Result<LoginResult>, Never> = eventsInputSubject
         .compactMap { [weak self] event -> (String, String)? in
             if case let .loginButtonTap(username, password) = event {
-                guard let areCredentialsValid = self?.validateCredentials(username: username, password: password), areCredentialsValid == true
-                else {
-                    self?.invalidCredentialsSubject.send()
-                    return nil }
                 return (username, password)
             } else { return nil }
         }
         .flatMap { [weak self] username, password in
-            return self?.usersDatabaseService.login(username: username, password: password)
+            return self?.loginService.login(username: username, password: password)
                 .toResult() ?? .emptyOutput
         }
         .share()
         .eraseToAnyPublisher()
 
-    private lazy var loginResultPublisher: AnyPublisher<Bool, Never> = loginOutcomePublisher
+    private lazy var loginResultPublisher: AnyPublisher<LoginResult, Never> = loginOutcomePublisher
         .extractResult()
         .eraseToAnyPublisher()
 
@@ -72,10 +75,12 @@ class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract 
         .extractFailure()
         .eraseToAnyPublisher()
 
-    private func validateCredentials(username: String, password: String) -> Bool {
-        let result = username.range(of: Constants.usernamePattern, options: .regularExpression)
-        let isUsernameValid = (result != nil)
-        return isUsernameValid
-    }
+    private lazy var loadingPublisher: AnyPublisher<Void, Never> = eventsInputSubject
+        .compactMap { event in
+            if case .loginButtonTap = event {
+                return ()
+            } else { return nil }
+        }
+        .eraseToAnyPublisher()
 
 }

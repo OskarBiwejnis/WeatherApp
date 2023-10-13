@@ -25,6 +25,10 @@ extension Publisher {
                             receiveRequest: nil).eraseToAnyPublisher()
     }
 
+    func delayTwoSeconds() -> AnyPublisher<Output, Failure> {
+        return delay(for: .seconds(2), scheduler: DispatchQueue.main).eraseToAnyPublisher()
+    }
+    
 }
 
 
