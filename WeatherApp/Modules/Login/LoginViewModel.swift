@@ -19,11 +19,21 @@ enum LoginViewState {
     case loading
     case issue(_ message: String)
     case error(_ error: Error)
+    case usernameCorrect
+    case usernameValidationError(_ message: String)
+    case passwordCorrect
+    case passwordValidationError(_ message: String)
 }
 
 class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract {
 
     let eventsInputSubject = PassthroughSubject<LoginViewController.EventInput, Never>()
+
+    private let loginService: LoginServiceType
+
+    init(usersDatabaseService: LoginServiceType) {
+        self.loginService = usersDatabaseService
+    }
 
     lazy var viewStatePublisher: AnyPublisher<LoginViewState, Never> = loginResultPublisher
         .compactMap { loginResult in
@@ -38,6 +48,8 @@ class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract 
         }
         .merge(with: loadingPublisher.map { .loading })
         .merge(with: loginErrorPublisher.map { .error($0) })
+        .merge(with: usernameValidationPublisher)
+        .merge(with: passwordValidationPublisher)
         .eraseToAnyPublisher()
 
     lazy var navigationEventsPublisher: AnyPublisher<LoginNavigationEvent, Never> = loginResultPublisher
@@ -48,11 +60,25 @@ class LoginViewModel: LoginViewModelContract, LoginViewModelCoordinatorContract 
         }
         .eraseToAnyPublisher()
 
-    private let loginService: LoginServiceType
+    private lazy var usernameValidationPublisher: AnyPublisher<LoginViewState, Never> = eventsInputSubject
+        .compactMap { [weak self] event in
+            if case let .usernameTextChanged(username) = event {
+                if let message = ValidationService.validateUsername(username) {
+                    return .usernameValidationError(message)
+                } else { return .usernameCorrect }
+            } else { return nil }
+        }
+        .eraseToAnyPublisher()
 
-    init(usersDatabaseService: LoginServiceType) {
-        self.loginService = usersDatabaseService
-    }
+    private lazy var passwordValidationPublisher: AnyPublisher<LoginViewState, Never> = eventsInputSubject
+        .compactMap { [weak self] event in
+            if case let .passwordTextChanged(password) = event {
+                if let message = ValidationService.validatePassword(password) {
+                    return .passwordValidationError(message)
+                } else { return .passwordCorrect }
+            } else { return nil }
+        }
+        .eraseToAnyPublisher()
 
     private lazy var loginOutcomePublisher: AnyPublisher<Result<LoginResult>, Never> = eventsInputSubject
         .compactMap { [weak self] event -> (String, String)? in

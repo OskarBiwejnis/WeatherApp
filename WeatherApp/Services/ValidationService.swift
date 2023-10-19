@@ -13,6 +13,7 @@ class ValidationService {
     }
 
     static func validateEmail(_ email: String) -> String? {
+        guard email != "" else { return nil }
         if email.range(of: Constants.emailPattern, options: .regularExpression) != nil {
             return nil
         } else {
@@ -21,6 +22,7 @@ class ValidationService {
     }
 
     static func validatePassword(_ password: String) -> String? {
+        guard password != "" else { return nil }
         if password.range(of: Constants.passwordPattern, options: .regularExpression) != nil {
             return nil
         } else {
@@ -29,6 +31,7 @@ class ValidationService {
     }
 
     static func validateUsername(_ username: String) -> String? {
+        guard username != "" else { return nil }
         if username.range(of: Constants.usernamePattern, options: .regularExpression) != nil {
             return nil
         } else {
@@ -37,4 +40,3 @@ class ValidationService {
     }
 
 }
-

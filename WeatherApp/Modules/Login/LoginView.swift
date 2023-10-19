@@ -5,54 +5,23 @@ import UIKit
 class LoginView: UIView {
 
     private enum Constants {
-        static let buttonBottomOffset = 50
         static let usernamePlaceholder = "Username"
         static let passwordPlaceholder = "Password"
         static let loginButtonTitle = "Login"
         static let loginButtonCornerRadius: CGFloat = 10
-        static let usernameBottomOffset = 40
         static let loginButtonBottomOffset = 200
         static let loginButtonWidth = 80
         static let loginButtonHeight = 40
         static let loadingText = "Loading..."
+        static let passwordTextFieldOffset = 30
+        static let textFieldsOffset = 100
     }
 
     private var subscriptions: [AnyCancellable] = []
 
-    let usernameTextField = {
-        let textField = UITextField()
-        textField.placeholder = Constants.usernamePlaceholder
-        textField.font = FontProvider.bigBoldFont
-        textField.textColor = .black
-        textField.autocapitalizationType = .none
-        textField.borderStyle = .roundedRect
-        textField.textAlignment = .center
-        return textField
-    }()
+    let usernameTextFieldView = LoginTextFieldView(placeholder: Constants.usernamePlaceholder)
 
-    private let usernameCautionLabel: UILabel = {
-        let label = Label(text: "", textColor: .red, font: FontProvider.smallFont)
-        label.isHidden = true
-        return label
-    }()
-
-    let passwordTextField = {
-        let textField = UITextField()
-        textField.placeholder = Constants.passwordPlaceholder
-        textField.font = FontProvider.bigBoldFont
-        textField.textColor = .black
-        textField.autocapitalizationType = .none
-        textField.borderStyle = .roundedRect
-        textField.textAlignment = .center
-        textField.isSecureTextEntry = true
-        return textField
-    }()
-
-    private let passwordCautionLabel: UILabel = {
-        let label = Label(text: "", textColor: .red, font: FontProvider.smallFont)
-        label.isHidden = true
-        return label
-    }()
+    let passwordTextFieldView = LoginTextFieldView(placeholder: Constants.passwordPlaceholder, isSecureTextEntry: true)
 
     let loginButton = {
         let loginButton = UIButton(type: .system)
@@ -64,7 +33,6 @@ class LoginView: UIView {
 
     private let stateLabel: UILabel = {
         let label = Label(text: Constants.loadingText, textColor: .cyan, font: FontProvider.defaultBoldFont)
-        label.isHidden = true
         return label
     }()
 
@@ -72,7 +40,7 @@ class LoginView: UIView {
         super.init(frame: .zero)
         setupView()
         setupConstraints()
-        bindActions()
+        changeState(.normal)
     }
 
     required init?(coder: NSCoder) {
@@ -86,42 +54,40 @@ class LoginView: UIView {
                 self?.stateLabel.isHidden = true
             case .loading:
                 self?.stateLabel.textColor = .cyan
-                self?.stateLabel.text = "Loading..."
+                self?.stateLabel.text = Constants.loadingText
                 self?.stateLabel.isHidden = false
             case let .issue(message):
                 self?.stateLabel.textColor = .red
                 self?.stateLabel.text = message
                 self?.stateLabel.isHidden = false
+            case .usernameCorrect:
+                self?.usernameTextFieldView.changeState(.normal)
+            case let .usernameValidationError(message):
+                self?.usernameTextFieldView.changeState(.caution(message))
+            case .passwordCorrect:
+                self?.passwordTextFieldView.changeState(.normal)
+            case let .passwordValidationError(message):
+                self?.passwordTextFieldView.changeState(.caution(message))
             }
         }
     }
 
     private func setupView() {
         backgroundColor = .white
-        addSubview(usernameTextField)
-        addSubview(usernameCautionLabel)
-        addSubview(passwordTextField)
-        addSubview(passwordCautionLabel)
+        addSubview(usernameTextFieldView)
+        addSubview(passwordTextFieldView)
         addSubview(loginButton)
         addSubview(stateLabel)
     }
 
     private func setupConstraints() {
-        usernameTextField.snp.makeConstraints { make -> Void in
+        usernameTextFieldView.snp.makeConstraints { make -> Void in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(passwordTextField.snp.top).offset(-Constants.usernameBottomOffset)
+            make.top.equalTo(passwordTextFieldView).offset(-Constants.textFieldsOffset)
         }
-        usernameCautionLabel.snp.makeConstraints { make -> Void in
-            make.top.equalTo(usernameTextField.snp.bottom)
-            make.left.equalTo(usernameTextField)
-        }
-        passwordTextField.snp.makeConstraints { make -> Void in
+        passwordTextFieldView.snp.makeConstraints {make -> Void in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
-        }
-        passwordCautionLabel.snp.makeConstraints { make -> Void in
-            make.top.equalTo(passwordTextField.snp.bottom)
-            make.left.equalTo(passwordTextField)
+            make.top.equalTo(safeAreaLayoutGuide.snp.centerY).offset(-Constants.passwordTextFieldOffset)
         }
         loginButton.snp.makeConstraints { make -> Void in
             make.bottom.equalToSuperview().offset(-Constants.loginButtonBottomOffset)
@@ -133,46 +99,6 @@ class LoginView: UIView {
             make.top.equalTo(loginButton.snp.bottom)
             make.left.equalTo(loginButton)
         }
-    }
-
-    private func bindActions() {
-        usernameTextField.textPublisher
-            .sink { [weak self] username in
-                if let username {
-                    if username != "", let errorMessage = ValidationService.validateUsername(username) {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.usernameTextField.backgroundColor = .red
-                            self?.usernameCautionLabel.text = errorMessage
-                            self?.usernameCautionLabel.isHidden = false
-                        }
-                    } else {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.usernameTextField.backgroundColor = .white
-                            self?.usernameCautionLabel.isHidden = true
-                        }
-                    }
-                }
-            }
-            .store(in: &subscriptions)
-
-        passwordTextField.textPublisher
-            .sink { password in
-                if let password {
-                    if password != "", let errorMessage = ValidationService.validatePassword(password) {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.passwordTextField.backgroundColor = .red
-                            self?.passwordCautionLabel.text = errorMessage
-                            self?.passwordCautionLabel.isHidden = false
-                        }
-                    } else {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.passwordTextField.backgroundColor = .white
-                            self?.passwordCautionLabel.isHidden = true
-                        }
-                    }
-                }
-            }
-            .store(in: &subscriptions)
     }
 
 }

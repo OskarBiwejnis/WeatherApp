@@ -5,6 +5,8 @@ class LoginViewController: UIViewController {
 
     enum EventInput {
         case loginButtonTap(username: String, password: String)
+        case usernameTextChanged(_ username: String)
+        case passwordTextChanged(_ password: String)
     }
 
     private var subscriptions: [AnyCancellable] = []
@@ -33,10 +35,24 @@ class LoginViewController: UIViewController {
     private func bindActions() {
         loginView.loginButton.tapPublisher
             .sink { [weak self] in
-                guard let username = self?.loginView.usernameTextField.text,
-                      let password = self?.loginView.passwordTextField.text
+                guard let username = self?.loginView.usernameTextFieldView.textField.text,
+                      let password = self?.loginView.passwordTextFieldView.textField.text
                 else { return }
                 self?.loginViewModel.eventsInputSubject.send(.loginButtonTap(username: username, password: password))
+            }
+            .store(in: &subscriptions)
+
+        loginView.usernameTextFieldView.textField.textPublisher
+            .sink { [weak self] username in
+                guard let username else { return }
+                self?.loginViewModel.eventsInputSubject.send(.usernameTextChanged(username))
+            }
+            .store(in: &subscriptions)
+
+        loginView.passwordTextFieldView.textField.textPublisher
+            .sink { [weak self] password in
+                guard let password else { return }
+                self?.loginViewModel.eventsInputSubject.send(.passwordTextChanged(password))
             }
             .store(in: &subscriptions)
 
