@@ -18,12 +18,9 @@ class WelcomeView: UIView {
         static let imageSizeMultipier = 0.3
         static let imageMargin = 0
         static let proceedButtonMargin = 50
-        static let numberOfButtons = 3
-        static let stackViewCornerRadius: CGFloat = 40
-        static let stackViewSpacing: CGFloat = 6
-        static let recentButtonCornerRadius: CGFloat = 10
-        static let stackViewWidth = 250
-        static let stackViewHeight = 160
+        static let loginButtonCornerRadius: CGFloat = 10
+        static let loginButtonWidth = 80
+        static let loginButtonHeight = 40
         static let recentLabelOffset = 40
         static let tableViewWidth = 250
         static let tableViewHeight = 150
@@ -80,10 +77,21 @@ class WelcomeView: UIView {
         proceedButton.backgroundColor = .systemGray5
         proceedButton.layer.cornerRadius = Constants.proceedButtonCornerRadius
         proceedButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
-        proceedButton.setTitle(R.string.localizable.button_text(), for: .normal)
+        proceedButton.setTitle(R.string.localizable.proceed_button_title(), for: .normal)
 
         return proceedButton
     }()
+
+    let loginButton: UIButton = {
+        let loginButton = UIButton(type: .system)
+        loginButton.backgroundColor = .systemGray5
+        loginButton.setTitle(R.string.localizable.login_button_title(), for: .normal)
+        loginButton.layer.cornerRadius = Constants.loginButtonCornerRadius
+
+        return loginButton
+    }()
+
+    private let centerBetweenIconAndRightBorder = UIView()
 
     // MARK: - Initialization -
 
@@ -118,6 +126,8 @@ class WelcomeView: UIView {
         addSubview(iconImageView)
         addSubview(tableView)
         addSubview(recentLabel)
+        addSubview(loginButton)
+        addSubview(centerBetweenIconAndRightBorder)
     }
 
     private func setupConstraints() {
@@ -149,6 +159,18 @@ class WelcomeView: UIView {
         recentLabel.snp.makeConstraints { make -> Void in
             make.centerX.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(Constants.recentLabelOffset)
+        }
+
+        centerBetweenIconAndRightBorder.snp.makeConstraints { make -> Void in
+            make.right.equalToSuperview()
+            make.left.equalTo(iconImageView.snp.right)
+        }
+
+        loginButton.snp.makeConstraints { make -> Void in
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.centerX.equalTo(centerBetweenIconAndRightBorder)
+            make.width.equalTo(Constants.loginButtonWidth)
+            make.height.equalTo(Constants.loginButtonHeight)
         }
     }
 

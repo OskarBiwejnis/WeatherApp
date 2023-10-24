@@ -1,30 +1,8 @@
 import Combine
 import UIKit
 
-protocol WelcomeViewModelContract {
-
-    var eventsInputSubject: PassthroughSubject<WelcomeViewController.EventInput, Never> { get }
-    var viewStatePublisher: AnyPublisher<WelcomeViewState, Never> { get }
-
-}
-
-protocol WelcomeViewModelCoordinatorContract {
-
-    var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> { get }
-
-}
-
-enum WelcomeViewState {
-    case cities([City])
-}
-
-enum WelcomeNavigationEvent {
-    case openForecastScreen(city: City)
-    case openSearchScreen
-}
-
 class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorContract {
-    
+
     // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
@@ -39,7 +17,7 @@ class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorCon
     init(storageService: StorageServiceType) {
         self.storageService = storageService
     }
-    
+
     // MARK: - Public -
 
     lazy var viewStatePublisher: AnyPublisher<WelcomeViewState, Never> = reloadRecentCitiesPublisher
@@ -48,11 +26,17 @@ class WelcomeViewModel: WelcomeViewModelContract, WelcomeViewModelCoordinatorCon
 
     lazy var navigationEventsPublisher: AnyPublisher<WelcomeNavigationEvent, Never> = eventsInputSubject
         .compactMap { [weak self] event in
-            if case .didSelectRecentCity(let row) = event, let city = self?.recentCities[row] {
+            switch event {
+            case .loginButtonTap:
+                return WelcomeNavigationEvent.openLoginScreen
+            case let .didSelectRecentCity(row):
+                guard let city = self?.recentCities[row] else { return nil }
                 return WelcomeNavigationEvent.openForecastScreen(city: city)
-            } else if case .proceedButtonTap = event {
+            case .proceedButtonTap:
                 return WelcomeNavigationEvent.openSearchScreen
-            } else { return nil }
+            default:
+                return nil
+            }
         }
         .eraseToAnyPublisher()
 

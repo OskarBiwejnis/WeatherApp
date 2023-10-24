@@ -1,5 +1,5 @@
 "app_name" = "WeatherApp";
-"button_text" = "Proceed";
+"proceed_button_title" = "Proceed";
 "search_placeholder" = "Search";
 "error_alert_title" = "Error occured";
 "invalid_response_message" = "Invalid response from server";
@@ -8,3 +8,10 @@
 "unknown_error_message" = "Unknown error occured";
 "ok_button_text" = "OK";
 "recent_label_text" = "recent searches";
+"username_restricted_message" = "This username is restricted for administrators";
+"username_textfield_placeholder" = "Username";
+"password_textfield_placeholder" = "Password";
+"loading_state_message" = "Loading...";
+"invalid_password_message" = "Password is invalid";
+"username_doesnt_exist_message" = "Username doesn't exist";
+"login_button_title" = "Login";

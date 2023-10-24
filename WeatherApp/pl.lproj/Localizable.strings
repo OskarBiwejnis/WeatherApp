@@ -1,5 +1,5 @@
 "app_name" = "Pogodynka";
-"button_text" = "Wejdź";
+"proceed_button_title" = "Wejdź";
 "search_placeholder" = "Znajdź";
 "error_alert_title" = "Wystąpił błąd";
 "invalid_response_message" = "Niewłaściwa odpowiedź serwera";
@@ -8,3 +8,10 @@
 "unknown_error_message" = "Wystąpił nieoczekiwany błąd";
 "ok_button_text" = "Okej";
 "recent_label_text" = "ostatnie wyszukiwania";
+"username_restricted_message" = "Ta nazwa użytkownika jest zastrzeżona dla administratorów";
+"username_textfield_placeholder" = "Nazwa użytkownika";
+"password_textfield_placeholder" = "Hasło";
+"loading_state_message" = "Proszę czekać...";
+"invalid_password_message" = "Niepoprawne hasło";
+"username_doesnt_exist_message" = "Użytkownik nie istnieje";
+"login_button_title" = "Zaloguj";
