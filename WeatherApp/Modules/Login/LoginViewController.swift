@@ -1,18 +1,25 @@
 import Combine
+import CombineExt
 import UIKit
 
 class LoginViewController: UIViewController {
+    
+    // MARK: - Constants -
 
     enum EventInput {
-        case loginButtonTap(username: String, password: String)
+        case loginButtonTap
         case usernameTextChanged(_ username: String)
         case passwordTextChanged(_ password: String)
     }
+
+    // MARK: - Variables -
 
     private var subscriptions: [AnyCancellable] = []
 
     let loginViewModel: LoginViewModelContract
     private let loginView = LoginView()
+
+    // MARK: - Initialization -
 
     init(loginViewModel: LoginViewModelContract) {
         self.loginViewModel = loginViewModel
@@ -23,6 +30,8 @@ class LoginViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Public -
+
     override func loadView() {
         view = loginView
     }
@@ -32,13 +41,12 @@ class LoginViewController: UIViewController {
         bindActions()
     }
 
+    // MARK: - Private -
+
     private func bindActions() {
         loginView.loginButton.tapPublisher
             .sink { [weak self] in
-                guard let username = self?.loginView.usernameTextFieldView.textField.text,
-                      let password = self?.loginView.passwordTextFieldView.textField.text
-                else { return }
-                self?.loginViewModel.eventsInputSubject.send(.loginButtonTap(username: username, password: password))
+                self?.loginViewModel.eventsInputSubject.send(.loginButtonTap)
             }
             .store(in: &subscriptions)
 

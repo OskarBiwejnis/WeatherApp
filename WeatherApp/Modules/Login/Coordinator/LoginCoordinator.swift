@@ -19,15 +19,11 @@ class LoginCoordinator: BaseCoordinator {
         bindActions(loginViewModel: loginViewModel)
     }
 
-    private func dismissItself() {
-        navigationController.popViewController(animated: false)
-    }
-
     private func bindActions(loginViewModel: LoginViewModelCoordinatorContract) {
         loginViewModel.navigationEventsPublisher
             .sink { [weak self] navigationEvent in
                 if case .dismiss = navigationEvent {
-                    self?.dismissItself()
+                    self?.navigationController.popViewController(animated: false)
                 }
             }
             .store(in: &subscriptions)

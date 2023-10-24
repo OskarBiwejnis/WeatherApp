@@ -36,12 +36,16 @@
 		465CA6DF2AB1EB8D00495467 /* EqualDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E9287A2AAF4AD10022A29C /* EqualDiff.swift */; };
 		4663C9762AA9DF71000019D3 /* PublisherEventsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */; };
 		466811232AC3082A004F6DF1 /* Optional+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466811222AC3082A004F6DF1 /* Optional+Ext.swift */; };
+		466A43CA2AE7DA2800BD9797 /* ForecastContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466A43C92AE7DA2800BD9797 /* ForecastContract.swift */; };
 		4677B0E62ACEF3470065F8C5 /* LoginTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4677B0E52ACEF3470065F8C5 /* LoginTextFieldView.swift */; };
 		467A516C2A9C99E600661714 /* Publisher+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516B2A9C99E600661714 /* Publisher+Ext.swift */; };
 		467A516F2A9CA29E00661714 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A516E2A9CA29E00661714 /* Result.swift */; };
 		4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35A2A8121A10018C215 /* PersistedCity.swift */; };
 		4688F3602A813E940018C215 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F35F2A813E940018C215 /* SearchViewModelTests.swift */; };
 		4688F3622A813EFE0018C215 /* ForecastViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */; };
+		4691C15A2AE7D93F00C91735 /* WelcomeContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4691C1592AE7D93F00C91735 /* WelcomeContract.swift */; };
+		4691C15D2AE7D98D00C91735 /* LoginContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4691C15C2AE7D98D00C91735 /* LoginContract.swift */; };
+		4691C1602AE7D9C700C91735 /* SearchContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4691C15F2AE7D9C700C91735 /* SearchContract.swift */; };
 		46A382712AB2F3D70003E46D /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A382702AB2F3D70003E46D /* AppCoordinator.swift */; };
 		46B498622AAB43F300CF278C /* AutoEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B498612AAB43F300CF278C /* AutoEquatable.swift */; };
 		46B498692AAB791E00CF278C /* TestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B498662AAB790400CF278C /* TestScheduler.swift */; };
@@ -126,12 +130,16 @@
 		465B27D72AD66037001E59D3 /* ValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
 		4663C9752AA9DF71000019D3 /* PublisherEventsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherEventsObserver.swift; sourceTree = "<group>"; };
 		466811222AC3082A004F6DF1 /* Optional+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Ext.swift"; sourceTree = "<group>"; };
+		466A43C92AE7DA2800BD9797 /* ForecastContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastContract.swift; sourceTree = "<group>"; };
 		4677B0E52ACEF3470065F8C5 /* LoginTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextFieldView.swift; sourceTree = "<group>"; };
 		467A516B2A9C99E600661714 /* Publisher+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Ext.swift"; sourceTree = "<group>"; };
 		467A516E2A9CA29E00661714 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		4688F35A2A8121A10018C215 /* PersistedCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedCity.swift; sourceTree = "<group>"; };
 		4688F35F2A813E940018C215 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
 		4688F3612A813EFE0018C215 /* ForecastViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModelTests.swift; sourceTree = "<group>"; };
+		4691C1592AE7D93F00C91735 /* WelcomeContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeContract.swift; sourceTree = "<group>"; };
+		4691C15C2AE7D98D00C91735 /* LoginContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginContract.swift; sourceTree = "<group>"; };
+		4691C15F2AE7D9C700C91735 /* SearchContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchContract.swift; sourceTree = "<group>"; };
 		46A382702AB2F3D70003E46D /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		46B498612AAB43F300CF278C /* AutoEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEquatable.swift; sourceTree = "<group>"; };
 		46B498662AAB790400CF278C /* TestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestScheduler.swift; sourceTree = "<group>"; };
@@ -208,6 +216,7 @@
 				4602D1CE2A67F0B2001E11F0 /* ForecastViewModel.swift */,
 				4602D1CC2A67F09B001E11F0 /* ForecastView.swift */,
 				4602D1D12A67F0EB001E11F0 /* ForecastCell.swift */,
+				466A43C92AE7DA2800BD9797 /* ForecastContract.swift */,
 				46170B262AC195B20032E9F7 /* ForecastAssembly.swift */,
 			);
 			path = Forecast;
@@ -240,6 +249,7 @@
 				464975C62A66D4CE00DC78FB /* WelcomeViewModel.swift */,
 				46C758D42A5E8D32008B52A5 /* WelcomeView.swift */,
 				4639AB3A2A7A57FC007AA0FA /* RecentCityCell.swift */,
+				4691C1592AE7D93F00C91735 /* WelcomeContract.swift */,
 				46170B222AC1959A0032E9F7 /* WelcomeAssembly.swift */,
 			);
 			path = Welcome;
@@ -253,6 +263,7 @@
 				464975BC2A668B2800DC78FB /* SearchViewModel.swift */,
 				46C758EC2A600088008B52A5 /* SearchView.swift */,
 				46D1FEA72A652B43003A71C4 /* SearchCell.swift */,
+				4691C15F2AE7D9C700C91735 /* SearchContract.swift */,
 				46170B242AC195A50032E9F7 /* SearchAssembly.swift */,
 			);
 			path = Search;
@@ -301,6 +312,7 @@
 				464BFF852AC707F20060A5D6 /* LoginViewController.swift */,
 				464BFF812AC707B80060A5D6 /* LoginViewModel.swift */,
 				464BFF872AC708210060A5D6 /* LoginView.swift */,
+				4691C15C2AE7D98D00C91735 /* LoginContract.swift */,
 				464BFF892AC708A90060A5D6 /* LoginAssembly.swift */,
 			);
 			path = Login;
@@ -809,10 +821,12 @@
 				464975C72A66D4CE00DC78FB /* WelcomeViewModel.swift in Sources */,
 				464BFF822AC707B80060A5D6 /* LoginViewModel.swift in Sources */,
 				4688F35B2A8121A10018C215 /* PersistedCity.swift in Sources */,
+				4691C15D2AE7D98D00C91735 /* LoginContract.swift in Sources */,
 				46170B272AC195B20032E9F7 /* ForecastAssembly.swift in Sources */,
 				464499472AB992E400CB3A3A /* WelcomeCoordinator.swift in Sources */,
 				46C758A12A5D4D51008B52A5 /* AppDelegate.swift in Sources */,
 				46C758EA2A600065008B52A5 /* SearchViewController.swift in Sources */,
+				466A43CA2AE7DA2800BD9797 /* ForecastContract.swift in Sources */,
 				467A516F2A9CA29E00661714 /* Result.swift in Sources */,
 				464BFF8C2AC70E5D0060A5D6 /* LoginService.swift in Sources */,
 				465B27D82AD66037001E59D3 /* ValidationService.swift in Sources */,
@@ -833,11 +847,13 @@
 				46B498702AAB8B8700CF278C /* AutoMockable.swift in Sources */,
 				4602D1CF2A67F0B2001E11F0 /* ForecastViewModel.swift in Sources */,
 				46C758F42A614E55008B52A5 /* NetworkingService.swift in Sources */,
+				4691C15A2AE7D93F00C91735 /* WelcomeContract.swift in Sources */,
 				46C758D32A5D521D008B52A5 /* WelcomeViewController.swift in Sources */,
 				46170B232AC1959A0032E9F7 /* WelcomeAssembly.swift in Sources */,
 				46A382712AB2F3D70003E46D /* AppCoordinator.swift in Sources */,
 				4602D1CD2A67F09B001E11F0 /* ForecastView.swift in Sources */,
 				4644994B2AB992FB00CB3A3A /* ForecastCoordinator.swift in Sources */,
+				4691C1602AE7D9C700C91735 /* SearchContract.swift in Sources */,
 				464BFF7E2AC7079E0060A5D6 /* LoginCoordinator.swift in Sources */,
 				46170B1F2AC04EA30032E9F7 /* ServicesAssembly.swift in Sources */,
 				46F770CA2A77ABF800C148FE /* Label.swift in Sources */,

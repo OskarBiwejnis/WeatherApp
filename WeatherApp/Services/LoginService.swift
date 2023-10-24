@@ -5,10 +5,21 @@ protocol LoginServiceType {
     func login(username: String, password: String) -> AnyPublisher<LoginResult, LoginError>
 }
 
-enum LoginResult: String {
+enum LoginResult {
     case success
-    case invalidPassword = "Password is invalid"
-    case usernameDoesntExist = "Username doesn't exist"
+    case invalidPassword
+    case usernameDoesntExist
+
+    var description: String? {
+        switch self {
+        case .success:
+            return nil
+        case .invalidPassword:
+            return R.string.localizable.invalid_password_message()
+        case .usernameDoesntExist:
+            return R.string.localizable.username_doesnt_exist_message()
+        }
+    }
 }
 
 class LoginService: LoginServiceType {

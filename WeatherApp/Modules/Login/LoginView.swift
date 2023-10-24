@@ -4,37 +4,36 @@ import UIKit
 
 class LoginView: UIView {
 
+    // MARK: - Constants -
+    
     private enum Constants {
-        static let usernamePlaceholder = "Username"
-        static let passwordPlaceholder = "Password"
-        static let loginButtonTitle = "Login"
         static let loginButtonCornerRadius: CGFloat = 10
         static let loginButtonBottomOffset = 200
         static let loginButtonWidth = 80
         static let loginButtonHeight = 40
-        static let loadingText = "Loading..."
         static let passwordTextFieldOffset = 30
         static let textFieldsOffset = 100
     }
 
+    // MARK: - Variables -
+    
     private var subscriptions: [AnyCancellable] = []
 
-    let usernameTextFieldView = LoginTextFieldView(placeholder: Constants.usernamePlaceholder)
+    let usernameTextFieldView = LoginTextFieldView(placeholder: R.string.localizable.username_textfield_placeholder())
 
-    let passwordTextFieldView = LoginTextFieldView(placeholder: Constants.passwordPlaceholder, isSecureTextEntry: true)
+    let passwordTextFieldView = LoginTextFieldView(placeholder: R.string.localizable.password_textfield_placeholder(), isSecureTextEntry: true)
 
     let loginButton = {
         let loginButton = UIButton(type: .system)
         loginButton.backgroundColor = .systemGray5
-        loginButton.setTitle(Constants.loginButtonTitle, for: .normal)
+        loginButton.setTitle(R.string.localizable.login_button_title(), for: .normal)
         loginButton.layer.cornerRadius = Constants.loginButtonCornerRadius
         return loginButton
     }()
 
-    private let stateLabel: UILabel = {
-        let label = Label(text: Constants.loadingText, textColor: .cyan, font: FontProvider.defaultBoldFont)
-        return label
-    }()
+    private let stateLabel = Label(text: R.string.localizable.loading_state_message(), textColor: .cyan, font: FontProvider.defaultBoldFont)
+
+    // MARK: - Initialization -
 
     init() {
         super.init(frame: .zero)
@@ -47,6 +46,8 @@ class LoginView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Public -
+
     func changeState(_ viewState: LoginViewState) {
         DispatchQueue.main.async { [weak self] in
             switch viewState {
@@ -54,7 +55,7 @@ class LoginView: UIView {
                 self?.stateLabel.isHidden = true
             case .loading:
                 self?.stateLabel.textColor = .cyan
-                self?.stateLabel.text = Constants.loadingText
+                self?.stateLabel.text = R.string.localizable.loading_state_message()
                 self?.stateLabel.isHidden = false
             case let .issue(message):
                 self?.stateLabel.textColor = .red
@@ -71,6 +72,8 @@ class LoginView: UIView {
             }
         }
     }
+
+    // MARK: - Private -
 
     private func setupView() {
         backgroundColor = .white

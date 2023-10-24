@@ -2,16 +2,6 @@ import Combine
 import Foundation
 import UIKit
 
-protocol ForecastViewModelContract {
-    var city: City { get }
-    var viewStatePublisher: AnyPublisher<ForecastViewState, Never> { get }
-}
-
-enum ForecastViewState {
-    case forecast([ThreeHourForecastFormatted])
-    case error(Error)
-}
-
 
 class ForecastViewModel: ForecastViewModelContract {
 
